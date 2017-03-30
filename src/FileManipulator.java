@@ -1,5 +1,6 @@
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -25,27 +26,32 @@ public class FileManipulator {
      */
     public static void main(String[] args) {
         FileManipulator rf = new FileManipulator("/home/s000191354/Committee_on_Committes/CocProfessors1.xlsx");
-        try {
-            InputStream inp = new FileInputStream(rf.getPath());
-            //InputStream inp = new FileInputStream("workbook.xlsx");
 
-            Workbook wb = WorkbookFactory.create(inp);
-            Sheet sheet = wb.getSheetAt(0);
-            Row row = sheet.getRow(2);
-            Cell cell = row.getCell(3);
-            if (cell == null)
-                cell = row.createCell(3);
-            cell.setCellType(CellType.STRING);
-            System.out.println("Editing Excel sheet now");
-            cell.setCellValue("abcdefghijklmnopqrstuvwxyz");
+        Workbook wb = rf.readExcelFile(rf.getPath());
 
-            rf.writeFile(wb, rf);
-        }catch (IOException ioe){
-            ioe.printStackTrace();
-        }catch(InvalidFormatException ife){
-            ife.printStackTrace();
+        Sheet sheet = wb.getSheetAt(0);
+
+
+        Cell cell = rf.getCell(1,3, sheet);
+
+        int totalRows = sheet.getPhysicalNumberOfRows();
+        Row row = sheet.getRow(0);
+        for (int i = 0; i < totalRows; i++){
+            //Cell cell
+            System.out.println();
         }
+
+        if (cell == null)
+            cell = row.createCell(3);
+
+
+        cell.setCellType(CellType.STRING);
+        System.out.println("Editing Excel sheet now");
+        cell.setCellValue("TESTING THIS NOW");
+
+        rf.writeFile(wb, rf);
     }
+
 
 
     /**
@@ -62,6 +68,35 @@ public class FileManipulator {
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
+    }
+
+    public Workbook readExcelFile(String path){
+        try {
+            InputStream inp = new FileInputStream(path);
+            //InputStream inp = new FileInputStream("workbook.xlsx");
+            Workbook wb = WorkbookFactory.create(inp);
+
+            return wb;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        Workbook wb = new XSSFWorkbook();
+        return wb;
+    }
+
+    /**
+     * Retrieves a cell in a sheet at the location given
+     * @param cellNum x-Axis in cell
+     * @param rowNum Y-axis of grid
+     * @param sheet sheet we are looking at
+     * @return
+     */
+    public Cell getCell(int cellNum, int rowNum, Sheet sheet){
+        Row row = sheet.getRow(rowNum);
+
+        Cell cell = row.getCell(cellNum);
+
+        return cell;
     }
 
     /**

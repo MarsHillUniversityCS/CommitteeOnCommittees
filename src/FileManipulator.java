@@ -11,6 +11,9 @@ import java.util.ArrayList;
  *
  */
 public class FileManipulator {
+    private Sheet sheet;
+
+
     private String path = "";
     //public static ArrayList<String[]> myList = new ArrayList<String[]>();
 
@@ -25,32 +28,35 @@ public class FileManipulator {
     FileManipulator rf = new FileManipulator("/home/s000191354/Committee_on_Committes/CocProfessors1.ods");
      */
     public static void main(String[] args) {
-        FileManipulator rf = new FileManipulator("/home/s000191354/Committee_on_Committes/CocProfessors1.xlsx");
+        FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
 
         Workbook wb = rf.readExcelFile(rf.getPath());
 
         Sheet sheet = wb.getSheetAt(0);
 
 
-        Cell cell = rf.getCell(1,3, sheet);
+       // Cell cell = rf.getCell(1,3, sheet);
 
         int totalRows = sheet.getPhysicalNumberOfRows();
         Row row = sheet.getRow(0);
-        for (int i = 0; i < totalRows; i++){
-            //Cell cell
-            System.out.println();
-        }
+       // for (int i = 0; i < totalRows; i++){
+            Cell cell = rf.getCell(Constants.CoC.YEAR_APPOINTED.getID(),3);
+            System.out.println(totalRows);
+      //  }
 
         if (cell == null)
             cell = row.createCell(3);
 
 
         cell.setCellType(CellType.STRING);
-        System.out.println("Editing Excel sheet now");
-        cell.setCellValue("TESTING THIS NOW");
+        //System.out.println("Editing Excel sheet now");
+        //cell.setCellValue("TESTING THIS NOW");
 
-        rf.saveFile(wb, rf);
+        //rf.saveFile(wb, rf);
     }
+
+
+
 
 
 
@@ -70,11 +76,18 @@ public class FileManipulator {
         }
     }
 
+    /**
+     * Reading exel file and creating a new workbook
+     * @param path is the location of the file you want to open.
+     * @return a workbook
+     */
     public Workbook readExcelFile(String path){
         try {
             InputStream inp = new FileInputStream(path);
             //InputStream inp = new FileInputStream("workbook.xlsx");
             Workbook wb = WorkbookFactory.create(inp);
+
+            sheet = wb.getSheetAt(1);
 
             return wb;
         }catch (FileNotFoundException fnfe) {
@@ -93,16 +106,32 @@ public class FileManipulator {
      * Retrieves a cell in a sheet at the location given
      * @param cellNum x-Axis in cell
      * @param rowNum Y-axis of grid
-     * @param sheet sheet we are looking at
      * @return
      */
-    public Cell getCell(int cellNum, int rowNum, Sheet sheet){
+    public Cell getCell(int cellNum, int rowNum){
         Row row = sheet.getRow(rowNum);
 
         Cell cell = row.getCell(cellNum);
 
         return cell;
     }
+
+
+    public int[] getAllElidgable(int Column, String Condition){
+       int [] eligibleProfessors = new int[150];
+       int spotInArray = 0;
+       Cell cell;
+
+       for(int i = 1; i < sheet.getPhysicalNumberOfRows(); i++){
+           cell = getCell(i, Column);
+           if(cell.toString().equals(Condition)){
+               eligibleProfessors[spotInArray] = i;
+           }
+       }
+       return eligibleProfessors;
+    }
+
+
 
     /**
      * Getter for FileManipulator.

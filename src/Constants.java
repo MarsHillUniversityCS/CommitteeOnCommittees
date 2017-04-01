@@ -34,6 +34,10 @@ public final class Constants {
 
     public static final String EMPTY = "-";
 
+    /**
+     * CoC - Committeee on Committee Excel Columns.
+     * ID is the column number inside the excel sheet.
+     */
     public enum CoC {
         FIRST_NAME(0), LAST_NAME(1), DIVISION(2), DEPARTMENT(3), PROGRAM(4), YEAR_APPOINTED(5),
         CURRENT_ASSIGNMENT(6), COMMITTEE_NUMBER(7), REPRESENTING(8), UNTIL(9), SEM(10),

@@ -49,7 +49,7 @@ public class FileManipulator {
         System.out.println("Editing Excel sheet now");
         cell.setCellValue("TESTING THIS NOW");
 
-        rf.writeFile(wb, rf);
+        rf.saveFile(wb, rf);
     }
 
 
@@ -59,14 +59,14 @@ public class FileManipulator {
      * @param wb workbook to be saved
      * @param rf FileManipulator with path to be saved
      */
-    public void writeFile(Workbook wb, FileManipulator rf){
+    public void saveFile(Workbook wb, FileManipulator rf){
         // Write the output to a file
         try {
             FileOutputStream fileOut = new FileOutputStream(rf.getPath());
             wb.write(fileOut);
             fileOut.close();
         }catch (IOException ioe){
-            ioe.printStackTrace();
+            System.err.println("An Input or output operation has failed.");
         }
     }
 
@@ -77,9 +77,14 @@ public class FileManipulator {
             Workbook wb = WorkbookFactory.create(inp);
 
             return wb;
-        }catch (Exception e) {
-            e.printStackTrace();
+        }catch (FileNotFoundException fnfe) {
+            System.err.println("The file you tried to open does not exist.");
+        }catch(InvalidFormatException ife){
+            System.err.println("The file you tried to open has an INVALID FORM.");
+        }catch (IOException ioe){
+            System.err.println("An Input or output operation has failed.");
         }
+
         Workbook wb = new XSSFWorkbook();
         return wb;
     }

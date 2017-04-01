@@ -55,3 +55,15 @@ public final class Constants {
         public int getID(){return id;};
     }
 }
+/**
+ * Tempted to create Constant Strings for every situation possible for each column...
+ */
+
+
+
+
+
+
+
+
+

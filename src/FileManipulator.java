@@ -39,15 +39,20 @@ public class FileManipulator {
 
         int totalRows = sheet.getPhysicalNumberOfRows();
         Row row = sheet.getRow(0);
-       // for (int i = 0; i < totalRows; i++){
             Cell cell = rf.getCell(Constants.CoC.YEAR_APPOINTED.getID(),3);
-            System.out.println(totalRows);
-      //  }
+            System.out.println(cell.toString());
 
         if (cell == null)
             cell = row.createCell(3);
 
+        int [] professors = rf.getAllElidgable(Constants.CoC.DEPARTMENT.getID(), "Math & CS");
+        professors = rf.getAllElidgable(Constants.CoC.LAST_NAME.getID(), "Nash", professors);
+        System.out.println(professors.length);
 
+        for(int i=0; i < professors.length; i++){
+            if(professors[i]==0)break;
+            System.out.println("professor department math  num = " + professors[i]);
+        }
         cell.setCellType(CellType.STRING);
         //System.out.println("Editing Excel sheet now");
         //cell.setCellValue("TESTING THIS NOW");
@@ -87,7 +92,7 @@ public class FileManipulator {
             //InputStream inp = new FileInputStream("workbook.xlsx");
             Workbook wb = WorkbookFactory.create(inp);
 
-            sheet = wb.getSheetAt(1);
+            sheet = wb.getSheetAt(0);
 
             return wb;
         }catch (FileNotFoundException fnfe) {
@@ -117,15 +122,45 @@ public class FileManipulator {
     }
 
 
+    /**
+     * Overloaded function that sorts through a list of professors to find if they meet a condition
+     * @param Column
+     * @param Condition
+     * @param professors
+     * @return
+     */
+    public int[] getAllElidgable(int Column, String Condition, int [] professors){
+        int spotInArray = 0;
+        Cell cell;
+        int [] eligibleProfessors = new int[professors.length];
+
+        for(int i = 0; i < eligibleProfessors.length; i++){
+            cell = getCell(Column, professors[i]);
+            if(cell.toString().equals(Condition)){
+                eligibleProfessors[spotInArray++] = professors[i];
+            }
+            if(professors[i] == 0)break;
+        }
+
+        return eligibleProfessors;
+    }
+
+
+    /**
+     * Sort through all row and find which professors meet the condition
+     * @param Column is the Constant.CoC Column we are looking through
+     * @param Condition is the string we are looking for in our column
+     * @return
+     */
     public int[] getAllElidgable(int Column, String Condition){
-       int [] eligibleProfessors = new int[150];
+       int [] eligibleProfessors = new int[sheet.getPhysicalNumberOfRows()];
        int spotInArray = 0;
        Cell cell;
 
        for(int i = 1; i < sheet.getPhysicalNumberOfRows(); i++){
-           cell = getCell(i, Column);
+           cell = getCell(Column, i);
            if(cell.toString().equals(Condition)){
-               eligibleProfessors[spotInArray] = i;
+               eligibleProfessors[spotInArray++] = i;
            }
        }
        return eligibleProfessors;

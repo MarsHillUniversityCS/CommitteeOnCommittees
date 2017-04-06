@@ -12,40 +12,51 @@ import org.apache.poi.ss.usermodel.Workbook;
 public class Requirements {
     //Constants:
     //ROW COMMITTEES_STARTS is the row in the excel file that the committee starts on
-    private static final int ROW_COMMITTEES_STARTS = 6 ;
+    private static final int ROW_COMMITTEES_STARTS = 4;
 
 
     private int      fineArtsNum;
     private boolean  fineArtsMustHaveTenure;
     private int      fineArtsMinNumYears;
-    private int      fineArtsMinRank;
+    private boolean      fineArtsMustBeAssociate;
 
     private int      hssNum;
     private boolean  hssMustHaveTenure;
     private int      hssMinNumYears;
-    private int      hssArtsMinRank;
+    private boolean      hssArtsMustBeAssociate;
 
     private int      mnsNum;
     private boolean  mnsMustHaveTenure;
     private int      mnsMinNumYears;
-    private int      mnsArtsMinRank;
+    private boolean      mnsArtsMustBeAssociate;
 
     private int      ppNum;
     private boolean  ppMustHaveTenure;
     private int      ppMinNumYears;
-    private int      ppArtsMinRank;
+    private boolean      ppArtsMustBeAssociate;
 
     private int      atLargeNum;
     private boolean  atLargeMustHaveTenure;
     private int      atLargeMinNumYears;
-    private int      atLargeMinRank;
+    private boolean      atLargeMustBeAssociate;
 
     private boolean  isElected;
     private int      term_years;
 
+    private static final String TENURE = "(T)";
+    private static final String ASSOCIATE = "(A)";
+    private static final String ELECTED = "Elected";
+
 
 
     FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
+
+
+    public static void main(String[] args) {
+        Requirements fa = new Requirements("Faculty Personel");
+        System.out.println(fa.fineArtsMustHaveTenure);
+
+    }
 
     public Requirements(String Committee){
         //FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
@@ -53,11 +64,12 @@ public class Requirements {
         Workbook wb = rf.readExcelFile(rf.getPath());
 
         //Sheet one is the committee requirements
-        Sheet sheet = wb.getSheetAt(1);
+        rf.sheet = wb.getSheetAt(1);
 
-        int CommitteeSpecsRow = findCommittee(Committee, sheet);
 
-        getCommittteeSpecs(CommitteeSpecsRow);
+        int CommitteeSpecsRow = findCommittee(Committee);
+
+        getCommitteeSpecs(CommitteeSpecsRow);
 
 
 
@@ -65,12 +77,12 @@ public class Requirements {
 
 
 
-    private int findCommittee(String Committee, Sheet sheet){
+    private int findCommittee(String Committee){
         Cell cell;
-        for(int i = 6; ; i++){
-            cell = rf.getCell(ROW_COMMITTEES_STARTS,i);
+        for(int i = ROW_COMMITTEES_STARTS; ; i++){
+            cell = rf.getCell(0,i);
             if(cell.getStringCellValue().isEmpty()){
-                return 0;
+                return -1;
             }
             if(cell.getStringCellValue().equals(Committee)){
                 return i;
@@ -78,17 +90,17 @@ public class Requirements {
         }
     }
 
-    private void getCommittteeSpecs(int row){
+    private void getCommitteeSpecs(int row){
         Cell cell = rf.getCell(1,row);
         String specs = cell.getStringCellValue();
 
-        if(specs.contains("(T)"))
+        if(specs.contains(TENURE))
             fineArtsMustHaveTenure = true;
+        if(specs.contains(ASSOCIATE))
+            fineArtsMustBeAssociate = true;
+        //if(specs.matches("(^[0-9]*)"))
 
-        for(int i=1; i <= 7; i++){
 
-
-        }
     }
 }
 /**

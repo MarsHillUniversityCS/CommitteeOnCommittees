@@ -2,18 +2,23 @@
  * Created by s000191354 on 4/1/17.
  */
 public class Committees {
+    protected int yearsOfService = 0;
+
     protected boolean isElected;
 
     protected int total_FA;
 
-
     protected int total_HSS;
+
     protected int total_MNS;
+
     protected int total_PP;
-    protected int total_L;
+
+    protected int total_At_Large;
+
+
 
     public void findFolks(){
-
 
     }
 
@@ -66,7 +71,8 @@ public class Committees {
 }
 
 /**
- * what does hss, fa, l, mns, pp stand for.
+ * what does hss=humanities and social, fa=fine arts, l=at large, mns=mathnatrural s, pp=prof programs stand for.
+ * sem S=spring semester
  * create a class for each that contains all that aplies to each of these for quicker searching.
  *
  */

@@ -11,13 +11,13 @@ import java.util.ArrayList;
  *
  */
 public class FileManipulator {
-    private Sheet sheet;
+    public Sheet sheet;
 
 
     private String path = "";
     //public static ArrayList<String[]> myList = new ArrayList<String[]>();
 
-    private FileManipulator(String path){
+    public FileManipulator(String path){
         this.path = path;
 
     }
@@ -35,12 +35,12 @@ public class FileManipulator {
         Sheet sheet = wb.getSheetAt(0);
 
 
-       // Cell cell = rf.getCell(1,3, sheet);
+        // Cell cell = rf.getCell(1,3, sheet);
 
         int totalRows = sheet.getPhysicalNumberOfRows();
         Row row = sheet.getRow(0);
-            Cell cell = rf.getCell(Constants.CoC.YEAR_APPOINTED.getID(),3);
-            System.out.println(cell.toString());
+        Cell cell = rf.getCell(Constants.CoC.YEAR_APPOINTED.getID(),3);
+        System.out.println(cell.toString());
 
         if (cell == null)
             cell = row.createCell(3);
@@ -153,17 +153,17 @@ public class FileManipulator {
      * @return
      */
     public int[] getAllElidgable(int Column, String Condition){
-       int [] eligibleProfessors = new int[sheet.getPhysicalNumberOfRows()];
-       int spotInArray = 0;
-       Cell cell;
+        int [] eligibleProfessors = new int[sheet.getPhysicalNumberOfRows()];
+        int spotInArray = 0;
+        Cell cell;
 
-       for(int i = 1; i < sheet.getPhysicalNumberOfRows(); i++){
-           cell = getCell(Column, i);
-           if(cell.toString().equals(Condition)){
-               eligibleProfessors[spotInArray++] = i;
-           }
-       }
-       return eligibleProfessors;
+        for(int i = 1; i < sheet.getPhysicalNumberOfRows(); i++){
+            cell = getCell(Column, i);
+            if(cell.toString().equals(Condition)){
+                eligibleProfessors[spotInArray++] = i;
+            }
+        }
+        return eligibleProfessors;
     }
 
 

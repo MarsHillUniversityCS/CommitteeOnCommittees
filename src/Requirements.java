@@ -2,6 +2,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by s000191354 on 4/6/17.
  * Each Department must check to see if Tenured, Number of years specified, and
@@ -20,10 +23,14 @@ public class Requirements {
     private int      fineArtsMinNumYears;
     private boolean      fineArtsMustBeAssociate;
 
+    private int[] fineArts = new int[] {0,0,0,0};
+
     private int      hssNum;
     private boolean  hssMustHaveTenure;
     private int      hssMinNumYears;
     private boolean      hssArtsMustBeAssociate;
+
+
 
     private int      mnsNum;
     private boolean  mnsMustHaveTenure;
@@ -42,6 +49,16 @@ public class Requirements {
 
     private boolean  isElected;
     private int      term_years;
+
+
+
+    private static final int FA_COLUMN = 1;
+    private static final int HSS_COLUMN = 2;
+    private static final int MNS_COLUMN = 3;
+    private static final int PP_COLUMN = 4;
+    private static final int L_COLUMN = 5;
+    private static final int ELECTED_COLUMN = 6;
+    private static final int TERM_COLUMN = 7;
 
     private static final String TENURE = "(T)";
     private static final String ASSOCIATE = "(A)";
@@ -69,7 +86,7 @@ public class Requirements {
 
         int CommitteeSpecsRow = findCommittee(Committee);
 
-        getCommitteeSpecs(CommitteeSpecsRow);
+        getCommitteeRequirements(CommitteeSpecsRow);
 
 
 
@@ -90,18 +107,37 @@ public class Requirements {
         }
     }
 
-    private void getCommitteeSpecs(int row){
-        Cell cell = rf.getCell(1,row);
-        String specs = cell.getStringCellValue();
-
-        if(specs.contains(TENURE))
-            fineArtsMustHaveTenure = true;
-        if(specs.contains(ASSOCIATE))
-            fineArtsMustBeAssociate = true;
-        //if(specs.matches("(^[0-9]*)"))
+    private void getCommitteeRequirements(int CommitteeRow){
+        getDepartmentRequirements(CommitteeRow, fineArts);
 
 
     }
+
+    /**
+     * Find all rules for department
+     * @param CommitteeRow
+     */
+    private void getDepartmentRequirements(int CommitteeRow, int[] Department){
+        Cell cell = rf.getCell(1,CommitteeRow);
+        String specs = cell.getStringCellValue();
+
+        if(Character.isDigit(specs.charAt(0)))
+            Department[0] = 0;
+
+        if(specs.contains(TENURE))
+            Department[1] = 1;
+
+        if(specs.contains(ASSOCIATE))
+           Department[2] = 1;
+
+        Matcher m = Pattern.compile("\\(([0-9])\\)").matcher(specs);
+        if(m.find())
+            Department[3] = Integer.parseInt(m.group(1));
+    }
+
+
+
+
 }
 /**
  * what does hss=humanities and social, fa=fine arts, l=at large, mns=mathnatrural s, pp=prof programs stand for.

@@ -1,4 +1,16 @@
 # Initial Commit
 
 
-This is my initial commit   
+This is my initial commit
+
+
+
+If you would like to add a committee please add it under the Committees that are already inside the
+excel sheet. Keep in mind that you must keep the first committee at row 5.
+
+
+NOTES:
+* Create Array of ALL Requirements at the start of program. Keep from having to read from file
+* during file
+*
+

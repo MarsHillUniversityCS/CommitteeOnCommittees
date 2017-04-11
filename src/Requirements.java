@@ -1,4 +1,5 @@
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.regex.Matcher;
@@ -57,7 +58,7 @@ public class Requirements {
      * [0] = # of people from this department are required
      * [1] = 1 if tenure is required, 0 if not
      * [2] = 1 if they must me Associate, 0 if not
-     * [3] = # of years they must have worked st Mars Hill
+     * [3] = # of years of service they must have at Mars Hill
      */
     private int[] fa_specs = new int[] {0,0,0,0};
     private int[] HSS_specs = new int[] {0,0,0,0};
@@ -75,17 +76,17 @@ public class Requirements {
 
     private static final String TENURE = "(T)";
     private static final String ASSOCIATE = "(A)";
-    //private static final String ELECTED = "Elected";
-
-
+    private static final String ELECTED = "Elected";
 
     FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
 
 
     public static void main(String[] args) {
-        Requirements FacultyPersonel = new Requirements("Faculty Personel");
+        //Requirements FacultyPersonel = new Requirements("Faculty Personel");
+        Requirements PandP = new Requirements("P&P");
 
-        System.out.println(FacultyPersonel.isElected);
+        //System.out.println(FacultyPersonel.isElected);
+        //System.out.println(FacultyPersonel.term_years);
 
     }
 
@@ -154,7 +155,7 @@ public class Requirements {
     private void getIsElected(int CommitteeRow){
         Cell cell = rf.getCell(ELECTED_COLUMN,CommitteeRow);
 
-        if(cell.getStringCellValue().equals("Elected")){
+        if(cell.getStringCellValue().equals(ELECTED)){
             isElected = true;
         }else{
             isElected = false;
@@ -166,38 +167,68 @@ public class Requirements {
     /**
      * Get the specs for a department. Looks at the Column given
      * And checks if they must have # of professors, if Tenure, and if Associate
+     * This array stand for
+     * [0] = # of people from this department are required
+     * [1] = 1 if tenure is required, 0 if not
+     * [2] = 1 if they must me Associate, 0 if not
+     * [3] = # of years of service they must have at Mars Hill
      * @param CommitteeRow
      * @param Column
      * @param Department
      */
     private void getDepartmentSpecs(int CommitteeRow, int Column, int[] Department){
         Cell cell = rf.getCell(Column,CommitteeRow);
-        String specs = cell.getStringCellValue();
 
-        if(Character.isDigit(specs.charAt(0)))
-            Department[0] = 0;
+        CellType cellType = cell.getCellTypeEnum();
 
-        if(specs.contains(TENURE))
-            Department[1] = 1;
+        if(cellType.name().equals(CellType.NUMERIC)){
+            //DO SOMETHING
 
-        if(specs.contains(ASSOCIATE))
-            Department[2] = 1;
 
-        Matcher m = Pattern.compile("\\(([0-9])\\)").matcher(specs);
-        if(m.find())
-            Department[3] = Integer.parseInt(m.group(1));
+
+
+
+
+
+        }else {
+            String specs = cell.getStringCellValue();
+
+            if (Character.isDigit(specs.charAt(0)))
+                Department[0] = Integer.parseInt(specs.charAt(0) + "");
+
+            if (specs.contains(TENURE))
+                Department[1] = 1;
+
+            if (specs.contains(ASSOCIATE))
+                Department[2] = 1;
+
+            Matcher m = Pattern.compile("\\(([0-9])\\)").matcher(specs);
+            if (m.find())
+                Department[3] = Integer.parseInt(m.group(1));
+        }
     }
 
     public void getTermYears(int CommitteeRow) {
         Cell cell = rf.getCell(TERM_COLUMN,CommitteeRow);
+
+        /*
+        String termOfYears = cell.getStringCellValue();
+
+        if(termOfYears.isEmpty() || termOfYears.matches("[0-9]+")){
+            term_years = -1;
+        }else{
+            term_years = Double.parseDouble(termOfYears);
+        }
+        */
         term_years = cell.getNumericCellValue();
+
     }
 }
 /**
  * what does hss=humanities and social, fa=fine arts, l=at large, mns=mathnatrural s, pp=prof programs stand for.
  * sem S=spring semester
  * create a class for each that contains all that aplies to each of these for quicker searching.
- *
+ * Find out a way to check that the cell is a numeric value
  */
 
 

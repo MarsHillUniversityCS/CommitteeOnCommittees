@@ -179,9 +179,11 @@ public class Requirements {
     private void getDepartmentSpecs(int CommitteeRow, int Column, int[] Department){
         Cell cell = rf.getCell(Column,CommitteeRow);
 
+        System.out.println(cell.toString());
+
         CellType cellType = cell.getCellTypeEnum();
 
-        if(cellType.name().equals(CellType.NUMERIC)){
+        if(cellType.equals(CellType.NUMERIC)){
             //DO SOMETHING
 
 

@@ -183,46 +183,48 @@ public class Requirements {
 
         CellType cellType = cell.getCellTypeEnum();
 
+        //If the cell contains only numbers
         if(cellType.equals(CellType.NUMERIC)){
-            //DO SOMETHING
-
-
-
-
-
-
+            Department[0] = (int)cell.getNumericCellValue();
 
         }else {
             String specs = cell.getStringCellValue();
 
+            //set # of people from department required
             if (Character.isDigit(specs.charAt(0)))
                 Department[0] = Integer.parseInt(specs.charAt(0) + "");
 
+            //set whether tenure is required
             if (specs.contains(TENURE))
                 Department[1] = 1;
 
+            //Set rank
             if (specs.contains(ASSOCIATE))
                 Department[2] = 1;
 
+            //Set # of years of service they must have at Mars Hill
             Matcher m = Pattern.compile("\\(([0-9])\\)").matcher(specs);
             if (m.find())
                 Department[3] = Integer.parseInt(m.group(1));
         }
     }
 
+
+    /**
+     * Length of position on Committee
+     * @param CommitteeRow
+     */
     public void getTermYears(int CommitteeRow) {
         Cell cell = rf.getCell(TERM_COLUMN,CommitteeRow);
 
-        /*
-        String termOfYears = cell.getStringCellValue();
+        String termOfYears = cell.toString();
+        System.out.println(termOfYears);
 
         if(termOfYears.isEmpty() || termOfYears.matches("[0-9]+")){
             term_years = -1;
         }else{
             term_years = Double.parseDouble(termOfYears);
         }
-        */
-        term_years = cell.getNumericCellValue();
 
     }
 }

@@ -1,5 +1,4 @@
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.regex.Matcher;
@@ -15,15 +14,14 @@ import java.util.regex.Pattern;
 public class Requirements {
     //Constants:
     //ROW COMMITTEES_STARTS is the row in the excel file that the committee starts on
-    private static final int ROW_COMMITTEES_STARTS = 4;
 
 
+    /*
     private int      fineArtsNum;
     private boolean  fineArtsMustHaveTenure;
     private int      fineArtsMinNumYears;
     private boolean      fineArtsMustBeAssociate;
 
-    private int[] fineArts = new int[] {0,0,0,0};
 
     private int      hssNum;
     private boolean  hssMustHaveTenure;
@@ -46,11 +44,26 @@ public class Requirements {
     private boolean  atLargeMustHaveTenure;
     private int      atLargeMinNumYears;
     private boolean      atLargeMustBeAssociate;
+    */
 
-    private boolean  isElected;
-    private int      term_years;
+    //This is the row that our committees start on
+    private static final int ROW_COMMITTEES_STARTS = 4;
 
+    private boolean isElected;
+    private double term_years;
 
+    /**
+     * This array stand for
+     * [0] = # of people from this department are required
+     * [1] = 1 if tenure is required, 0 if not
+     * [2] = 1 if they must me Associate, 0 if not
+     * [3] = # of years they must have worked st Mars Hill
+     */
+    private int[] fa_specs = new int[] {0,0,0,0};
+    private int[] HSS_specs = new int[] {0,0,0,0};
+    private int[] MNS_specs = new int[] {0,0,0,0};
+    private int[] PP_specs = new int[] {0,0,0,0};
+    private int[] L_specs = new int[] {0,0,0,0};
 
     private static final int FA_COLUMN = 1;
     private static final int HSS_COLUMN = 2;
@@ -62,7 +75,7 @@ public class Requirements {
 
     private static final String TENURE = "(T)";
     private static final String ASSOCIATE = "(A)";
-    private static final String ELECTED = "Elected";
+    //private static final String ELECTED = "Elected";
 
 
 
@@ -70,11 +83,18 @@ public class Requirements {
 
 
     public static void main(String[] args) {
-        Requirements fa = new Requirements("Faculty Personel");
-        System.out.println(fa.fineArtsMustHaveTenure);
+        Requirements FacultyPersonel = new Requirements("Faculty Personel");
+
+        System.out.println(FacultyPersonel.isElected);
 
     }
 
+
+    /**
+     * This Opens our workbook and reads the File in. Looks at our committee sheet
+     * and then calls getCommitteeRequirements
+     * @param Committee
+     */
     public Requirements(String Committee){
         //FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
 
@@ -93,7 +113,11 @@ public class Requirements {
     }
 
 
-
+    /**
+     * Finds what row our committee is on in the Excel sheet
+     * @param Committee
+     * @return
+     */
     private int findCommittee(String Committee){
         Cell cell;
         for(int i = ROW_COMMITTEES_STARTS; ; i++){
@@ -107,18 +131,47 @@ public class Requirements {
         }
     }
 
-    private void getCommitteeRequirements(int CommitteeRow){
-        getDepartmentRequirements(CommitteeRow, fineArts);
-
-
-    }
 
     /**
      * Find all rules for department
      * @param CommitteeRow
      */
-    private void getDepartmentRequirements(int CommitteeRow, int[] Department){
-        Cell cell = rf.getCell(1,CommitteeRow);
+    private void getCommitteeRequirements(int CommitteeRow){
+        getDepartmentSpecs(CommitteeRow, FA_COLUMN, fa_specs);
+        getDepartmentSpecs(CommitteeRow, HSS_COLUMN, HSS_specs);
+        getDepartmentSpecs(CommitteeRow, MNS_COLUMN, MNS_specs);
+        getDepartmentSpecs(CommitteeRow, PP_COLUMN, PP_specs);
+        getDepartmentSpecs(CommitteeRow, L_COLUMN, L_specs);
+
+        getIsElected(CommitteeRow);
+        getTermYears(CommitteeRow);
+    }
+
+    /**
+     * Find out if Committee is elected or Appointed
+     * @param CommitteeRow
+     */
+    private void getIsElected(int CommitteeRow){
+        Cell cell = rf.getCell(ELECTED_COLUMN,CommitteeRow);
+
+        if(cell.getStringCellValue().equals("Elected")){
+            isElected = true;
+        }else{
+            isElected = false;
+        }
+
+    }
+
+
+    /**
+     * Get the specs for a department. Looks at the Column given
+     * And checks if they must have # of professors, if Tenure, and if Associate
+     * @param CommitteeRow
+     * @param Column
+     * @param Department
+     */
+    private void getDepartmentSpecs(int CommitteeRow, int Column, int[] Department){
+        Cell cell = rf.getCell(Column,CommitteeRow);
         String specs = cell.getStringCellValue();
 
         if(Character.isDigit(specs.charAt(0)))
@@ -128,16 +181,17 @@ public class Requirements {
             Department[1] = 1;
 
         if(specs.contains(ASSOCIATE))
-           Department[2] = 1;
+            Department[2] = 1;
 
         Matcher m = Pattern.compile("\\(([0-9])\\)").matcher(specs);
         if(m.find())
             Department[3] = Integer.parseInt(m.group(1));
     }
 
-
-
-
+    public void getTermYears(int CommitteeRow) {
+        Cell cell = rf.getCell(TERM_COLUMN,CommitteeRow);
+        term_years = cell.getNumericCellValue();
+    }
 }
 /**
  * what does hss=humanities and social, fa=fine arts, l=at large, mns=mathnatrural s, pp=prof programs stand for.

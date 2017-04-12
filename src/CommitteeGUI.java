@@ -1,3 +1,5 @@
+import TabPanels.CurrentCommittee;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -24,6 +26,7 @@ public class CommitteeGUI {
     public void createFrame(){
         CommitteeFrame = new JFrame(title);
         CommitteeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //CommitteeFrame.setBounds(0, 0, screenSize.width, screenSize.height);
 
@@ -39,11 +42,10 @@ public class CommitteeGUI {
 
         //START Create Find Current Committee
         //FindCurrentCommittee = makeTextPanel("See Committee Members");
-        createFindCurrentCommittee();
 
-        
 
-        tabbedPane.addTab("Tab 1", FindCurrentCommittee);
+        tabbedPane.addTab("Tab 1", CurrentCommittee.getPanel());
+
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         //END Create Find Current Committee
 

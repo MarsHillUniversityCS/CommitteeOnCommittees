@@ -1,4 +1,4 @@
-
+package project;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -27,7 +27,7 @@ public class ReadFile {
     /**
      * This unction reads from a file when given a path
      * @param args
-    ReadFile rf = new ReadFile("/home/s000191354/Committee_on_Committes/CocProfessors1.ods");
+    project.ReadFile rf = new project.ReadFile("/home/s000191354/Committee_on_Committes/CocProfessors1.ods");
      */
     public static void main(String[] args) {
         try {
@@ -41,7 +41,7 @@ public class ReadFile {
             if (cell == null)
                 cell = row.createCell(3);
             cell.setCellType(CellType.STRING);
-            System.out.println("Editing Excel sheet now");
+            System.out.println("Editing Excel professorSheet now");
             cell.setCellValue("HELLOWORLD");
 
             // Write the output to a file

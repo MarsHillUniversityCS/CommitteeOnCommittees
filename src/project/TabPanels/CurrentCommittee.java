@@ -1,9 +1,12 @@
-package TabPanels;
+package project.TabPanels;
 
+
+import project.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * Created by s000191354 on 4/11/17.
@@ -15,8 +18,8 @@ public class CurrentCommittee {
     private JTextField BoxTextField = new JTextField(15);
     private JButton DropDownButton = new JButton("Add items");
 
-    private String[] description = { "Ebullient", "Obtuse", "Recalcitrant",
-            "Brilliant", "Somnescent", "Timorous", "Florid", "Putrescent" };
+    private String[] CommitteeList; //= { "Ebullient", "Obtuse", "Recalcitrant",
+            //"Brilliant", "Somnescent", "Timorous", "Florid", "Putrescent" };
 
     private JComboBox c = new JComboBox();
 
@@ -26,6 +29,7 @@ public class CurrentCommittee {
     private JPanel DropDownPanel;
     private JPanel CurrentCommittee;
 
+    FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
 
 
 
@@ -52,13 +56,15 @@ public class CurrentCommittee {
 
     public void createDropDown(){
         DropDownPanel = new JPanel();
+        System.out.println();
+        CommitteeList = rf.getCommittees();
 
         for (int i = 0; i < 4; i++)
-            c.addItem(description[count++]);
+            c.addItem(CommitteeList[count++]);
         b.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (count < description.length)
-                    c.addItem(description[count++]);
+                if (count < CommitteeList.length)
+                    c.addItem(CommitteeList[count++]);
             }
         });
         c.addActionListener(new ActionListener() {
@@ -74,7 +80,7 @@ public class CurrentCommittee {
     }
 
     public static void run() {
-        TabPanels.CurrentCommittee c = new CurrentCommittee();
+        project.TabPanels.CurrentCommittee c = new CurrentCommittee();
         c.getPanel();
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,3 +1,5 @@
+package project;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -13,7 +15,7 @@ import java.util.regex.Pattern;
  * L=atLarge
  */
 public class Requirements {
-    //Constants:
+    //project.Constants:
     //ROW COMMITTEES_STARTS is the row in the excel file that the committee starts on
 
 
@@ -48,7 +50,7 @@ public class Requirements {
     */
 
     //This is the row that our committees start on
-    private static final int ROW_COMMITTEES_STARTS = 4;
+    public static final int ROW_COMMITTEES_STARTS = 4;
 
     private boolean isElected;
     private double term_years;
@@ -82,7 +84,7 @@ public class Requirements {
 
 
     public static void main(String[] args) {
-        //Requirements FacultyPersonel = new Requirements("Faculty Personel");
+        //project.Requirements FacultyPersonel = new project.Requirements("Faculty Personel");
         Requirements PandP = new Requirements("P&P");
 
         //System.out.println(FacultyPersonel.isElected);
@@ -92,17 +94,17 @@ public class Requirements {
 
 
     /**
-     * This Opens our workbook and reads the File in. Looks at our committee sheet
+     * This Opens our workbook and reads the File in. Looks at our committee professorSheet
      * and then calls getCommitteeRequirements
      * @param Committee
      */
     public Requirements(String Committee){
-        //FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
+        //project.FileManipulator rf = new project.FileManipulator("./Committee_on_Committes/CoC.xlsx");
 
         Workbook wb = rf.readExcelFile(rf.getPath());
 
         //Sheet one is the committee requirements
-        rf.sheet = wb.getSheetAt(1);
+        rf.professorSheet = wb.getSheetAt(1);
 
 
         int CommitteeSpecsRow = findCommittee(Committee);
@@ -115,14 +117,14 @@ public class Requirements {
 
 
     /**
-     * Finds what row our committee is on in the Excel sheet
+     * Finds what row our committee is on in the Excel professorSheet
      * @param Committee
      * @return
      */
     private int findCommittee(String Committee){
         Cell cell;
         for(int i = ROW_COMMITTEES_STARTS; ; i++){
-            cell = rf.getCell(0,i);
+            cell = rf.getCellFromProfessorSheet(0,i);
             if(cell.getStringCellValue().isEmpty()){
                 return -1;
             }
@@ -153,7 +155,7 @@ public class Requirements {
      * @param CommitteeRow
      */
     private void getIsElected(int CommitteeRow){
-        Cell cell = rf.getCell(ELECTED_COLUMN,CommitteeRow);
+        Cell cell = rf.getCellFromProfessorSheet(ELECTED_COLUMN,CommitteeRow);
 
         if(cell.getStringCellValue().equals(ELECTED)){
             isElected = true;
@@ -177,7 +179,7 @@ public class Requirements {
      * @param Department
      */
     private void getDepartmentSpecs(int CommitteeRow, int Column, int[] Department){
-        Cell cell = rf.getCell(Column,CommitteeRow);
+        Cell cell = rf.getCellFromProfessorSheet(Column,CommitteeRow);
 
         System.out.println(cell.toString());
 
@@ -215,7 +217,7 @@ public class Requirements {
      * @param CommitteeRow
      */
     public void getTermYears(int CommitteeRow) {
-        Cell cell = rf.getCell(TERM_COLUMN,CommitteeRow);
+        Cell cell = rf.getCellFromProfessorSheet(TERM_COLUMN,CommitteeRow);
 
         String termOfYears = cell.toString();
         System.out.println(termOfYears);

@@ -16,11 +16,14 @@ public final class FileManipulator {
     public Sheet committeeSheet;
     public Workbook wb;
 
-    private String path = "";
+    public String PATH = "./Committee_on_Committes/CoC.xlsx";
     //public static ArrayList<String[]> myList = new ArrayList<String[]>();
 
-    public FileManipulator(String path){
-        this.path = path;
+    public FileManipulator(){
+        wb = readExcelFile(getPath());
+
+        professorSheet = wb.getSheetAt(0);
+        committeeSheet = wb.getSheetAt(1);
 
     }
 
@@ -30,7 +33,7 @@ public final class FileManipulator {
     project.FileManipulator rf = new project.FileManipulator("/home/s000191354/Committee_on_Committes/CocProfessors1.ods");
      */
     public static void main(String[] args) {
-        FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
+        FileManipulator rf = new FileManipulator();
 
         Workbook wb = rf.readExcelFile(rf.getPath());
 
@@ -66,15 +69,17 @@ public final class FileManipulator {
 
     public String[] getCommittees(){
         String [] Committees = new String[20];
+        int committeeCount = 0;
 
         Cell cell;
         for(int i = Requirements.ROW_COMMITTEES_STARTS;   ; i++){
 
             cell = getCellFromCommitteeSheet(0,i);
-            if(cell.getStringCellValue().isEmpty()){
+            if(cell.toString().isEmpty()){
+                Committees[committeeCount] = "";
                 break;
             }
-            Committees[i] = cell.toString();
+            Committees[committeeCount++] = cell.toString();
         }
 
 
@@ -206,7 +211,7 @@ public final class FileManipulator {
      * @return path of read file
      */
     public String getPath() {
-        return path;
+        return PATH;
     }
 	/*
 	 * reads from file

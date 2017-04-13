@@ -6,47 +6,47 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 /**
  * Created by s000191354 on 4/11/17.
  */
 public class CurrentCommittee {
 
-    private String[] Committees = {"Blue", "Grean", "Yellow"};
-    private JComboBox CommitteeBox = new JComboBox();
-    private JTextField BoxTextField = new JTextField(15);
-    private JButton DropDownButton = new JButton("Add items");
-
-    private String[] CommitteeList; //= { "Ebullient", "Obtuse", "Recalcitrant",
-            //"Brilliant", "Somnescent", "Timorous", "Florid", "Putrescent" };
-
-    private JComboBox c = new JComboBox();
-
-    private JButton b = new JButton("Add items");
-
+    //Initialize Variables
+    private String[] CommitteeList;
+    private JComboBox committeeDropDown = new JComboBox();
+    private JButton btnFindCommitteeMembers = new JButton("Find Current Members");
     private int count = 0;
     private JPanel DropDownPanel;
     private JPanel CurrentCommittee;
-
-    FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
-
+    private String selectedCommittee = "";
 
 
 
+    //Create our FileManipulator
+    FileManipulator rf = new FileManipulator();
 
+
+    /**
+     * Test our pannel
+     * @param args
+     */
     public static void main(String[] args) {
         run();
 
     }
 
 
+    /**
+     * Command called that will return our panel
+     * @return
+     */
     public JPanel getPanel(){
         CurrentCommittee = new JPanel();
-        //JLabel filler = new JLabel("TEST");
-        //filler.setHorizontalAlignment(JLabel.CENTER);
+
         CurrentCommittee.setLayout(new GridLayout(1,1));
-        //CurrentCommittee.add(filler);
+
+        //create our drop down box to select a committee
         createDropDown();
 
         return CurrentCommittee;
@@ -54,27 +54,41 @@ public class CurrentCommittee {
 
     }
 
+    /**
+     * Create our drop down box that is loaded with all of our committees
+     */
     public void createDropDown(){
+        //Initialize variables
         DropDownPanel = new JPanel();
-        System.out.println();
+        //Grab all commitees and load them into a String array
         CommitteeList = rf.getCommittees();
 
-        for (int i = 0; i < 4; i++)
-            c.addItem(CommitteeList[count++]);
-        b.addActionListener(new ActionListener() {
+        //Add Committees to ComboBox
+        for (int i = 0; !(CommitteeList[i].isEmpty()); i++)
+            committeeDropDown.addItem(CommitteeList[count++]);
+
+        //Set selectedCommittee
+        selectedCommittee = CommitteeList[0];
+
+        //Create our search button
+        btnFindCommitteeMembers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (count < CommitteeList.length)
-                    c.addItem(CommitteeList[count++]);
+                    committeeDropDown.addItem(CommitteeList[count++]);
             }
         });
-        c.addActionListener(new ActionListener() {
+
+        //Put stuff in this actionlister if you want something to happen when selecting a committee
+        committeeDropDown.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                selectedCommittee = committeeDropDown.getSelectedItem().toString();
+                System.out.println(selectedCommittee);
             }
         });
 
-        DropDownPanel.add(c);
-        DropDownPanel.add(b);
+        //add components to panel. Maybe move this somewhere else.
+        DropDownPanel.add(committeeDropDown);
+        DropDownPanel.add(btnFindCommitteeMembers);
 
         CurrentCommittee.add(DropDownPanel);
     }

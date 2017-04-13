@@ -22,16 +22,45 @@ public class DialogTableTester extends JFrame {
 
 		DialogTableTester t = new DialogTableTester();
 
+		String[] columnNames = new String[] { "First Name", "Last Name", "Sport",
+				"Balance", "Vegetarian", "Date of Birth", "Date Joined",
+				"Notes" };
+
+		Object[][] data = new Object[][] {
+				{
+						"Kathy",
+						"Smith",
+						"Snowboarding",
+						"5",
+						false,
+						"16.04.1974",
+						"",
+						"Talented individual who possesses great skills on the slopers, and active and fun memeber" },
+				{ "John", "Doe", "Rowing", "3", true, "02.02.1972", "", "" },
+				{
+						"Sue",
+						"Black",
+						"Knitting",
+						"-2",
+						false,
+						"16.12.1988",
+						"",
+						"An excellent knitter who can knit several multicoloured jumpers in about 3 hours. Is ready to take her knitting to the next competitive level" },
+				{ "Jane", "White", "Speed reading", "20", true,
+						"16.04.1942", "", "" },
+				{ "Joe", "Brown", "Pool", "-10", false, "16.04.1984", "",
+						"" }, };
+
 		t.setSize(500, 600);
-		t.add(t.getPanel());
+		t.add(t.getPanel(columnNames, data));
 		t.setVisible(true);
 
 	}
 
-	public static JPanel getPanel() {
+	public static JPanel getPanel(String[] columnNames, Object[][] data) {
 		JPanel panel = new JPanel();
 
-		MyTableModel m = new MyTableModel();
+		MyTableModel m = new MyTableModel(columnNames, data);
 
 		DialogTable t = new DialogTable(m);
 		panel.add(new JScrollPane(t));
@@ -55,37 +84,13 @@ public class DialogTableTester extends JFrame {
 
 		Object o = new Object();
 
-		public MyTableModel() {
+		public MyTableModel(String[] columnNames, Object[][] data) {
 
-			columnNames = new String[] { "First Name", "Last Name", "Sport",
-					"Balance", "Vegetarian", "Date of Birth", "Date Joined",
-					"Notes" };
+			this.columnNames = columnNames;
 
-			data = new Object[][] {
-					{
-							"Kathy",
-							"Smith",
-							"Snowboarding",
-							"5",
-							false,
-							"16.04.1974",
-							"",
-							"Talented individual who possesses great skills on the slopers, and active and fun memeber" },
-					{ "John", "Doe", "Rowing", "3", true, "02.02.1972", "", "" },
-					{
-							"Sue",
-							"Black",
-							"Knitting",
-							"-2",
-							false,
-							"16.12.1988",
-							"",
-							"An excellent knitter who can knit several multicoloured jumpers in about 3 hours. Is ready to take her knitting to the next competitive level" },
-					{ "Jane", "White", "Speed reading", "20", true,
-							"16.04.1942", "", "" },
-					{ "Joe", "Brown", "Pool", "-10", false, "16.04.1984", "",
-							"" }, };
+			this.data = data;
 		}
+
 
 		public int getColumnCount() {
 			return columnNames.length;

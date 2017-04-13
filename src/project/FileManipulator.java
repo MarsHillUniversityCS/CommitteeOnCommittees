@@ -67,24 +67,6 @@ public final class FileManipulator {
     }
 
 
-    public String[] getCommittees(){
-        String [] Committees = new String[20];
-        int committeeCount = 0;
-
-        Cell cell;
-        for(int i = Requirements.ROW_COMMITTEES_STARTS;   ; i++){
-
-            cell = getCellFromCommitteeSheet(0,i);
-            if(cell.toString().isEmpty()){
-                Committees[committeeCount] = "";
-                break;
-            }
-            Committees[committeeCount++] = cell.toString();
-        }
-
-
-        return Committees;
-    }
 
 
 
@@ -204,6 +186,25 @@ public final class FileManipulator {
         return eligibleProfessors;
     }
 
+
+    public String[] getCommittees(){
+        String [] Committees = new String[20];
+        int committeeCount = 0;
+
+        Cell cell;
+        for(int i = Requirements.ROW_COMMITTEES_STARTS;   ; i++){
+
+            cell = getCellFromCommitteeSheet(0,i);
+            if(cell.toString().isEmpty()){
+                Committees[committeeCount] = "";
+                break;
+            }
+            Committees[committeeCount++] = cell.toString();
+        }
+
+
+        return Committees;
+    }
 
 
     /**

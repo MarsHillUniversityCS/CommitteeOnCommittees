@@ -1,6 +1,8 @@
 package project.TabPanels;
 
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import project.*;
 import project.TabPanels.CreateTable.DialogTableTester;
 
@@ -112,9 +114,69 @@ public class CurrentCommittee {
 //END: DROP DOWN MENU
 
 //START: Table
+    //TEST
+String[] columnNames = new String[] { "First Name", "Last Name", "Sport",
+        "Balance", "Vegetarian", "Date of Birth", "Date Joined",
+        "Notes" };
+
+    Object[][] data = new Object[][] {
+            {
+                    "Kathy",
+                    "Smith",
+                    "Snowboarding",
+                    "5",
+                    false,
+                    "16.04.1974",
+                    "",
+                    "Talented individual who possesses great skills on the slopers, and active and fun memeber" },
+            { "John", "Doe", "Rowing", "3", true, "02.02.1972", "", "" },
+            {
+                    "Sue",
+                    "Black",
+                    "Knitting",
+                    "-2",
+                    false,
+                    "16.12.1988",
+                    "",
+                    "An excellent knitter who can knit several multicoloured jumpers in about 3 hours. Is ready to take her knitting to the next competitive level" },
+            { "Jane", "White", "Speed reading", "20", true,
+                    "16.04.1942", "", "" },
+            { "Joe", "Brown", "Pool", "-10", false, "16.04.1984", "",
+                    "" }, };
+
+    //TEST
+
     public void createTable(){
-        PanelTable = DialogTableTester.getPanel();
+        //Create a way that then can select the columns they want to see
+        String[] tableColumns = getTableColumns();
+        Object[][] tableData = getTableData();
+        PanelTable = DialogTableTester.getPanel(tableColumns, tableData);
         PanelCurrentCommittee.add(PanelTable, BorderLayout.CENTER);
+    }
+
+    public String[] getTableColumns(){
+        String []tableColumns = new String[] {"First Name", "Last Name", "Term", "Preferences"};
+
+        return tableColumns;
+    }
+
+    public Object[][] getTableData(){
+        Object[][] data = new Object[100][100];
+
+        int[] EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
+        for (int i = 0; i < 100; i++){
+            for(int j =0; j < 100; j++) {
+                Row ProfessorRow = rf.professorSheet.getRow(EligibleProfessors[i]);
+                Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
+
+                data[i][j] = cell.toString();
+            }
+
+
+
+        }
+
+        return data;
     }
 
 

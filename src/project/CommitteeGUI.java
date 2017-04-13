@@ -1,4 +1,6 @@
-import TabPanels.CurrentCommittee;
+package project;
+
+import project.TabPanels.CurrentCommittee;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +14,7 @@ public class CommitteeGUI {
 
 
     private JFrame CommitteeFrame;
-    private String title = "Committee on Committees";
+    private String title = "Committee on project.Committees";
 
     private JTabbedPane tabbedPane;
     private JComponent FindCurrentCommittee;
@@ -44,7 +46,7 @@ public class CommitteeGUI {
         //FindCurrentCommittee = makeTextPanel("See Committee Members");
 
 
-        tabbedPane.addTab("Tab 1", CurrentCommittee.getPanel());
+        tabbedPane.addTab("Tab 1", new CurrentCommittee().getPanel());
 
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         //END Create Find Current Committee

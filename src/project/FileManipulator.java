@@ -1,18 +1,20 @@
+package project;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
-import java.util.ArrayList;
 
 
 /**
  * @author s000191354
  *
  */
-public class FileManipulator {
-    public Sheet sheet;
-
+public final class FileManipulator {
+    public Sheet professorSheet;
+    public Sheet committeeSheet;
+    public Workbook wb;
 
     private String path = "";
     //public static ArrayList<String[]> myList = new ArrayList<String[]>();
@@ -25,7 +27,7 @@ public class FileManipulator {
     /**
      * This unction reads from a file when given a path
      * @param args
-    FileManipulator rf = new FileManipulator("/home/s000191354/Committee_on_Committes/CocProfessors1.ods");
+    project.FileManipulator rf = new project.FileManipulator("/home/s000191354/Committee_on_Committes/CocProfessors1.ods");
      */
     public static void main(String[] args) {
         FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
@@ -33,20 +35,21 @@ public class FileManipulator {
         Workbook wb = rf.readExcelFile(rf.getPath());
 
         Sheet sheet = wb.getSheetAt(0);
+        //Sheet professorSheet = wb.getSheetAt(0);
 
 
-        // Cell cell = rf.getCell(1,3, sheet);
+        // Cell cell = rf.getCellFromProfessorSheet(1,3, professorSheet);
 
         int totalRows = sheet.getPhysicalNumberOfRows();
         Row row = sheet.getRow(0);
-        Cell cell = rf.getCell(Constants.CoC.YEAR_APPOINTED.getID(),3);
+        Cell cell = rf.getCellFromProfessorSheet(Constants.CoC.YEAR_APPOINTED.getID(),3);
         System.out.println(cell.toString());
 
         if (cell == null)
             cell = row.createCell(3);
 
-        int [] professors = rf.getAllElidgable(Constants.CoC.DEPARTMENT.getID(), "Math & CS");
-        professors = rf.getAllElidgable(Constants.CoC.LAST_NAME.getID(), "Nash", professors);
+        int [] professors = rf.getAllEligible(Constants.CoC.DEPARTMENT.getID(), "Math & CS");
+        professors = rf.getAllEligible(Constants.CoC.LAST_NAME.getID(), "Nash", professors);
         System.out.println(professors.length);
 
         for(int i=0; i < professors.length; i++){
@@ -54,13 +57,29 @@ public class FileManipulator {
             System.out.println("professor department math  num = " + professors[i]);
         }
         cell.setCellType(CellType.STRING);
-        //System.out.println("Editing Excel sheet now");
+        //System.out.println("Editing Excel professorSheet now");
         //cell.setCellValue("TESTING THIS NOW");
 
         //rf.saveFile(wb, rf);
     }
 
 
+    public String[] getCommittees(){
+        String [] Committees = new String[20];
+
+        Cell cell;
+        for(int i = Requirements.ROW_COMMITTEES_STARTS;   ; i++){
+
+            cell = getCellFromCommitteeSheet(0,i);
+            if(cell.getStringCellValue().isEmpty()){
+                break;
+            }
+            Committees[i] = cell.toString();
+        }
+
+
+        return Committees;
+    }
 
 
 
@@ -68,7 +87,7 @@ public class FileManipulator {
     /**
      * write a workbook
      * @param wb workbook to be saved
-     * @param rf FileManipulator with path to be saved
+     * @param rf project.FileManipulator with path to be saved
      */
     public void saveFile(Workbook wb, FileManipulator rf){
         // Write the output to a file
@@ -90,9 +109,10 @@ public class FileManipulator {
         try {
             InputStream inp = new FileInputStream(path);
             //InputStream inp = new FileInputStream("workbook.xlsx");
-            Workbook wb = WorkbookFactory.create(inp);
+            wb = WorkbookFactory.create(inp);
 
-            sheet = wb.getSheetAt(0);
+            professorSheet = wb.getSheetAt(0);
+            committeeSheet = wb.getSheetAt(1);
 
             return wb;
         }catch (FileNotFoundException fnfe) {
@@ -108,13 +128,13 @@ public class FileManipulator {
     }
 
     /**
-     * Retrieves a cell in a sheet at the location given
+     * Retrieves a cell in a professorSheet at the location given
      * @param cellNum x-Axis in cell
      * @param rowNum Y-axis of grid
      * @return
      */
-    public Cell getCell(int cellNum, int rowNum){
-        Row row = sheet.getRow(rowNum);
+    public Cell getCellFromProfessorSheet(int cellNum, int rowNum){
+        Row row = professorSheet.getRow(rowNum);
 
         Cell cell = row.getCell(cellNum);
 
@@ -123,19 +143,32 @@ public class FileManipulator {
 
 
     /**
+     * Retrieves a cell in a professorSheet at the location given
+     * @param cellNum x-Axis in cell
+     * @param rowNum Y-axis of grid
+     * @return
+     */
+    public Cell getCellFromCommitteeSheet(int cellNum, int rowNum){
+        Row row = committeeSheet.getRow(rowNum);
+
+        Cell cell = row.getCell(cellNum);
+
+        return cell;
+    }
+    /**
      * Overloaded function that sorts through a list of professors to find if they meet a condition
      * @param Column
      * @param Condition
      * @param professors
      * @return
      */
-    public int[] getAllElidgable(int Column, String Condition, int [] professors){
+    public int[] getAllEligible(int Column, String Condition, int [] professors){
         int spotInArray = 0;
         Cell cell;
         int [] eligibleProfessors = new int[professors.length];
 
         for(int i = 0; i < eligibleProfessors.length; i++){
-            cell = getCell(Column, professors[i]);
+            cell = getCellFromProfessorSheet(Column, professors[i]);
             if(cell.toString().equals(Condition)){
                 eligibleProfessors[spotInArray++] = professors[i];
             }
@@ -152,13 +185,13 @@ public class FileManipulator {
      * @param Condition is the string we are looking for in our column
      * @return
      */
-    public int[] getAllElidgable(int Column, String Condition){
-        int [] eligibleProfessors = new int[sheet.getPhysicalNumberOfRows()];
+    public int[] getAllEligible(int Column, String Condition){
+        int [] eligibleProfessors = new int[professorSheet.getPhysicalNumberOfRows()];
         int spotInArray = 0;
         Cell cell;
 
-        for(int i = 1; i < sheet.getPhysicalNumberOfRows(); i++){
-            cell = getCell(Column, i);
+        for(int i = 1; i < professorSheet.getPhysicalNumberOfRows(); i++){
+            cell = getCellFromProfessorSheet(Column, i);
             if(cell.toString().equals(Condition)){
                 eligibleProfessors[spotInArray++] = i;
             }
@@ -169,7 +202,7 @@ public class FileManipulator {
 
 
     /**
-     * Getter for FileManipulator.
+     * Getter for project.FileManipulator.
      * @return path of read file
      */
     public String getPath() {

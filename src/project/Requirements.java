@@ -80,7 +80,7 @@ public class Requirements {
     private static final String ASSOCIATE = "(A)";
     private static final String ELECTED = "Elected";
 
-    FileManipulator rf = new FileManipulator("./Committee_on_Committes/CoC.xlsx");
+    FileManipulator rf = new FileManipulator();
 
 
     public static void main(String[] args) {

@@ -2,6 +2,8 @@ package project.TabPanels;
 
 
 import project.*;
+import project.TabPanels.CreateTable.DialogTableTester;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,8 +19,9 @@ public class CurrentCommittee {
     private JComboBox committeeDropDown = new JComboBox();
     private JButton btnFindCommitteeMembers = new JButton("Find Current Members");
     private int count = 0;
-    private JPanel DropDownPanel;
-    private JPanel CurrentCommittee;
+    private JPanel PanelDropDown;
+    private JPanel PanelTable;
+    private JPanel PanelCurrentCommittee;
     private String selectedCommittee = "";
 
 
@@ -36,30 +39,44 @@ public class CurrentCommittee {
 
     }
 
+    /**
+     * Test method
+     */
+    public static void run() {
+        project.TabPanels.CurrentCommittee c = new CurrentCommittee();
+        c.getPanel();
+        JFrame frame = new JFrame();
+        frame.setMinimumSize(new Dimension(500,500));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(c.PanelCurrentCommittee);
+        frame.setVisible(true);
+    }
 
     /**
      * Command called that will return our panel
      * @return
      */
-    public JPanel getPanel(){
-        CurrentCommittee = new JPanel();
+    public JPanel getPanel() {
+        PanelCurrentCommittee = new JPanel();
 
-        CurrentCommittee.setLayout(new GridLayout(1,1));
+        PanelCurrentCommittee.setLayout(new GridLayout(1, 1));
 
         //create our drop down box to select a committee
         createDropDown();
+        createTable();
 
-        return CurrentCommittee;
+        return PanelCurrentCommittee;
 
 
     }
 
+//START: Drop Down Menu
     /**
      * Create our drop down box that is loaded with all of our committees
      */
     public void createDropDown(){
         //Initialize variables
-        DropDownPanel = new JPanel();
+        PanelDropDown = new JPanel();
         //Grab all commitees and load them into a String array
         CommitteeList = rf.getCommittees();
 
@@ -87,20 +104,25 @@ public class CurrentCommittee {
         });
 
         //add components to panel. Maybe move this somewhere else.
-        DropDownPanel.add(committeeDropDown);
-        DropDownPanel.add(btnFindCommitteeMembers);
+        PanelDropDown.add(committeeDropDown);
+        PanelDropDown.add(btnFindCommitteeMembers);
 
-        CurrentCommittee.add(DropDownPanel);
+        PanelCurrentCommittee.add(PanelDropDown);
+    }
+//END: DROP DOWN MENU
+
+//START: Table
+    public void createTable(){
+        PanelTable = DialogTableTester.getPanel();
+        PanelCurrentCommittee.add(PanelTable, BorderLayout.CENTER);
     }
 
-    public static void run() {
-        project.TabPanels.CurrentCommittee c = new CurrentCommittee();
-        c.getPanel();
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(c.DropDownPanel);
-        frame.setVisible(true);
-    }
+
+
+//END: Table
+
+
+
 }
 
 /**

@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by s000191354 on 4/11/17.
@@ -92,8 +93,15 @@ public class CurrentCommittee {
         //Create our search button
         btnFindCommitteeMembers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                PanelCurrentCommittee.remove(PanelTable);
+                PanelCurrentCommittee.revalidate();
+                createTable();
+                PanelCurrentCommittee.add(PanelTable);
+                PanelCurrentCommittee.revalidate();
+                /*)
                 if (count < CommitteeList.length)
                     committeeDropDown.addItem(CommitteeList[count++]);
+                */
             }
         });
 
@@ -146,34 +154,41 @@ String[] columnNames = new String[] { "First Name", "Last Name", "Sport",
 
     //TEST
 
+    String[] tableColumns = getTableColumns();
+
     public void createTable(){
         //Create a way that then can select the columns they want to see
-        String[] tableColumns = getTableColumns();
-        Object[][] tableData = getTableData();
+        tableColumns = getTableColumns();
+        ArrayList<Object[]> tableData = getTableData();
         PanelTable = DialogTableTester.getPanel(tableColumns, tableData);
         PanelCurrentCommittee.add(PanelTable, BorderLayout.CENTER);
     }
 
     public String[] getTableColumns(){
-        String []tableColumns = new String[] {"First Name", "Last Name", "Term", "Preferences"};
+        String [] columns = new String[] {"First Name", "Last Name", "Term", "Preferences"};
 
-        return tableColumns;
+        return columns;
     }
 
-    public Object[][] getTableData(){
-        Object[][] data = new Object[100][100];
 
-        int[] EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
-        for (int i = 0; i < 100; i++){
-            for(int j =0; j < 100; j++) {
-                Row ProfessorRow = rf.professorSheet.getRow(EligibleProfessors[i]);
+
+    public ArrayList<Object[]> getTableData(){
+        ArrayList<Object[]> data = new ArrayList<Object[]>();
+
+        ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
+
+        for (int i = 0; i < EligibleProfessors.size(); i++){
+            Row ProfessorRow = rf.professorSheet.getRow(EligibleProfessors.get(i));
+            Object[] professorInfo = new Object[EligibleProfessors.size()];
+            for(int j =0; j < tableColumns.length; j++) {
                 Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
 
-                data[i][j] = cell.toString();
+                professorInfo[j] = cell.toString();
+                //data[i][j] = cell.toString();
+                //CHECK WHEN WE ARE FINISHED
             }
 
-
-
+            data.add(professorInfo);
         }
 
         return data;

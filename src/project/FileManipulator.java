@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
+import java.util.ArrayList;
 
 
 /**
@@ -33,6 +34,7 @@ public final class FileManipulator {
     project.FileManipulator rf = new project.FileManipulator("/home/s000191354/Committee_on_Committes/CocProfessors1.ods");
      */
     public static void main(String[] args) {
+        /*
         FileManipulator rf = new FileManipulator();
 
         Workbook wb = rf.readExcelFile(rf.getPath());
@@ -64,6 +66,7 @@ public final class FileManipulator {
         //cell.setCellValue("TESTING THIS NOW");
 
         //rf.saveFile(wb, rf);
+        */
     }
 
 
@@ -172,15 +175,17 @@ public final class FileManipulator {
      * @param Condition is the string we are looking for in our column
      * @return
      */
-    public int[] getAllEligible(int Column, String Condition){
-        int [] eligibleProfessors = new int[professorSheet.getPhysicalNumberOfRows()];
+    public ArrayList<Integer> getAllEligible(int Column, String Condition){
+        ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();//int[professorSheet.getPhysicalNumberOfRows()];
         int spotInArray = 0;
         Cell cell;
 
         for(int i = 1; i < professorSheet.getPhysicalNumberOfRows(); i++){
             cell = getCellFromProfessorSheet(Column, i);
             if(cell.toString().equals(Condition)){
-                eligibleProfessors[spotInArray++] = i;
+                //eligibleProfessors.add(spotInArray++);
+                eligibleProfessors.add(i);
+                //eligibleProfessors[spotInArray++] = i;
             }
         }
         return eligibleProfessors;

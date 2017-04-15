@@ -3,6 +3,7 @@ package project.TabPanels.CreateTable;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,8 +27,9 @@ public class DialogTableTester extends JFrame {
 				"Balance", "Vegetarian", "Date of Birth", "Date Joined",
 				"Notes" };
 
-		Object[][] data = new Object[][] {
-				{
+		ArrayList<Object[]> data = new ArrayList<Object[]>();
+		//Object[][] data = new Object[][] {
+		Object[] a =		{
 						"Kathy",
 						"Smith",
 						"Snowboarding",
@@ -35,9 +37,9 @@ public class DialogTableTester extends JFrame {
 						false,
 						"16.04.1974",
 						"",
-						"Talented individual who possesses great skills on the slopers, and active and fun memeber" },
-				{ "John", "Doe", "Rowing", "3", true, "02.02.1972", "", "" },
-				{
+						"Talented individual who possesses great skills on the slopers, and active and fun memeber" };
+		Object[] b =	{ "John", "Doe", "Rowing", "3", true, "02.02.1972", "", "" };
+		Object[] c =	{
 						"Sue",
 						"Black",
 						"Knitting",
@@ -45,11 +47,17 @@ public class DialogTableTester extends JFrame {
 						false,
 						"16.12.1988",
 						"",
-						"An excellent knitter who can knit several multicoloured jumpers in about 3 hours. Is ready to take her knitting to the next competitive level" },
-				{ "Jane", "White", "Speed reading", "20", true,
-						"16.04.1942", "", "" },
-				{ "Joe", "Brown", "Pool", "-10", false, "16.04.1984", "",
-						"" }, };
+						"An excellent knitter who can knit several multicoloured jumpers in about 3 hours. Is ready to take her knitting to the next competitive level" };
+			Object[] d =	{ "Jane", "White", "Speed reading", "20", true,
+						"16.04.1942", "", "" };
+				Object[] e = { "Joe", "Brown", "Pool", "-10", false, "16.04.1984", "",
+						"" }; //};
+
+		data.add(a);
+		data.add(b);
+		data.add(c);
+		data.add(d);
+		data.add(e);
 
 		t.setSize(500, 600);
 		t.add(t.getPanel(columnNames, data));
@@ -57,7 +65,7 @@ public class DialogTableTester extends JFrame {
 
 	}
 
-	public static JPanel getPanel(String[] columnNames, Object[][] data) {
+	public static JPanel getPanel(String[] columnNames, ArrayList<Object[]> data) {
 		JPanel panel = new JPanel();
 
 		MyTableModel m = new MyTableModel(columnNames, data);
@@ -65,8 +73,8 @@ public class DialogTableTester extends JFrame {
 		DialogTable t = new DialogTable(m);
 		panel.add(new JScrollPane(t));
 
-		t.getColumnModel().getColumn(3)
-				.setCellRenderer(new MyTableCellRenderer());
+		//t.getColumnModel().getColumn(3)
+		//		.setCellRenderer(new MyTableCellRenderer());
 
 		// mainFrame.getContentPane().add(panel);
 		//
@@ -80,11 +88,11 @@ public class DialogTableTester extends JFrame {
 	static class MyTableModel extends AbstractTableModel {
 
 		String[] columnNames;
-		Object[][] data;
+		ArrayList<Object[]> data;
 
 		Object o = new Object();
 
-		public MyTableModel(String[] columnNames, Object[][] data) {
+		public MyTableModel(String[] columnNames, ArrayList<Object[]> data) {
 
 			this.columnNames = columnNames;
 
@@ -97,7 +105,7 @@ public class DialogTableTester extends JFrame {
 		}
 
 		public int getRowCount() {
-			return data.length;
+			return data.size();
 		}
 
 		public String getColumnName(int col) {
@@ -105,7 +113,8 @@ public class DialogTableTester extends JFrame {
 		}
 
 		public Object getValueAt(int row, int col) {
-			return data[row][col];
+			Object[] Row = data.get(row);//data[row][col];
+            return Row[col];
 		}
 
 		public Class getColumnClass(int c) {
@@ -126,7 +135,8 @@ public class DialogTableTester extends JFrame {
 		}
 
 		public void setValueAt(Object value, int row, int col) {
-			data[row][col] = value;
+			//data[row][col] = value;
+			data.get(row)[col] = value;
 			fireTableCellUpdated(row, col);
 		}
 

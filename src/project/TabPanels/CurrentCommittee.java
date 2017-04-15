@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by s000191354 on 4/11/17.
@@ -25,6 +26,7 @@ public class CurrentCommittee {
     private JPanel PanelTable;
     private JPanel PanelCurrentCommittee;
     private String selectedCommittee = "";
+    private String[] tableColumns = getTableColumns();
 
 
 
@@ -37,14 +39,14 @@ public class CurrentCommittee {
      * @param args
      */
     public static void main(String[] args) {
-        run();
+        test();
 
     }
 
     /**
      * Test method
      */
-    public static void run() {
+    public static void test() {
         project.TabPanels.CurrentCommittee c = new CurrentCommittee();
         c.getPanel();
         JFrame frame = new JFrame();
@@ -59,12 +61,15 @@ public class CurrentCommittee {
      * @return
      */
     public JPanel getPanel() {
+        //Our main panel
         PanelCurrentCommittee = new JPanel();
 
         PanelCurrentCommittee.setLayout(new GridLayout(1, 1));
 
         //create our drop down box to select a committee
         createDropDown();
+
+        //Create our table that displays minor information
         createTable();
 
         return PanelCurrentCommittee;
@@ -79,7 +84,8 @@ public class CurrentCommittee {
     public void createDropDown(){
         //Initialize variables
         PanelDropDown = new JPanel();
-        //Grab all commitees and load them into a String array
+
+        //Grab all committees and load them into a String array
         CommitteeList = rf.getCommittees();
 
         //Add Committees to ComboBox
@@ -92,8 +98,15 @@ public class CurrentCommittee {
         //Create our search button
         btnFindCommitteeMembers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                PanelCurrentCommittee.remove(PanelTable);
+                PanelCurrentCommittee.revalidate();
+                createTable();
+                PanelCurrentCommittee.add(PanelTable);
+                PanelCurrentCommittee.revalidate();
+                /*)
                 if (count < CommitteeList.length)
                     committeeDropDown.addItem(CommitteeList[count++]);
+                */
             }
         });
 
@@ -105,7 +118,7 @@ public class CurrentCommittee {
             }
         });
 
-        //add components to panel. Maybe move this somewhere else.
+        //add components to panel.
         PanelDropDown.add(committeeDropDown);
         PanelDropDown.add(btnFindCommitteeMembers);
 
@@ -114,72 +127,71 @@ public class CurrentCommittee {
 //END: DROP DOWN MENU
 
 //START: Table
-    //TEST
-String[] columnNames = new String[] { "First Name", "Last Name", "Sport",
-        "Balance", "Vegetarian", "Date of Birth", "Date Joined",
-        "Notes" };
 
-    Object[][] data = new Object[][] {
-            {
-                    "Kathy",
-                    "Smith",
-                    "Snowboarding",
-                    "5",
-                    false,
-                    "16.04.1974",
-                    "",
-                    "Talented individual who possesses great skills on the slopers, and active and fun memeber" },
-            { "John", "Doe", "Rowing", "3", true, "02.02.1972", "", "" },
-            {
-                    "Sue",
-                    "Black",
-                    "Knitting",
-                    "-2",
-                    false,
-                    "16.12.1988",
-                    "",
-                    "An excellent knitter who can knit several multicoloured jumpers in about 3 hours. Is ready to take her knitting to the next competitive level" },
-            { "Jane", "White", "Speed reading", "20", true,
-                    "16.04.1942", "", "" },
-            { "Joe", "Brown", "Pool", "-10", false, "16.04.1984", "",
-                    "" }, };
 
-    //TEST
-
+    /**
+     * Program that runs our methods that create our table
+     */
     public void createTable(){
-        //Create a way that then can select the columns they want to see
-        String[] tableColumns = getTableColumns();
-        Object[][] tableData = getTableData();
+        //Get the columns for our table. These are created in a method
+        tableColumns = getTableColumns();
+
+        //Get the table data. That is the Professors in the selected committee
+        ArrayList<Object[]> tableData = getTableData();
+
+        //Get the Table inside of a Panel using a GitHub Class from Oliver Watkins
         PanelTable = DialogTableTester.getPanel(tableColumns, tableData);
+
+        //Add the table to our main Panel
         PanelCurrentCommittee.add(PanelTable, BorderLayout.CENTER);
     }
 
+    /**
+     * returns the names to our columns. The top row
+     * @return string of column names
+     */
     public String[] getTableColumns(){
-        String []tableColumns = new String[] {"First Name", "Last Name", "Term", "Preferences"};
 
-        return tableColumns;
+        String [] columns = new String[] {"First Name", "Last Name", "Term", "Preferences"};
+
+        return columns;
     }
 
-    public Object[][] getTableData(){
-        Object[][] data = new Object[100][100];
 
-        int[] EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
-        for (int i = 0; i < 100; i++){
-            for(int j =0; j < 100; j++) {
-                Row ProfessorRow = rf.professorSheet.getRow(EligibleProfessors[i]);
+    /**
+     * Gets the data that will be loaded into our table
+     * @return Array list of object[]. Each Object[] is information about the professor
+     */
+    public ArrayList<Object[]> getTableData(){
+        //Initialize ArrayList data
+        ArrayList<Object[]> data = new ArrayList<Object[]>();
+        Object[] professorInfo;
+        Row ProfessorRow;
+
+        //Our ArrayList of Professors. Each Integer represents professor's row number
+        ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
+        //Loop through each Professor
+        for (int i = 0; i < EligibleProfessors.size(); i++){
+            //Get the row of our professor in excel sheet
+            ProfessorRow = rf.professorSheet.getRow(EligibleProfessors.get(i));
+            //Initialize our professorInfo
+            professorInfo = new Object[EligibleProfessors.size()];
+
+            //Load Info into professorInfo
+            for(int j =0; j < tableColumns.length; j++) {
                 Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
 
-                data[i][j] = cell.toString();
+                professorInfo[j] = cell.toString();
+                //data[i][j] = cell.toString();
+                //CHECK WHEN WE ARE FINISHED
             }
 
-
-
+            //Add professorInfo(Our new Row) to ArrayList<Object[]> data
+            data.add(professorInfo);
         }
 
         return data;
     }
-
-
 
 //END: Table
 
@@ -188,5 +200,9 @@ String[] columnNames = new String[] { "First Name", "Last Name", "Sport",
 }
 
 /**
- * Load Drop down box.
+ * Create way to read long named Committees.
+ * Create way to read minor assignments
+ * Create way when double clicked we can view all of information about user
+ * and edit it. Then if closed we can ask to save changes or not.
+ *
  */

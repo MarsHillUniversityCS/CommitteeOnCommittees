@@ -203,5 +203,9 @@ String[] columnNames = new String[] { "First Name", "Last Name", "Sport",
 }
 
 /**
- * Load Drop down box.
+ * Create way to read long named Committees.
+ * Create way to read minor assignments
+ * Create way when double clicked we can view all of information about user
+ * and edit it. Then if closed we can ask to save changes or not.
+ *
  */

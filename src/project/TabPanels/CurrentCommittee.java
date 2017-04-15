@@ -204,5 +204,5 @@ public class CurrentCommittee {
  * Create way to read minor assignments
  * Create way when double clicked we can view all of information about user
  * and edit it. Then if closed we can ask to save changes or not.
- *
+ * Add a check that will see if it is a valid string
  */

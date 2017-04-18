@@ -48,7 +48,7 @@ public class DialogTable extends JTable {
 					gbc.insets = new Insets(2, 2, 2, 2);
 
 					Cell cell;
-					for (int j = 0; j < getColumnCount(); j++) {
+					for (int j = 0; j < rf.professorSheet.getRow(0).getPhysicalNumberOfCells(); j++) {
 
 						gbc.gridx = 0;
 						gbc.gridy = j;
@@ -62,10 +62,10 @@ public class DialogTable extends JTable {
 						Object valueInTable = rf.getCellFromProfessorSheet(j,i);
 						System.out.println("valueInTable=" + valueInTable);
 
-						TableCellRenderer renderer = getCellRenderer(i, j);
+						TableCellRenderer renderer = getCellRenderer(i, 0);
 						System.out.println("TableCellRenderer=" + renderer);
 
-						Object valueInModel = getModel().getValueAt(i, j);
+						Object valueInModel = rf.getCellFromProfessorSheet(j,i);
 						System.out.println("valueInModel=" + valueInModel + "\n");
 
 						//Object valueInTable = getValueAt(i, j);

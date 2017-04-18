@@ -177,14 +177,27 @@ public class CurrentCommittee {
             //Initialize our professorInfo
             professorInfo = new Object[EligibleProfessors.size()];
 
+            Cell cell = ProfessorRow.getCell(Professor_Constants.ID);
+            professorInfo[0] = cell.toString();
+
+            cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
+            professorInfo[1] = cell.toString();
+
+            cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
+            professorInfo[2] = cell.toString();
+
+            cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
+            professorInfo[3] = cell.toString();
+
             //Load Info into professorInfo
+            /*
             for(int j =0; j < tableColumns.length; j++) {
                 Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
-
                 professorInfo[j] = cell.toString();
                 //data[i][j] = cell.toString();
                 //CHECK WHEN WE ARE FINISHED
             }
+            */
 
             //Add professorInfo(Our new Row) to ArrayList<Object[]> data
             data.add(professorInfo);

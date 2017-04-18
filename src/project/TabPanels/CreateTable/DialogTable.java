@@ -1,6 +1,9 @@
 //github.com/oliverwatkins/swing_library
 package project.TabPanels.CreateTable;
 
+import org.apache.poi.ss.usermodel.Cell;
+import project.FileManipulator;
+
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -26,6 +29,8 @@ public class DialogTable extends JTable {
 
 		super(model);
 
+		FileManipulator rf = new FileManipulator();
+
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -41,6 +46,8 @@ public class DialogTable extends JTable {
 
 					GridBagConstraints gbc = new GridBagConstraints();
 					gbc.insets = new Insets(2, 2, 2, 2);
+
+					Cell cell;
 					for (int j = 0; j < getColumnCount(); j++) {
 
 						gbc.gridx = 0;
@@ -48,11 +55,24 @@ public class DialogTable extends JTable {
 						gbc.anchor = GridBagConstraints.WEST;
 						gbc.fill = GridBagConstraints.HORIZONTAL;
 
-						Object valueInTable = getValueAt(i, j);
+						cell = 	rf.getCellFromProfessorSheet(i, j);
+
+
+						//Object valueInTable = getValueAt(i, j);
+						Object valueInTable = rf.getCellFromProfessorSheet(j,i);
+						System.out.println("valueInTable=" + valueInTable);
 
 						TableCellRenderer renderer = getCellRenderer(i, j);
+						System.out.println("TableCellRenderer=" + renderer);
 
 						Object valueInModel = getModel().getValueAt(i, j);
+						System.out.println("valueInModel=" + valueInModel + "\n");
+
+						//Object valueInTable = getValueAt(i, j);
+
+						//TableCellRenderer renderer = getCellRenderer(i, j);
+
+						//Object valueInModel = getModel().getValueAt(i, j);
 
 						Component rendererComponent = renderer
 								.getTableCellRendererComponent(getThisTable(),

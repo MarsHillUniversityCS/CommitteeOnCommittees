@@ -145,6 +145,21 @@ public final class FileManipulator {
 
         return cell;
     }
+
+    public int getMatchedCellFromProfessorSheet(int column, String condition){
+        Cell cell;
+        int row = 0;
+        for(int i = 0; i < professorSheet.getPhysicalNumberOfRows(); i++){
+            cell = getCellFromProfessorSheet(column, i);
+            if (cell.toString().equals(condition)){
+                row = i;
+                break;
+            }
+        }
+        return row;
+    }
+
+
     /**
      * Overloaded function that sorts through a list of professors to find if they meet a condition
      * @param Column

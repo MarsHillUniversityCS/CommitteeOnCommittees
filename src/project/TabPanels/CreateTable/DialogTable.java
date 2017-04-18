@@ -1,6 +1,10 @@
 //github.com/oliverwatkins/swing_library
 package project.TabPanels.CreateTable;
 
+import org.apache.poi.ss.usermodel.Cell;
+import project.FileManipulator;
+import project.Professor_Constants;
+
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -26,6 +30,8 @@ public class DialogTable extends JTable {
 
 		super(model);
 
+		FileManipulator rf = new FileManipulator();
+
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -41,24 +47,43 @@ public class DialogTable extends JTable {
 
 					GridBagConstraints gbc = new GridBagConstraints();
 					gbc.insets = new Insets(2, 2, 2, 2);
-					for (int j = 0; j < getColumnCount(); j++) {
+
+					Cell cell;
+					Object professorID = getValueAt(i, 0);
+					for (int j = 0; j < rf.professorSheet.getRow(0).getPhysicalNumberOfCells(); j++) {
 
 						gbc.gridx = 0;
 						gbc.gridy = j;
 						gbc.anchor = GridBagConstraints.WEST;
 						gbc.fill = GridBagConstraints.HORIZONTAL;
 
-						Object valueInTable = getValueAt(i, j);
 
-						TableCellRenderer renderer = getCellRenderer(i, j);
+						int row = rf.getMatchedCellFromProfessorSheet(Professor_Constants.ID, professorID.toString());
+						cell = 	rf.getCellFromProfessorSheet(i, j);
+						System.out.println("Row=" + row);
 
-						Object valueInModel = getModel().getValueAt(i, j);
+
+						//Object valueInTable = getValueAt(i, j);
+						Object valueInTable = rf.getCellFromProfessorSheet(j,row);
+						//System.out.println("valueInTable=" + valueInTable);
+
+						TableCellRenderer renderer = getCellRenderer(i, 0);
+						//System.out.println("TableCellRenderer=" + renderer);
+
+						Object valueInModel = rf.getCellFromProfessorSheet(j,row);
+						//System.out.println("valueInModel=" + valueInModel + "\n");
+
+						//Object valueInTable = getValueAt(i, j);
+
+						//TableCellRenderer renderer = getCellRenderer(i, j);
+
+						//Object valueInModel = getModel().getValueAt(i, j);
 
 						Component rendererComponent = renderer
 								.getTableCellRendererComponent(getThisTable(),
 										valueInModel, false, false, i, j);
 
-						dialog.add(new JLabel("" + getColumnName(j)), gbc);
+						dialog.add(new JLabel("" + rf.getCellFromProfessorSheet(j,0)), gbc);
 						gbc.gridx = 1;
 
 						// Rendering with DefaultTableCellRenderer does not seem

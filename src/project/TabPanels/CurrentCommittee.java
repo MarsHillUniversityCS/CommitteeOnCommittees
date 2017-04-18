@@ -152,7 +152,7 @@ public class CurrentCommittee {
      */
     public String[] getTableColumns(){
 
-        String [] columns = new String[] {"First Name", "Last Name", "Term", "Preferences"};
+        String [] columns = new String[] {"ID","First Name", "Last Name", "Term"};
 
         return columns;
     }
@@ -170,6 +170,7 @@ public class CurrentCommittee {
 
         //Our ArrayList of Professors. Each Integer represents professor's row number
         ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
+
         //Loop through each Professor
         for (int i = 0; i < EligibleProfessors.size(); i++){
             //Get the row of our professor in excel sheet
@@ -178,13 +179,26 @@ public class CurrentCommittee {
             professorInfo = new Object[EligibleProfessors.size()];
 
             //Load Info into professorInfo
+            Cell cell = ProfessorRow.getCell(Professor_Constants.ID);
+            professorInfo[0] = cell.toString();
+
+            cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
+            professorInfo[1] = cell.toString();
+
+            cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
+            professorInfo[2] = cell.toString();
+
+            cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
+            professorInfo[3] = cell.toString();
+
+            /*
             for(int j =0; j < tableColumns.length; j++) {
                 Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
-
                 professorInfo[j] = cell.toString();
                 //data[i][j] = cell.toString();
                 //CHECK WHEN WE ARE FINISHED
             }
+            */
 
             //Add professorInfo(Our new Row) to ArrayList<Object[]> data
             data.add(professorInfo);

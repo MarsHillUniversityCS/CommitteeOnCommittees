@@ -3,6 +3,7 @@ package project.TabPanels.CreateTable;
 
 import org.apache.poi.ss.usermodel.Cell;
 import project.FileManipulator;
+import project.Professor_Constants;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -48,6 +49,7 @@ public class DialogTable extends JTable {
 					gbc.insets = new Insets(2, 2, 2, 2);
 
 					Cell cell;
+					Object professorID = getValueAt(i, 0);
 					for (int j = 0; j < rf.professorSheet.getRow(0).getPhysicalNumberOfCells(); j++) {
 
 						gbc.gridx = 0;
@@ -55,18 +57,21 @@ public class DialogTable extends JTable {
 						gbc.anchor = GridBagConstraints.WEST;
 						gbc.fill = GridBagConstraints.HORIZONTAL;
 
+
+						int row = rf.getMatchedCellFromProfessorSheet(Professor_Constants.ID, professorID.toString());
 						cell = 	rf.getCellFromProfessorSheet(i, j);
+						System.out.println("Row=" + row);
 
 
 						//Object valueInTable = getValueAt(i, j);
-						Object valueInTable = rf.getCellFromProfessorSheet(j,i);
-						System.out.println("valueInTable=" + valueInTable);
+						Object valueInTable = rf.getCellFromProfessorSheet(j,row);
+						//System.out.println("valueInTable=" + valueInTable);
 
 						TableCellRenderer renderer = getCellRenderer(i, 0);
-						System.out.println("TableCellRenderer=" + renderer);
+						//System.out.println("TableCellRenderer=" + renderer);
 
-						Object valueInModel = rf.getCellFromProfessorSheet(j,i);
-						System.out.println("valueInModel=" + valueInModel + "\n");
+						Object valueInModel = rf.getCellFromProfessorSheet(j,row);
+						//System.out.println("valueInModel=" + valueInModel + "\n");
 
 						//Object valueInTable = getValueAt(i, j);
 

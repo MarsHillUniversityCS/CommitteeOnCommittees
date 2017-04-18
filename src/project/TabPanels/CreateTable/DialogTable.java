@@ -78,7 +78,7 @@ public class DialogTable extends JTable {
 								.getTableCellRendererComponent(getThisTable(),
 										valueInModel, false, false, i, j);
 
-						dialog.add(new JLabel("" + getColumnName(j)), gbc);
+						dialog.add(new JLabel("" + rf.getCellFromProfessorSheet(j,0)), gbc);
 						gbc.gridx = 1;
 
 						// Rendering with DefaultTableCellRenderer does not seem

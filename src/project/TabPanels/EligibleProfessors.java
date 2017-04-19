@@ -158,22 +158,43 @@ public class EligibleProfessors {
         String thisYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
         EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, thisYear, EligibleProfessors);
 
+        //How to check if they are on sabbatical
+
+        //Check if they are athletic representative
+
+        //Check if they are DTA-15? and if they are Visiting?
+
+        //Check if Athletic Trainer (DT-AT)?
+
+        //Check if a dean
+
+        //Check if FacChair
+
+
+
+
 
         //Loop through each Professor
         for (int i = 0; i < EligibleProfessors.size(); i++){
             //Get the row of our professor in excel sheet
             ProfessorRow = rf.professorSheet.getRow(EligibleProfessors.get(i));
 
+            //Set the content wanted for each professor
             professorInfo = getProfessorInfo(ProfessorRow);
-
 
             //Add professorInfo(Our new Row) to ArrayList<Object[]> data
             data.add(professorInfo);
         }
 
+        //Return information about the professors that meet given specs
         return data;
     }
 
+    /**
+     * Gets the professors information and stores it in an Object array.
+     * @param ProfessorRow the row the professors information lives
+     * @return data. This has all the wanted info for our table.
+     */
     private Object[] getProfessorInfo(Row ProfessorRow){
         Object[] Info = new Object[tableColumns.length];
 
@@ -207,3 +228,10 @@ public class EligibleProfessors {
 //END: Table
 
 }
+
+/**
+ * Add Something that shows the specs of the committee selected.
+ * Add a feature that will allow the user to Select prospective committee members.
+ * If they have selected a person in that division than the spec is checked.
+ *
+ */

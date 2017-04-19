@@ -150,7 +150,7 @@ public class EligibleProfessors {
 
 
         //Check all specs from our Requirement
-        ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
+        ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, "");
 
 
 
@@ -158,33 +158,10 @@ public class EligibleProfessors {
         for (int i = 0; i < EligibleProfessors.size(); i++){
             //Get the row of our professor in excel sheet
             ProfessorRow = rf.professorSheet.getRow(EligibleProfessors.get(i));
+
+            professorInfo = getProfessorInfo(ProfessorRow);
+
             //Initialize our professorInfo
-            professorInfo = new Object[tableColumns.length];
-
-            //Load Info into professorInfo
-            Cell cell = ProfessorRow.getCell(Professor_Constants.ID);
-            professorInfo[0] = cell.toString();
-
-            cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
-            professorInfo[1] = cell.toString();
-
-            cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
-            professorInfo[2] = cell.toString();
-
-            cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
-            professorInfo[3] = cell.toString();
-
-            cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
-            professorInfo[4] = cell.toString();
-
-            cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_3);
-            professorInfo[5] = cell.toString();
-
-            cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_4);
-            professorInfo[6] = cell.toString();
-
-            cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_5);
-            professorInfo[7] = cell.toString();
             /*
             for(int j =0; j < tableColumns.length; j++) {
                 Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
@@ -199,6 +176,36 @@ public class EligibleProfessors {
         }
 
         return data;
+    }
+
+    private Object[] getProfessorInfo(Row ProfessorRow){
+        Object[] Info = new Object[tableColumns.length];
+
+        //Load Info into professorInfo
+        Cell cell = ProfessorRow.getCell(Professor_Constants.ID);
+        Info[0] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
+        Info[1] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
+        Info[2] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
+        Info[3] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
+        Info[4] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_3);
+        Info[5] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_4);
+        Info[6] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_5);
+        Info[7] = cell.toString();
+        return Info;
     }
 
 //END: Table

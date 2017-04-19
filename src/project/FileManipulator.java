@@ -13,13 +13,18 @@ import java.util.ArrayList;
  *
  */
 public final class FileManipulator {
+    //Initialize variables
     public Sheet professorSheet;
     public Sheet committeeSheet;
     public Workbook wb;
 
+    //Our path that we use to view excel sheet
     public String PATH = "./Committee_on_Committes/CoC.xlsx";
-    //public static ArrayList<String[]> myList = new ArrayList<String[]>();
 
+    /**
+     * Constructor for FileManipulator.
+     * Initializes our sheets
+     */
     public FileManipulator(){
         wb = readExcelFile(getPath());
 
@@ -80,11 +85,12 @@ public final class FileManipulator {
      * @param rf project.FileManipulator with path to be saved
      */
     public void saveFile(Workbook wb, FileManipulator rf){
-        // Write the output to a file
         try {
+            // Write the output to a file
             FileOutputStream fileOut = new FileOutputStream(rf.getPath());
             wb.write(fileOut);
             fileOut.close();
+        //User friendly error
         }catch (IOException ioe){
             System.err.println("An Input or output operation has failed.");
         }
@@ -97,14 +103,14 @@ public final class FileManipulator {
      */
     public Workbook readExcelFile(String path){
         try {
+            //Initialize variables
             InputStream inp = new FileInputStream(path);
-            //InputStream inp = new FileInputStream("workbook.xlsx");
             wb = WorkbookFactory.create(inp);
-
             professorSheet = wb.getSheetAt(0);
             committeeSheet = wb.getSheetAt(1);
 
             return wb;
+        //Catch errors and give user friendly exceptions
         }catch (FileNotFoundException fnfe) {
             System.err.println("The file you tried to open does not exist.");
         }catch(InvalidFormatException ife){
@@ -113,6 +119,7 @@ public final class FileManipulator {
             System.err.println("An Input or output operation has failed.");
         }
 
+        //This might create problems
         Workbook wb = new XSSFWorkbook();
         return wb;
     }
@@ -125,7 +132,6 @@ public final class FileManipulator {
      */
     public Cell getCellFromProfessorSheet(int cellNum, int rowNum){
         Row row = professorSheet.getRow(rowNum);
-
         Cell cell = row.getCell(cellNum);
 
         return cell;
@@ -133,24 +139,33 @@ public final class FileManipulator {
 
 
     /**
-     * Retrieves a cell in a professorSheet at the location given
+     * Retrieves a cell in a CommitteeSheet at the location given
      * @param cellNum x-Axis in cell
      * @param rowNum Y-axis of grid
      * @return
      */
     public Cell getCellFromCommitteeSheet(int cellNum, int rowNum){
         Row row = committeeSheet.getRow(rowNum);
-
         Cell cell = row.getCell(cellNum);
 
         return cell;
     }
 
+    /**
+     * Finds the cell in a column that matches the condition
+     * @param column the column we are looking trough
+     * @param condition content in the cell that we want to find
+     * @return int row that our cell is in.
+     */
     public int getMatchedCellFromProfessorSheet(int column, String condition){
+        //Initialize variables
         Cell cell;
         int row = 0;
+
+        //Search through sheet for condition
         for(int i = 0; i < professorSheet.getPhysicalNumberOfRows(); i++){
             cell = getCellFromProfessorSheet(column, i);
+            //If cell is equal to condition return row
             if (cell.toString().equals(condition)){
                 row = i;
                 break;
@@ -167,17 +182,47 @@ public final class FileManipulator {
      * @param professors
      * @return
      */
-    public int[] getAllEligible(int Column, String Condition, int [] professors){
-        int spotInArray = 0;
+    public ArrayList<Integer> getAllEligibleNotCondition(int Column, String Condition, ArrayList<Integer> professors){
+        //Initialize variables
         Cell cell;
-        int [] eligibleProfessors = new int[professors.length];
+        ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
 
-        for(int i = 0; i < eligibleProfessors.length; i++){
-            cell = getCellFromProfessorSheet(Column, professors[i]);
-            if(cell.toString().equals(Condition)){
-                eligibleProfessors[spotInArray++] = professors[i];
+        //Search through array
+        for(int i = 0; i < professors.size(); i++){
+            cell = getCellFromProfessorSheet(Column, professors.get(i));
+            //Check to make sure it is not the condition
+            if(!(cell.toString().equals(Condition))){
+                eligibleProfessors.add(professors.get(i));
             }
-            if(professors[i] == 0)break;
+            //Check if we are on the Header row
+            if(professors.get(i) == 0)break;
+        }
+
+        return eligibleProfessors;
+    }
+
+    /**
+     * Overloaded function that sorts through a list of professors to find if they meet a condition
+     * @param Column
+     * @param Condition
+     * @param professors
+     * @return
+     */
+    public ArrayList<Integer> getAllEligible(int Column, String Condition, ArrayList<Integer> professors){
+        //Initialize variables
+        Cell cell;
+        ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
+
+        //Search sheet
+        for(int i = 0; i < eligibleProfessors.size(); i++){
+            cell = getCellFromProfessorSheet(Column, professors.get(i));
+            //If we have a match add it to our list of eligible professors
+            if(cell.toString().equals(Condition)){
+                eligibleProfessors.add(professors.get(i));
+            }
+
+            //If we are on the header row inside sheet
+            if(professors.get(i) == 0)break;
         }
 
         return eligibleProfessors;
@@ -191,34 +236,42 @@ public final class FileManipulator {
      * @return
      */
     public ArrayList<Integer> getAllEligible(int Column, String Condition){
+
+        //Initialize variables
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();//int[professorSheet.getPhysicalNumberOfRows()];
-        int spotInArray = 0;
         Cell cell;
 
+        //Search through sheet
         for(int i = 1; i < professorSheet.getPhysicalNumberOfRows(); i++){
             cell = getCellFromProfessorSheet(Column, i);
+            //if cell is equal to condition
             if(cell.toString().equals(Condition)){
-                //eligibleProfessors.add(spotInArray++);
                 eligibleProfessors.add(i);
-                //eligibleProfessors[spotInArray++] = i;
             }
         }
         return eligibleProfessors;
     }
 
 
+    /**
+     * This returns all of the committees inside of CoC Committee Sheet
+     * @return A string of all the committees
+     */
     public String[] getCommittees(){
+        //Initialize variables
         String [] Committees = new String[20];
         int committeeCount = 0;
-
         Cell cell;
-        for(int i = Requirements.ROW_COMMITTEES_STARTS;   ; i++){
 
+        //Look at each name starting with row ROW_COMMITTEES_STARTS
+        for(int i = Requirements.ROW_COMMITTEES_STARTS;   ; i++){
             cell = getCellFromCommitteeSheet(0,i);
+            //If we reach an empty cell we are finished
             if(cell.toString().isEmpty()){
                 Committees[committeeCount] = "";
                 break;
             }
+            //else add cell to Committees
             Committees[committeeCount++] = cell.toString();
         }
 

@@ -1,9 +1,10 @@
 package project.TabPanels;
 
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import project.*;
+import project.FileManipulator;
+import project.Professor_Constants;
+import project.Requirements;
 import project.TabPanels.CreateTable.DialogTableTester;
 
 import javax.swing.*;
@@ -11,20 +12,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
- * Created by s000191354 on 4/11/17.
+ * Created by s000191354 on 4/18/17.
  */
-public class CurrentCommittee {
+public class EligibleProfessors {
 
-    //Initialize Variables
     private String[] CommitteeList;
     private JComboBox committeeDropDown = new JComboBox();
     private JButton btnFindCommitteeMembers = new JButton("Find Current Members");
     private int count = 0;
     private JPanel PanelDropDown;
     private JPanel PanelTable;
-    private JPanel PanelCurrentCommittee;
+    private JPanel EligibleProfessorPanel;
     private String selectedCommittee = "";
     private String[] tableColumns = getTableColumns();
 
@@ -32,37 +33,16 @@ public class CurrentCommittee {
     FileManipulator rf = new FileManipulator();
 
 
-    /**
-     * Test our pannel
-     * @param args
-     */
     public static void main(String[] args) {
-        test();
 
     }
 
-    /**
-     * Test method
-     */
-    public static void test() {
-        project.TabPanels.CurrentCommittee c = new CurrentCommittee();
-        c.getPanel();
-        JFrame frame = new JFrame();
-        frame.setMinimumSize(new Dimension(500,500));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(c.PanelCurrentCommittee);
-        frame.setVisible(true);
-    }
-
-    /**
-     * Command called that will return our panel
-     * @return
-     */
-    public JPanel getPanel() {
+    public JPanel getPanel(){
         //Our main panel
-        PanelCurrentCommittee = new JPanel();
+        EligibleProfessorPanel = new JPanel();
 
-        PanelCurrentCommittee.setLayout(new GridLayout(1, 1));
+
+        EligibleProfessorPanel.setLayout(new GridLayout(1, 1));
 
         //create our drop down box to select a committee
         createDropDown();
@@ -70,9 +50,8 @@ public class CurrentCommittee {
         //Create our table that displays minor information
         createTable();
 
-        return PanelCurrentCommittee;
 
-
+        return EligibleProfessorPanel;
     }
 
 //START: Drop Down Menu
@@ -96,11 +75,11 @@ public class CurrentCommittee {
         //Create our search button
         btnFindCommitteeMembers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PanelCurrentCommittee.remove(PanelTable);
-                PanelCurrentCommittee.revalidate();
+                EligibleProfessorPanel.remove(PanelTable);
+                EligibleProfessorPanel.revalidate();
                 createTable();
-                PanelCurrentCommittee.add(PanelTable);
-                PanelCurrentCommittee.revalidate();
+                EligibleProfessorPanel.add(PanelTable);
+                EligibleProfessorPanel.revalidate();
                 /*)
                 if (count < CommitteeList.length)
                     committeeDropDown.addItem(CommitteeList[count++]);
@@ -120,9 +99,10 @@ public class CurrentCommittee {
         PanelDropDown.add(committeeDropDown);
         PanelDropDown.add(btnFindCommitteeMembers);
 
-        PanelCurrentCommittee.add(PanelDropDown);
+        EligibleProfessorPanel.add(PanelDropDown);
     }
 //END: DROP DOWN MENU
+
 
 //START: Table
 
@@ -141,7 +121,7 @@ public class CurrentCommittee {
         PanelTable = DialogTableTester.getPanel(tableColumns, tableData);
 
         //Add the table to our main Panel
-        PanelCurrentCommittee.add(PanelTable, BorderLayout.CENTER);
+        EligibleProfessorPanel.add(PanelTable, BorderLayout.CENTER);
     }
 
     /**
@@ -150,7 +130,7 @@ public class CurrentCommittee {
      */
     public String[] getTableColumns(){
 
-        String [] columns = new String[] {"ID","First Name", "Last Name", "Term"};
+        String [] columns = new String[] {"ID","First Name", "Last Name", "Pref 1", "Pref 2", "Pref 3", "Pref 4", "Pref 5"};
 
         return columns;
     }
@@ -166,37 +146,26 @@ public class CurrentCommittee {
         Object[] professorInfo;
         Row ProfessorRow;
 
-        //Our ArrayList of Professors. Each Integer represents professor's row number
-        ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
+        //Find requirements
+        Requirements required = new Requirements(selectedCommittee);
+
+
+        //Check to see if they are currently serving on a committee
+        ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, "");
+        //Need to highlight married couples. Should add this to table.
+
+        //Check year appointed. Should add this to Table
+        String thisYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, thisYear, EligibleProfessors);
+
 
         //Loop through each Professor
         for (int i = 0; i < EligibleProfessors.size(); i++){
             //Get the row of our professor in excel sheet
             ProfessorRow = rf.professorSheet.getRow(EligibleProfessors.get(i));
-            //Initialize our professorInfo
-            professorInfo = new Object[tableColumns.length];
 
-            //Load Info into professorInfo
-            Cell cell = ProfessorRow.getCell(Professor_Constants.ID);
-            professorInfo[0] = cell.toString();
+            professorInfo = getProfessorInfo(ProfessorRow);
 
-            cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
-            professorInfo[1] = cell.toString();
-
-            cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
-            professorInfo[2] = cell.toString();
-
-            cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
-            professorInfo[3] = cell.toString();
-
-            /*
-            for(int j =0; j < tableColumns.length; j++) {
-                Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
-                professorInfo[j] = cell.toString();
-                //data[i][j] = cell.toString();
-                //CHECK WHEN WE ARE FINISHED
-            }
-            */
 
             //Add professorInfo(Our new Row) to ArrayList<Object[]> data
             data.add(professorInfo);
@@ -205,16 +174,36 @@ public class CurrentCommittee {
         return data;
     }
 
+    private Object[] getProfessorInfo(Row ProfessorRow){
+        Object[] Info = new Object[tableColumns.length];
+
+        //Load Info into professorInfo
+        Cell cell = ProfessorRow.getCell(Professor_Constants.ID);
+        Info[0] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
+        Info[1] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
+        Info[2] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
+        Info[3] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
+        Info[4] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_3);
+        Info[5] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_4);
+        Info[6] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_5);
+        Info[7] = cell.toString();
+        return Info;
+    }
+
 //END: Table
 
-
-
 }
-
-/**
- * Create way to read long named Committees.
- * Create way to read minor assignments
- * Create way when double clicked we can view all of information about user
- * and edit it. Then if closed we can ask to save changes or not.
- * Add a check that will see if it is a valid string
- */

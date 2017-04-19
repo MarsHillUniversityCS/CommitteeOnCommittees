@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by s000191354 on 4/18/17.
@@ -149,9 +150,13 @@ public class EligibleProfessors {
         Requirements required = new Requirements(selectedCommittee);
 
 
-        //Check all specs from our Requirement
+        //Check to see if they are currently serving on a committee
         ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, "");
+        //Need to highlight married couples. Should add this to table.
 
+        //Check year appointed. Should add this to Table
+        String thisYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, thisYear, EligibleProfessors);
 
 
         //Loop through each Professor
@@ -161,15 +166,6 @@ public class EligibleProfessors {
 
             professorInfo = getProfessorInfo(ProfessorRow);
 
-            //Initialize our professorInfo
-            /*
-            for(int j =0; j < tableColumns.length; j++) {
-                Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
-                professorInfo[j] = cell.toString();
-                //data[i][j] = cell.toString();
-                //CHECK WHEN WE ARE FINISHED
-            }
-            */
 
             //Add professorInfo(Our new Row) to ArrayList<Object[]> data
             data.add(professorInfo);

@@ -28,8 +28,6 @@ public class CurrentCommittee {
     private String selectedCommittee = "";
     private String[] tableColumns = getTableColumns();
 
-
-
     //Create our FileManipulator
     FileManipulator rf = new FileManipulator();
 
@@ -176,7 +174,7 @@ public class CurrentCommittee {
             //Get the row of our professor in excel sheet
             ProfessorRow = rf.professorSheet.getRow(EligibleProfessors.get(i));
             //Initialize our professorInfo
-            professorInfo = new Object[EligibleProfessors.size()];
+            professorInfo = new Object[tableColumns.length];
 
             //Load Info into professorInfo
             Cell cell = ProfessorRow.getCell(Professor_Constants.ID);

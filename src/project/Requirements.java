@@ -216,7 +216,7 @@ public class Requirements {
      * Length of position on Committee
      * @param CommitteeRow
      */
-    public void getTermYears(int CommitteeRow) {
+    private void getTermYears(int CommitteeRow) {
         Cell cell = rf.getCellFromProfessorSheet(TERM_COLUMN,CommitteeRow);
 
         String termOfYears = cell.toString();

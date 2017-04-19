@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import project.FileManipulator;
 import project.Professor_Constants;
+import project.Requirements;
 import project.TabPanels.CreateTable.DialogTableTester;
 
 import javax.swing.*;
@@ -128,7 +129,7 @@ public class EligibleProfessors {
      */
     public String[] getTableColumns(){
 
-        String [] columns = new String[] {"ID","First Name", "Last Name", "Term"};
+        String [] columns = new String[] {"ID","First Name", "Last Name", "Pref 1", "Pref 2", "Pref 3", "Pref 4", "Pref 5"};
 
         return columns;
     }
@@ -144,6 +145,10 @@ public class EligibleProfessors {
         Object[] professorInfo;
         Row ProfessorRow;
 
+        //Find requirements
+        Requirements required = new Requirements(selectedCommittee);
+
+
         //Check all specs from our Requirement
         ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
 
@@ -154,7 +159,7 @@ public class EligibleProfessors {
             //Get the row of our professor in excel sheet
             ProfessorRow = rf.professorSheet.getRow(EligibleProfessors.get(i));
             //Initialize our professorInfo
-            professorInfo = new Object[EligibleProfessors.size()];
+            professorInfo = new Object[tableColumns.length];
 
             //Load Info into professorInfo
             Cell cell = ProfessorRow.getCell(Professor_Constants.ID);
@@ -166,9 +171,20 @@ public class EligibleProfessors {
             cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
             professorInfo[2] = cell.toString();
 
-            cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
+            cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
             professorInfo[3] = cell.toString();
 
+            cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
+            professorInfo[4] = cell.toString();
+
+            cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_3);
+            professorInfo[5] = cell.toString();
+
+            cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_4);
+            professorInfo[6] = cell.toString();
+
+            cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_5);
+            professorInfo[7] = cell.toString();
             /*
             for(int j =0; j < tableColumns.length; j++) {
                 Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);

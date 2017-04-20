@@ -21,7 +21,7 @@ public class EligibleProfessors {
 
     private String[] CommitteeList;
     private JComboBox committeeDropDown = new JComboBox();
-    private JButton btnFindCommitteeMembers = new JButton("Find Current Members");
+    private JButton btnFindCommitteeMembers = new JButton("Find Eligible Members");
     private int count = 0;
     private JPanel PanelDropDown;
     private JPanel PanelTable;
@@ -149,24 +149,43 @@ public class EligibleProfessors {
         //Find requirements
         Requirements required = new Requirements(selectedCommittee);
 
+        //If beyond Feb put next year in the Spring. Radio buttons for
+        //Fall 2017, Spring 2017, Spring 2018. Based on current year
 
         //Check to see if they are currently serving on a committee
+        //If serving on a committee and the term is ending or term has ended
+        //Check box that asks Spring or Fall. If Spring do not show Unil
+        //that ends in spring. If Fall show folks that ended in spring.
         ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, "");
+
         //Need to highlight married couples. Should add this to table.
 
-        //Check year appointed. Should add this to Table
+
+
+        //Check year appointed. Highlight if they were added in fall. SHOULD ADD THIS TO TABLE
+        //special  election for current
+        //or highlight all folks from previous year. Add key
         String thisYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
         EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, thisYear, EligibleProfessors);
 
         //How to check if they are on sabbatical
 
+
+
+        //athRep
         //Check if they are athletic representative
 
+
+        //TenureStatus DT-15 cannot but DT can. Also V is visiting
         //Check if they are DTA-15? and if they are Visiting?
 
+
+        //TenureStatus DT-AT cannot but DT can.
         //Check if Athletic Trainer (DT-AT)?
 
+
         //Check if a dean
+
 
         //Check if FacChair
 

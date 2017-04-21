@@ -22,12 +22,20 @@ public class EligibleProfessors {
     private String[] CommitteeList;
     private JComboBox committeeDropDown = new JComboBox();
     private JButton btnFindCommitteeMembers = new JButton("Find Eligible Members");
+    private JRadioButton ThisSpring;
+    private JRadioButton NextSpring;
+    private JRadioButton ThisFall;
+    private ButtonGroup bG;
+
     private int count = 0;
+    private String thisYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+
+    private String selectedCommittee = "";
+    private String[] tableColumns = getTableColumns();
+
     private JPanel PanelDropDown;
     private JPanel PanelTable;
     private JPanel EligibleProfessorPanel;
-    private String selectedCommittee = "";
-    private String[] tableColumns = getTableColumns();
 
     //Create our FileManipulator
     FileManipulator rf = new FileManipulator();
@@ -101,15 +109,34 @@ public class EligibleProfessors {
 
         //If beyond Feb put next year in the Spring. Radio buttons for
         //Fall 2017, Spring 2017, Spring 2018. Based on current year
-        CreateRadioButtons();
 
         EligibleProfessorPanel.add(PanelDropDown);
+        CreateRadioButtons();
     }
 
 
-
+    /**
+     * Create our radio buttons for the year we are in
+     */
     public void CreateRadioButtons(){
+        JPanel RadioButtonPannel = new JPanel();
+        int nextYear = Integer.parseInt(thisYear) + 1;
+        ThisFall = new JRadioButton(thisYear +" Fall");
+        ThisFall.setSelected(true);
+        ThisSpring = new JRadioButton(thisYear +" Spring");
+        NextSpring = new JRadioButton(nextYear + " Spring");
 
+        bG = new ButtonGroup();
+        bG.add(ThisFall);
+        bG.add(ThisSpring);
+        bG.add(NextSpring);
+
+        //Add to Panel
+        RadioButtonPannel.add(ThisFall);
+        RadioButtonPannel.add(ThisSpring);
+        RadioButtonPannel.add(NextSpring);
+
+        EligibleProfessorPanel.add(RadioButtonPannel);
     }
 
 
@@ -162,7 +189,6 @@ public class EligibleProfessors {
         Requirements required = new Requirements(selectedCommittee);
 
         //Initialize variables
-        String thisYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
         ArrayList<Integer> EligibleProfessors;
 
 

@@ -22,12 +22,20 @@ public class EligibleProfessors {
     private String[] CommitteeList;
     private JComboBox committeeDropDown = new JComboBox();
     private JButton btnFindCommitteeMembers = new JButton("Find Eligible Members");
+    private JRadioButton ThisSpring;
+    private JRadioButton NextSpring;
+    private JRadioButton ThisFall;
+    private ButtonGroup bG;
+
     private int count = 0;
+    private String thisYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+
+    private String selectedCommittee = "";
+    private String[] tableColumns = getTableColumns();
+
     private JPanel PanelDropDown;
     private JPanel PanelTable;
     private JPanel EligibleProfessorPanel;
-    private String selectedCommittee = "";
-    private String[] tableColumns = getTableColumns();
 
     //Create our FileManipulator
     FileManipulator rf = new FileManipulator();
@@ -99,8 +107,39 @@ public class EligibleProfessors {
         PanelDropDown.add(committeeDropDown);
         PanelDropDown.add(btnFindCommitteeMembers);
 
+        //If beyond Feb put next year in the Spring. Radio buttons for
+        //Fall 2017, Spring 2017, Spring 2018. Based on current year
+
         EligibleProfessorPanel.add(PanelDropDown);
+        CreateRadioButtons();
     }
+
+
+    /**
+     * Create our radio buttons for the year we are in
+     */
+    public void CreateRadioButtons(){
+        JPanel RadioButtonPanel = new JPanel();
+        int nextYear = Integer.parseInt(thisYear) + 1;
+        ThisFall = new JRadioButton(thisYear +" Fall");
+        ThisFall.setSelected(true);
+        ThisSpring = new JRadioButton(thisYear +" Spring");
+        NextSpring = new JRadioButton(nextYear + " Spring");
+
+        bG = new ButtonGroup();
+        bG.add(ThisFall);
+        bG.add(ThisSpring);
+        bG.add(NextSpring);
+
+        //Add to Panel
+        RadioButtonPanel.add(ThisFall);
+        RadioButtonPanel.add(ThisSpring);
+        RadioButtonPanel.add(NextSpring);
+
+        EligibleProfessorPanel.add(RadioButtonPanel);
+    }
+
+
 //END: DROP DOWN MENU
 
 
@@ -146,48 +185,90 @@ public class EligibleProfessors {
         Object[] professorInfo;
         Row ProfessorRow;
 
+        int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
+
         //Find requirements
         Requirements required = new Requirements(selectedCommittee);
 
-        //If beyond Feb put next year in the Spring. Radio buttons for
-        //Fall 2017, Spring 2017, Spring 2018. Based on current year
+        //Initialize variables
+        ArrayList<Integer> EligibleProfessors;
+
 
         //Check to see if they are currently serving on a committee
+        ArrayList<Integer> withAssignment = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "");
+
         //If serving on a committee and the term is ending or term has ended
-        //Check box that asks Spring or Fall. If Spring do not show Unil
+        if(ThisSpring.isSelected()) {
+
+            withAssignment = rf.getAllEligibleNotCondition(Professor_Constants.UNTIL, thisYear, withAssignment);
+
+        //If this Fall Find all professors eligible in the spring of this year
+        } else if(ThisFall.isSelected()){
+
+            //Get all professors This year
+            ArrayList<Integer> ThisYear = rf.getAllEligible(Professor_Constants.UNTIL, thisYear);
+
+            //All professors eligible in the spring
+            ArrayList<Integer> NotFallUntil = rf.getAllEligible(Professor_Constants.SEM, "S");
+
+            //merge all the lists
+            ThisYear = rf.mergeLists(ThisYear, NotFallUntil);
+            withAssignment = rf.mergeLists(withAssignment, ThisYear);
+
+        //If Next Spring Find all professors eligible in the spring of this year
+        } else if(NextSpring.isSelected()){
+            //Get all professors This year
+            ArrayList<Integer> ThisYear = rf.getAllEligible(Professor_Constants.UNTIL, thisYear);
+
+            //merge all the lists
+            withAssignment = rf.mergeLists(withAssignment, ThisYear);
+
+        }
+
+        //Check box that asks Spring or Fall. If Spring do not show Until
         //that ends in spring. If Fall show folks that ended in spring.
-        ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, "");
+        ArrayList<Integer> withOutAssignment = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, "");
 
         //Need to highlight married couples. Should add this to table.
 
+        //Merge With and Without
+        EligibleProfessors = rf.mergeLists(withOutAssignment, withAssignment);
+
+        //Check if Next Assignment is empty
+        EligibleProfessors = rf.getAllEligible(Professor_Constants.NEXT_ASSIGNMENT, "");
 
 
         //Check year appointed. Highlight if they were added in fall. SHOULD ADD THIS TO TABLE
         //special  election for current
         //or highlight all folks from previous year. Add key
-        String thisYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
         EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, thisYear, EligibleProfessors);
 
         //How to check if they are on sabbatical
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "Sabbatical", EligibleProfessors);
 
 
 
         //athRep
         //Check if they are athletic representative
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "AthRep", EligibleProfessors);
 
 
         //TenureStatus DT-15 cannot but DT can. Also V is visiting
         //Check if they are DTA-15? and if they are Visiting?
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "V", EligibleProfessors);
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-15", EligibleProfessors);
 
 
         //TenureStatus DT-AT cannot but DT can.
         //Check if Athletic Trainer (DT-AT)?
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-AT", EligibleProfessors);
+
+        //Check if a dean *works
+        EligibleProfessors = rf.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Dean", EligibleProfessors);
 
 
-        //Check if a dean
-
-
-        //Check if FacChair
+        //Check if FacChair *works
+        EligibleProfessors = rf.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Fac", EligibleProfessors);
 
 
 

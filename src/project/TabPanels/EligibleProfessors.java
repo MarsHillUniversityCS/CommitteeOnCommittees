@@ -165,17 +165,6 @@ public class EligibleProfessors {
         EligibleProfessorPanel.add(PanelTable, BorderLayout.CENTER);
     }
 
-    /**
-     * returns the names to our columns. The top row
-     * @return string of column names
-     */
-    public String[] getTableColumns(){
-
-        String [] columns = new String[] {"ID","First Name", "Last Name", "Pref 1", "Pref 2", "Pref 3", "Pref 4", "Pref 5"};
-
-        return columns;
-    }
-
 
     /**
      * Gets the data that will be loaded into our table
@@ -235,39 +224,41 @@ public class EligibleProfessors {
         EligibleProfessors = rf.mergeLists(withOutAssignment, withAssignment);
 
         //Check if Next Assignment is empty
-        EligibleProfessors = rf.getAllEligible(Professor_Constants.NEXT_ASSIGNMENT, "");
+        //EligibleProfessors = rf.getAllEligible(Professor_Constants.NEXT_ASSIGNMENT, "", EligibleProfessors);
 
 
         //Check year appointed. Highlight if they were added in fall. SHOULD ADD THIS TO TABLE
         //special  election for current
         //or highlight all folks from previous year. Add key
-        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, thisYear, EligibleProfessors);
+        //EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, thisYear, EligibleProfessors);
 
-        //How to check if they are on sabbatical
+        //not sabbatical
         EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "Sabbatical", EligibleProfessors);
 
 
 
         //athRep
-        //Check if they are athletic representative
+        //not athletic representative
         EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "AthRep", EligibleProfessors);
 
 
         //TenureStatus DT-15 cannot but DT can. Also V is visiting
-        //Check if they are DTA-15? and if they are Visiting?
+        //not Visiting
         EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "V", EligibleProfessors);
+
+        //not DTA-15
         EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-15", EligibleProfessors);
 
 
         //TenureStatus DT-AT cannot but DT can.
-        //Check if Athletic Trainer (DT-AT)?
+        //not Athletic Trainers (DT-AT)?
         EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-AT", EligibleProfessors);
 
-        //Check if a dean *works
+        //not deans *works
         EligibleProfessors = rf.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Dean", EligibleProfessors);
 
 
-        //Check if FacChair *works
+        //not FacChairs *works
         EligibleProfessors = rf.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Fac", EligibleProfessors);
 
 
@@ -293,6 +284,18 @@ public class EligibleProfessors {
     }
 
     /**
+     * returns the names to our columns. The top row
+     * @return string of column names
+     */
+    public String[] getTableColumns(){
+
+        String [] columns = new String[] {"ID","First Name", "Last Name", "Current Pos", "Until", "Sem",
+                "Pref 1", "Pref 2", "Pref 3"};
+
+        return columns;
+    }
+
+    /**
      * Gets the professors information and stores it in an Object array.
      * @param ProfessorRow the row the professors information lives
      * @return data. This has all the wanted info for our table.
@@ -310,20 +313,24 @@ public class EligibleProfessors {
         cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
         Info[2] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
+        cell = ProfessorRow.getCell(Professor_Constants.CURRENT_ASSIGNMENT);
         Info[3] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
+        cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
         Info[4] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_3);
+        cell = ProfessorRow.getCell(Professor_Constants.SEM);
         Info[5] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_4);
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
         Info[6] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_5);
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
         Info[7] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_3);
+        Info[8] = cell.toString();
+
         return Info;
     }
 
@@ -333,8 +340,9 @@ public class EligibleProfessors {
 
 /**
  * work more on get department Requirements
+ * Get rid of .0 at the end of Years and IDs
+ *
  * Add Something that shows the specs of the committee selected.
  * Add a feature that will allow the user to Select prospective committee members.
  * If they have selected a person in that division than the spec is checked.
- *
  */

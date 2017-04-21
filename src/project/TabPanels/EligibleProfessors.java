@@ -119,7 +119,7 @@ public class EligibleProfessors {
      * Create our radio buttons for the year we are in
      */
     public void CreateRadioButtons(){
-        JPanel RadioButtonPannel = new JPanel();
+        JPanel RadioButtonPanel = new JPanel();
         int nextYear = Integer.parseInt(thisYear) + 1;
         ThisFall = new JRadioButton(thisYear +" Fall");
         ThisFall.setSelected(true);
@@ -132,11 +132,11 @@ public class EligibleProfessors {
         bG.add(NextSpring);
 
         //Add to Panel
-        RadioButtonPannel.add(ThisFall);
-        RadioButtonPannel.add(ThisSpring);
-        RadioButtonPannel.add(NextSpring);
+        RadioButtonPanel.add(ThisFall);
+        RadioButtonPanel.add(ThisSpring);
+        RadioButtonPanel.add(NextSpring);
 
-        EligibleProfessorPanel.add(RadioButtonPannel);
+        EligibleProfessorPanel.add(RadioButtonPanel);
     }
 
 
@@ -185,6 +185,8 @@ public class EligibleProfessors {
         Object[] professorInfo;
         Row ProfessorRow;
 
+        int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
+
         //Find requirements
         Requirements required = new Requirements(selectedCommittee);
 
@@ -194,8 +196,34 @@ public class EligibleProfessors {
 
         //Check to see if they are currently serving on a committee
         ArrayList<Integer> withAssignment = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "");
+
         //If serving on a committee and the term is ending or term has ended
-        withAssignment = rf.getAllEligibleNotCondition(Professor_Constants.UNTIL, thisYear, withAssignment);
+        if(ThisSpring.isSelected()) {
+
+            withAssignment = rf.getAllEligibleNotCondition(Professor_Constants.UNTIL, thisYear, withAssignment);
+
+        //If this Fall Find all professors eligible in the spring of this year
+        } else if(ThisFall.isSelected()){
+
+            //Get all professors This year
+            ArrayList<Integer> ThisYear = rf.getAllEligible(Professor_Constants.UNTIL, thisYear);
+
+            //All professors eligible in the spring
+            ArrayList<Integer> NotFallUntil = rf.getAllEligible(Professor_Constants.SEM, "S");
+
+            //merge all the lists
+            ThisYear = rf.mergeLists(ThisYear, NotFallUntil);
+            withAssignment = rf.mergeLists(withAssignment, ThisYear);
+
+        //If Next Spring Find all professors eligible in the spring of this year
+        } else if(NextSpring.isSelected()){
+            //Get all professors This year
+            ArrayList<Integer> ThisYear = rf.getAllEligible(Professor_Constants.UNTIL, thisYear);
+
+            //merge all the lists
+            withAssignment = rf.mergeLists(withAssignment, ThisYear);
+
+        }
 
         //Check box that asks Spring or Fall. If Spring do not show Until
         //that ends in spring. If Fall show folks that ended in spring.

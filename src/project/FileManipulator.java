@@ -319,6 +319,8 @@ public final class FileManipulator {
     }
 
 
+
+
     /**
      * This returns all of the committees inside of CoC Committee Sheet
      * @return A string of all the committees
@@ -343,6 +345,45 @@ public final class FileManipulator {
 
 
         return Committees;
+    }
+
+    /**
+     * Overloaded function that sorts through a list of professors to find if they meet a condition
+     * @param Column
+     * @param Condition
+     * @param professors
+     * @return
+     */
+    public ArrayList<Integer> getAllMatches(int Column, String Condition, ArrayList<Integer> professors){
+        //Initialize variables
+        Cell cell;
+        ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
+
+        //Search sheet
+        for(int i = 0; i < eligibleProfessors.size(); i++){
+            cell = getCellFromProfessorSheet(Column, professors.get(i));
+            //If we have a match add it to our list of eligible professors
+            if(cell.toString().matches(Condition)){
+                eligibleProfessors.add(professors.get(i));
+            }
+
+            //If we are on the header row inside sheet
+            if(professors.get(i) == 0)break;
+        }
+
+        return eligibleProfessors;
+    }
+
+    public ArrayList<Integer> getDepartmentRequirements(int[] requirements, ArrayList<Integer> EligibleProfessors){
+        //req[1] is tenure. If 1 then sort through Tenure
+        if(requirements[1] == 1 ){
+            EligibleProfessors = getAllMatches(Professor_Constants.TENURE_STATUS, ".*\\d+.*", EligibleProfessors);
+        }
+
+
+
+        return EligibleProfessors;
+
     }
 
 

@@ -62,11 +62,11 @@ public class Requirements {
      * [2] = 1 if they must me Associate, 0 if not
      * [3] = # of years of service they must have at Mars Hill
      */
-    private int[] fa_specs = new int[] {0,0,0,0};
-    private int[] HSS_specs = new int[] {0,0,0,0};
-    private int[] MNS_specs = new int[] {0,0,0,0};
-    private int[] PP_specs = new int[] {0,0,0,0};
-    private int[] L_specs = new int[] {0,0,0,0};
+    public int[] fa_specs = new int[] {0,0,0,0};
+    public int[] HSS_specs = new int[] {0,0,0,0};
+    public int[] MNS_specs = new int[] {0,0,0,0};
+    public int[] PP_specs = new int[] {0,0,0,0};
+    public int[] L_specs = new int[] {0,0,0,0};
 
     private static final int FA_COLUMN = 1;
     private static final int HSS_COLUMN = 2;

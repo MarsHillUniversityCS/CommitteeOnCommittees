@@ -31,6 +31,7 @@ public class CurrentCommittee {
     //Create our FileManipulator
     FileManipulator rf = new FileManipulator();
 
+    //Create List of Committees
 
     /**
      * Test our pannel
@@ -111,8 +112,8 @@ public class CurrentCommittee {
         //Put stuff in this actionlister if you want something to happen when selecting a committee
         committeeDropDown.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                selectedCommittee = committeeDropDown.getSelectedItem().toString();
-                System.out.println(selectedCommittee);
+                //Set selected committee from index in our committee list
+                selectedCommittee = Committee_Req_Constants.CommitteeNames[committeeDropDown.getSelectedIndex()];
             }
         });
 

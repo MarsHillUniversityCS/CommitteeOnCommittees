@@ -2,6 +2,7 @@ package project.TabPanels;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import project.Committee_Req_Constants;
 import project.FileManipulator;
 import project.Professor_Constants;
 import project.Requirements;
@@ -26,7 +27,7 @@ public class EligibleProfessors {
     private JRadioButton NextSpring;
     private JRadioButton ThisFall;
     private ButtonGroup bG;
-
+    private Requirements required;
     private int count = 0;
     private String thisYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
 
@@ -38,7 +39,7 @@ public class EligibleProfessors {
     private JPanel EligibleProfessorPanel;
 
     //Create our FileManipulator
-    FileManipulator rf = new FileManipulator();
+    private FileManipulator rf = new FileManipulator();
 
 
     public static void main(String[] args) {
@@ -98,8 +99,9 @@ public class EligibleProfessors {
         //Put stuff in this actionlister if you want something to happen when selecting a committee
         committeeDropDown.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                selectedCommittee = committeeDropDown.getSelectedItem().toString();
-                System.out.println(selectedCommittee);
+                //selectedCommittee = committeeDropDown.getSelectedItem().toString();
+                //Set selected committee from index in our committee list
+                selectedCommittee = Committee_Req_Constants.CommitteeNames[committeeDropDown.getSelectedIndex()];
             }
         });
 
@@ -185,10 +187,8 @@ public class EligibleProfessors {
         Object[] professorInfo;
         Row ProfessorRow;
 
-        int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
-
         //Find requirements
-        Requirements required = new Requirements(selectedCommittee);
+        required = new Requirements(selectedCommittee);
 
         //Initialize variables
         ArrayList<Integer> EligibleProfessors;
@@ -271,6 +271,8 @@ public class EligibleProfessors {
         EligibleProfessors = rf.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Fac", EligibleProfessors);
 
 
+        //Get All Department Requirements
+        EligibleProfessors = rf.getDepartmentRequirements(required.fa_specs, EligibleProfessors);
 
 
 
@@ -330,6 +332,7 @@ public class EligibleProfessors {
 }
 
 /**
+ * work more on get department Requirements
  * Add Something that shows the specs of the committee selected.
  * Add a feature that will allow the user to Select prospective committee members.
  * If they have selected a person in that division than the spec is checked.

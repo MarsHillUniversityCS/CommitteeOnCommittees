@@ -176,7 +176,51 @@ public final class FileManipulator {
 
 
     /**
-     * Overloaded function that sorts through a list of professors to find if they meet a condition
+     * Remove all duplicates from list and add the second list. Not efficient at all...
+     * @param list1
+     * @param list2
+     * @return
+     */
+    public ArrayList<Integer> mergeLists(ArrayList<Integer> list1, ArrayList<Integer> list2){
+
+        //Remove all duplicates
+        list1.removeAll(list2);
+
+        //Add all of list two
+        list1.addAll(list2);
+
+        return list1;
+
+    }
+
+    /**
+     * sorts through a list of professors to find the ones that do not meet a condition
+     * @param Column
+     * @param Condition
+     * @param professors
+     * @return
+     */
+    public ArrayList<Integer> getAllEligibleNotContains(int Column, String Condition, ArrayList<Integer> professors){
+        //Initialize variables
+        Cell cell;
+        ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
+
+        //Search through array
+        for(int i = 0; i < professors.size(); i++){
+            cell = getCellFromProfessorSheet(Column, professors.get(i));
+            //Check to make sure it does not contain expression
+            if(!(cell.toString().toLowerCase().contains(Condition.toLowerCase()))){
+                eligibleProfessors.add(professors.get(i));
+            }
+            //Check if we are on the Header row
+            if(professors.get(i) == 0)break;
+        }
+
+        return eligibleProfessors;
+    }
+
+    /**
+     * sorts through a list of professors to find the ones that do not meet a condition
      * @param Column
      * @param Condition
      * @param professors
@@ -201,6 +245,28 @@ public final class FileManipulator {
         return eligibleProfessors;
     }
 
+    /**
+     * Overload gets a list of professors to find the ones that do not meet a condition
+     * @param Column
+     * @param Condition
+     * @return
+     */
+    public ArrayList<Integer> getAllEligibleNotCondition(int Column, String Condition){
+
+        //Initialize variables
+        ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();//int[professorSheet.getPhysicalNumberOfRows()];
+        Cell cell;
+
+        //Search through sheet
+        for(int i = 1; i < professorSheet.getPhysicalNumberOfRows(); i++){
+            cell = getCellFromProfessorSheet(Column, i);
+            //if cell is not equal to condition
+            if(!(cell.toString().equals(Condition))){
+                eligibleProfessors.add(i);
+            }
+        }
+        return eligibleProfessors;
+    }
     /**
      * Overloaded function that sorts through a list of professors to find if they meet a condition
      * @param Column

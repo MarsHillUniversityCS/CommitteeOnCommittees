@@ -162,6 +162,7 @@ public class EligibleProfessors {
 
 
 
+
         //Check year appointed. Highlight if they were added in fall. SHOULD ADD THIS TO TABLE
         //special  election for current
         //or highlight all folks from previous year. Add key
@@ -169,25 +170,31 @@ public class EligibleProfessors {
         EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, thisYear, EligibleProfessors);
 
         //How to check if they are on sabbatical
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "Sabbatical", EligibleProfessors);
 
 
 
         //athRep
         //Check if they are athletic representative
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "AthRep", EligibleProfessors);
 
 
         //TenureStatus DT-15 cannot but DT can. Also V is visiting
         //Check if they are DTA-15? and if they are Visiting?
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "V", EligibleProfessors);
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-15", EligibleProfessors);
 
 
         //TenureStatus DT-AT cannot but DT can.
         //Check if Athletic Trainer (DT-AT)?
-
+        EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-AT", EligibleProfessors);
 
         //Check if a dean
+        EligibleProfessors = rf.getAllEligibleNotContains(Professor_Constants.TENURE_STATUS, "Dean", EligibleProfessors);
 
 
         //Check if FacChair
+        EligibleProfessors = rf.getAllEligibleNotContains(Professor_Constants.TENURE_STATUS, "Fac", EligibleProfessors);
 
 
 

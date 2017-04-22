@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -31,6 +32,8 @@ public class DialogTable extends JTable {
 		super(model);
 
 		FileManipulator rf = new FileManipulator();
+		ArrayList<JTextArea> ProfessorInfo = new ArrayList<>();
+
 
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -59,8 +62,6 @@ public class DialogTable extends JTable {
 
 
 						int row = rf.getMatchedCellFromProfessorSheet(Professor_Constants.ID, professorID.toString());
-						cell = 	rf.getCellFromProfessorSheet(i, j);
-						System.out.println("Row=" + row);
 
 
 						//Object valueInTable = getValueAt(i, j);
@@ -93,7 +94,8 @@ public class DialogTable extends JTable {
 								DefaultTableCellRenderer.UIResource.class)) {
 
 							JTextArea ta = new JTextArea("" + valueInTable);
-							ta.setEditable(false);
+							ProfessorInfo.add(ta);
+							//ta.setEditable(false);
 							dialog.add(new JScrollPane(ta), gbc);
 						} else {
 							
@@ -111,6 +113,10 @@ public class DialogTable extends JTable {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							dialog.setVisible(false);
+							for (JTextArea jta : ProfessorInfo) {
+							    
+								System.out.println(jta.getText());
+							}
 						}
 					});
 					gbc.anchor = GridBagConstraints.EAST;

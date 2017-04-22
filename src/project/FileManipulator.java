@@ -2,6 +2,7 @@ package project;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
@@ -81,16 +82,14 @@ public final class FileManipulator {
 
     /**
      * write a workbook
-     * @param wb workbook to be saved
-     * @param rf project.FileManipulator with path to be saved
      */
-    public void saveFile(Workbook wb, FileManipulator rf){
+    public void saveFile(){
         try {
             // Write the output to a file
-            FileOutputStream fileOut = new FileOutputStream(rf.getPath());
+            FileOutputStream fileOut = new FileOutputStream(getPath());
             wb.write(fileOut);
             fileOut.close();
-        //User friendly error
+            //User friendly error
         }catch (IOException ioe){
             System.err.println("An Input or output operation has failed.");
         }
@@ -110,7 +109,7 @@ public final class FileManipulator {
             committeeSheet = wb.getSheetAt(1);
 
             return wb;
-        //Catch errors and give user friendly exceptions
+            //Catch errors and give user friendly exceptions
         }catch (FileNotFoundException fnfe) {
             System.err.println("The file you tried to open does not exist.");
         }catch(InvalidFormatException ife){
@@ -355,6 +354,7 @@ public final class FileManipulator {
      * @return
      */
     public ArrayList<Integer> getAllMatches(int Column, String Condition, ArrayList<Integer> professors){
+
         //Initialize variables
         Cell cell;
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
@@ -383,6 +383,33 @@ public final class FileManipulator {
 
 
         return EligibleProfessors;
+
+    }
+
+
+    public void editProfessorRow(ArrayList<String> ProfessorInfo){
+        int rowInSheet = (int)Double.parseDouble(ProfessorInfo.get(Professor_Constants.ID));
+        int numericValue = 0;
+        Cell cell;
+
+
+        for(int i = 0; i < ProfessorInfo.size(); i++){
+            String info = ProfessorInfo.get(i);
+            cell = getCellFromProfessorSheet(i,rowInSheet);
+
+            if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
+                System.out.println(cell.getRichStringCellValue().getString());
+
+                cell.setCellValue(ProfessorInfo.get(i));
+
+
+            }else if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
+                System.out.println(cell.getNumericCellValue());
+                numericValue = (int)Double.parseDouble(ProfessorInfo.get(i));
+                cell.setCellValue(numericValue);
+            }
+
+        }
 
     }
 

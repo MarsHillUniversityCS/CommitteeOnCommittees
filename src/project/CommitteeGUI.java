@@ -78,7 +78,7 @@ public class CommitteeGUI {
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 
-                    rf.saveFile();
+                    //rf.saveFile();
                     System.exit(0);
                 }
             }

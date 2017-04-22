@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -387,30 +388,32 @@ public final class FileManipulator {
     }
 
 
-    public void editProfessorRow(ArrayList<String> ProfessorInfo){
-        int rowInSheet = (int)Double.parseDouble(ProfessorInfo.get(Professor_Constants.ID));
+    public void editProfessorRow(ArrayList<JTextArea> ProfessorInfo){
+        JTextArea profID = ProfessorInfo.get(Professor_Constants.ID);
+        int rowInSheet = (int)Double.parseDouble(profID.getText());
         int numericValue = 0;
         Cell cell;
 
 
-        for(int i = 0; i < ProfessorInfo.size(); i++){
-            String info = ProfessorInfo.get(i);
+        for(int i = 0; i < Professor_Constants.PREFERENCE_5; i++){
+            String info = ProfessorInfo.get(i).getText();
+            System.out.println("getCellFrom cell = " + i + "Row = "+ rowInSheet);
             cell = getCellFromProfessorSheet(i,rowInSheet);
 
             if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
-                System.out.println(cell.getRichStringCellValue().getString());
+                System.out.println(info);
 
-                cell.setCellValue(ProfessorInfo.get(i));
+                cell.setCellValue(info);
 
 
             }else if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
                 System.out.println(cell.getNumericCellValue());
-                numericValue = (int)Double.parseDouble(ProfessorInfo.get(i));
+                numericValue = (int)Double.parseDouble(info);
                 cell.setCellValue(numericValue);
             }
 
         }
-
+        saveFile();
     }
 
 

@@ -32,7 +32,7 @@ public class DialogTable extends JTable {
 		super(model);
 
 		FileManipulator rf = new FileManipulator();
-		ArrayList<String> ProfessorInfo = new ArrayList<>();
+		ArrayList<JTextArea> ProfessorInfo = new ArrayList<>();
 
 
 		this.addMouseListener(new MouseAdapter() {
@@ -94,7 +94,7 @@ public class DialogTable extends JTable {
 								DefaultTableCellRenderer.UIResource.class)) {
 
 							JTextArea ta = new JTextArea("" + valueInTable);
-							ProfessorInfo.add(ta.getText());
+							ProfessorInfo.add(ta);
 							//ta.setEditable(false);
 							dialog.add(new JScrollPane(ta), gbc);
 						} else {
@@ -112,8 +112,8 @@ public class DialogTable extends JTable {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							dialog.setVisible(false);
 							rf.editProfessorRow(ProfessorInfo);
+							dialog.setVisible(false);
 						}
 					});
 					gbc.anchor = GridBagConstraints.EAST;

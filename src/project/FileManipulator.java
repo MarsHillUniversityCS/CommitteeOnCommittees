@@ -82,7 +82,6 @@ public final class FileManipulator {
      */
     public static void saveFile(){
         try {
-            // Write the output to a file
             System.out.println("Saving File");
             FileOutputStream fileOut = new FileOutputStream(getPath());
             wb.write(fileOut);
@@ -128,7 +127,8 @@ public final class FileManipulator {
      * @return
      */
     public static Cell getCellFromProfessorSheet(int cellNum, int rowNum){
-        Row row = professorSheet.getRow(rowNum);
+        //Professor Sheet
+        Row row = wb.getSheetAt(0).getRow(rowNum);
         Cell cell = row.getCell(cellNum);
 
         return cell;
@@ -159,8 +159,8 @@ public final class FileManipulator {
         Cell cell;
         int row = 0;
 
-        //Search through sheet for condition
-        for(int i = 0; i < professorSheet.getPhysicalNumberOfRows(); i++){
+        //Search through professor sheet for condition
+        for(int i = 0; i < wb.getSheetAt(0).getPhysicalNumberOfRows(); i++){
             cell = getCellFromProfessorSheet(column, i);
             //If cell is equal to condition return row
             if (cell.toString().equals(condition)){
@@ -255,8 +255,8 @@ public final class FileManipulator {
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();//int[professorSheet.getPhysicalNumberOfRows()];
         Cell cell;
 
-        //Search through sheet
-        for(int i = 1; i < professorSheet.getPhysicalNumberOfRows(); i++){
+        //Search through professor sheet
+        for(int i = 1; i < wb.getSheetAt(0).getPhysicalNumberOfRows(); i++){
             cell = getCellFromProfessorSheet(Column, i);
             //if cell is not equal to condition
             if(!(cell.toString().equals(Condition))){
@@ -305,8 +305,8 @@ public final class FileManipulator {
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();//int[professorSheet.getPhysicalNumberOfRows()];
         Cell cell;
 
-        //Search through sheet
-        for(int i = 1; i < professorSheet.getPhysicalNumberOfRows(); i++){
+        //Search through professor sheet
+        for(int i = 1; i < wb.getSheetAt(0).getPhysicalNumberOfRows(); i++){
             cell = getCellFromProfessorSheet(Column, i);
             if(cell==null)break;
             //if cell is equal to condition
@@ -374,20 +374,28 @@ public final class FileManipulator {
         return eligibleProfessors;
     }
 
+    /**
+     * get set of all professors that meet requirements for EligibleProfessors
+     * @param requirements reqs for the committee
+     * @param EligibleProfessors professors that met all general specs
+     * @return
+     */
     public static ArrayList<Integer> getDepartmentRequirements(int[] requirements, ArrayList<Integer> EligibleProfessors){
         //req[1] is tenure. If 1 then sort through Tenure
         if(requirements[1] == 1 ){
             EligibleProfessors = getAllMatches(Professor_Constants.TENURE_STATUS, ".*\\d+.*", EligibleProfessors);
         }
 
-
-
         return EligibleProfessors;
 
     }
 
-
+    /**
+     * Take information that was changed in edit professor sheet and update spreadsheet
+     * @param ProfessorInfo
+     */
     public static void editProfessorRow(ArrayList<JTextArea> ProfessorInfo){
+        //Initialize variables
         JTextArea profID = ProfessorInfo.get(Professor_Constants.ID);
         int rowInSheet = (int)Double.parseDouble(profID.getText());
         int numericValue = 0;
@@ -397,11 +405,11 @@ public final class FileManipulator {
             String info = ProfessorInfo.get(i).getText();
             cell = getCellFromProfessorSheet(i,rowInSheet);
 
+            //check if cell is a text cell
             if(cell.getCellType() == Cell.CELL_TYPE_STRING || cell.toString().isEmpty()) {
 
                 cell.setCellValue(info);
-
-
+            //check if cell is a number cell
             }else if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
                 if(info.isEmpty()){
                     cell.setCellValue("");
@@ -412,6 +420,8 @@ public final class FileManipulator {
             }
 
         }
+        //update professor sheet for other pages
+        professorSheet = wb.getSheetAt(0);
         //saveFile();
     }
 

@@ -86,8 +86,6 @@ public class Requirements {
         //project.Requirements FacultyPersonel = new project.Requirements("Faculty Personel");
         Requirements PandP = new Requirements("P&P");
 
-        //System.out.println(FacultyPersonel.isElected);
-        //System.out.println(FacultyPersonel.term_years);
 
     }
 
@@ -180,7 +178,6 @@ public class Requirements {
     private void getDepartmentSpecs(int CommitteeRow, int Column, int[] Department){
         Cell cell = FileManipulator.getCellFromProfessorSheet(Column,CommitteeRow);
 
-        System.out.println(cell.toString());
 
         CellType cellType = cell.getCellTypeEnum();
 
@@ -219,7 +216,6 @@ public class Requirements {
         Cell cell = FileManipulator.getCellFromProfessorSheet(TERM_COLUMN,CommitteeRow);
 
         String termOfYears = cell.toString();
-        System.out.println(termOfYears);
 
         if(termOfYears.isEmpty() || termOfYears.matches("[0-9]+")){
             term_years = -1;

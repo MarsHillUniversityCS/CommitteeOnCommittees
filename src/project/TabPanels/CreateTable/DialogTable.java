@@ -65,13 +65,10 @@ public class DialogTable extends JTable {
 
 						//Object valueInTable = getValueAt(i, j);
 						Object valueInTable = FileManipulator.getCellFromProfessorSheet(j,row);
-						//System.out.println("valueInTable=" + valueInTable);
 
 						TableCellRenderer renderer = getCellRenderer(i, 0);
-						//System.out.println("TableCellRenderer=" + renderer);
 
 						Object valueInModel = FileManipulator.getCellFromProfessorSheet(j,row);
-						//System.out.println("valueInModel=" + valueInModel + "\n");
 
 						//Object valueInTable = getValueAt(i, j);
 
@@ -93,8 +90,10 @@ public class DialogTable extends JTable {
 								DefaultTableCellRenderer.UIResource.class)) {
 
 							JTextArea ta = new JTextArea("" + valueInTable);
+							//Make ID unEditable
+							if(j == Professor_Constants.ID)
+								ta.setEditable(false);
 							ProfessorInfo.add(ta);
-							//ta.setEditable(false);
 							dialog.add(new JScrollPane(ta), gbc);
 						} else {
 							

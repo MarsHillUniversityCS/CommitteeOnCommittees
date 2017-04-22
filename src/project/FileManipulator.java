@@ -55,21 +55,17 @@ public final class FileManipulator {
         int totalRows = sheet.getPhysicalNumberOfRows();
         Row row = sheet.getRow(0);
         Cell cell = rf.getCellFromProfessorSheet(Constants.CoC.YEAR_APPOINTED.getID(),3);
-        System.out.println(cell.toString());
 
         if (cell == null)
             cell = row.createCell(3);
 
         int [] professors = rf.getAllEligible(Constants.CoC.DEPARTMENT.getID(), "Math & CS");
         professors = rf.getAllEligible(Constants.CoC.LAST_NAME.getID(), "Nash", professors);
-        System.out.println(professors.length);
 
         for(int i=0; i < professors.length; i++){
             if(professors[i]==0)break;
-            System.out.println("professor department math  num = " + professors[i]);
         }
         cell.setCellType(CellType.STRING);
-        //System.out.println("Editing Excel professorSheet now");
         //cell.setCellValue("TESTING THIS NOW");
 
         //rf.saveFile(wb, rf);
@@ -87,6 +83,7 @@ public final class FileManipulator {
     public static void saveFile(){
         try {
             // Write the output to a file
+            System.out.println("Saving File");
             FileOutputStream fileOut = new FileOutputStream(getPath());
             wb.write(fileOut);
             fileOut.close();
@@ -133,8 +130,6 @@ public final class FileManipulator {
     public static Cell getCellFromProfessorSheet(int cellNum, int rowNum){
         Row row = professorSheet.getRow(rowNum);
         Cell cell = row.getCell(cellNum);
-        System.out.println("Row = " + rowNum + "\n" + professorSheet.getSheetName());
-        System.out.println("Cell = " + cell.toString());
 
         return cell;
     }
@@ -315,7 +310,6 @@ public final class FileManipulator {
             cell = getCellFromProfessorSheet(Column, i);
             if(cell==null)break;
             //if cell is equal to condition
-            System.out.println("sheet = " + professorSheet.getSheetName() + " - - cell.toStrio() = " + cell.toString() + "\n Column = " + Column+ "\n**************************\n");
             if(cell.toString().equals(Condition)){
                 eligibleProfessors.add(i);
             }
@@ -399,26 +393,26 @@ public final class FileManipulator {
         int numericValue = 0;
         Cell cell;
 
-
         for(int i = 0; i < Professor_Constants.PREFERENCE_5; i++){
             String info = ProfessorInfo.get(i).getText();
-            System.out.println("getCellFrom cell = " + i + "Row = "+ rowInSheet);
             cell = getCellFromProfessorSheet(i,rowInSheet);
 
-            if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
-                System.out.println(info);
+            if(cell.getCellType() == Cell.CELL_TYPE_STRING || cell.toString().isEmpty()) {
 
                 cell.setCellValue(info);
 
 
             }else if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
-                System.out.println(cell.getNumericCellValue());
-                numericValue = (int)Double.parseDouble(info);
-                cell.setCellValue(numericValue);
+                if(info.isEmpty()){
+                    cell.setCellValue("");
+                }else {
+                    numericValue = (int)Double.parseDouble(info);
+                    cell.setCellValue(numericValue);
+                }
             }
 
         }
-        saveFile();
+        //saveFile();
     }
 
 

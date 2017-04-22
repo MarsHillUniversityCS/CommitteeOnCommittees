@@ -31,7 +31,6 @@ public class DialogTable extends JTable {
 
 		super(model);
 
-		FileManipulator rf = new FileManipulator();
 		ArrayList<JTextArea> ProfessorInfo = new ArrayList<>();
 
 
@@ -53,7 +52,7 @@ public class DialogTable extends JTable {
 
 					Cell cell;
 					Object professorID = getValueAt(i, 0);
-					for (int j = 0; j < rf.professorSheet.getRow(0).getPhysicalNumberOfCells(); j++) {
+					for (int j = 0; j < FileManipulator.professorSheet.getRow(0).getPhysicalNumberOfCells(); j++) {
 
 						gbc.gridx = 0;
 						gbc.gridy = j;
@@ -61,17 +60,17 @@ public class DialogTable extends JTable {
 						gbc.fill = GridBagConstraints.HORIZONTAL;
 
 
-						int row = rf.getMatchedCellFromProfessorSheet(Professor_Constants.ID, professorID.toString());
+						int row = FileManipulator.getMatchedCellFromProfessorSheet(Professor_Constants.ID, professorID.toString());
 
 
 						//Object valueInTable = getValueAt(i, j);
-						Object valueInTable = rf.getCellFromProfessorSheet(j,row);
+						Object valueInTable = FileManipulator.getCellFromProfessorSheet(j,row);
 						//System.out.println("valueInTable=" + valueInTable);
 
 						TableCellRenderer renderer = getCellRenderer(i, 0);
 						//System.out.println("TableCellRenderer=" + renderer);
 
-						Object valueInModel = rf.getCellFromProfessorSheet(j,row);
+						Object valueInModel = FileManipulator.getCellFromProfessorSheet(j,row);
 						//System.out.println("valueInModel=" + valueInModel + "\n");
 
 						//Object valueInTable = getValueAt(i, j);
@@ -84,7 +83,7 @@ public class DialogTable extends JTable {
 								.getTableCellRendererComponent(getThisTable(),
 										valueInModel, false, false, i, j);
 
-						dialog.add(new JLabel("" + rf.getCellFromProfessorSheet(j,0)), gbc);
+						dialog.add(new JLabel("" + FileManipulator.getCellFromProfessorSheet(j,0)), gbc);
 						gbc.gridx = 1;
 
 						// Rendering with DefaultTableCellRenderer does not seem
@@ -112,7 +111,7 @@ public class DialogTable extends JTable {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							rf.editProfessorRow(ProfessorInfo);
+							FileManipulator.editProfessorRow(ProfessorInfo);
 							dialog.setVisible(false);
 						}
 					});

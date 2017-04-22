@@ -30,7 +30,7 @@ public class EligibleProfessors {
     private ButtonGroup bG;
     private Requirements required;
     private int count = 0;
-    private String thisYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+    private int thisYear = (Calendar.getInstance().get(Calendar.YEAR));
 
     private String selectedCommittee = "";
     private String[] tableColumns = getTableColumns();
@@ -122,7 +122,7 @@ public class EligibleProfessors {
      */
     public void CreateRadioButtons(){
         JPanel RadioButtonPanel = new JPanel();
-        int nextYear = Integer.parseInt(thisYear) + 1;
+        int nextYear = (thisYear) + 1;
         ThisFall = new JRadioButton(thisYear +" Fall");
         ThisFall.setSelected(true);
         ThisSpring = new JRadioButton(thisYear +" Spring");
@@ -176,41 +176,75 @@ public class EligibleProfessors {
         Object[] professorInfo;
         Row ProfessorRow;
 
+        //Initialize variables
+        ArrayList<Integer> EligibleProfessors = getAllEligible();
+
+
+
+        //Loop through each Professor
+        for (int i = 0; i < EligibleProfessors.size(); i++){
+            //Get the row of our professor in excel sheet
+            ProfessorRow = FileManipulator.professorSheet.getRow(EligibleProfessors.get(i));
+
+            //Set the content wanted for each professor
+            professorInfo = getProfessorInfo(ProfessorRow);
+
+            //Add professorInfo(Our new Row) to ArrayList<Object[]> data
+            data.add(professorInfo);
+        }
+
+        //Return information about the professors that meet given specs
+        return data;
+    }
+
+
+    public ArrayList<Integer> getAllEligible(){
         //Find requirements
         required = new Requirements(selectedCommittee);
-
-        //Initialize variables
-        ArrayList<Integer> EligibleProfessors;
-
 
         //Check to see if they are currently serving on a committee
         ArrayList<Integer> withAssignment = FileManipulator.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "");
 
         //If serving on a committee and the term is ending or term has ended
         if(ThisSpring.isSelected()) {
+            int lastYear = thisYear-1;
 
-            withAssignment = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, thisYear, withAssignment);
+           // withAssignment = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, thisYear, withAssignment);
 
-        //If this Fall Find all professors eligible in the spring of this year
+            ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, (int)(lastYear));
+            //ArrayList<Integer> ThisYear = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, (thisYear), withAssignment);
+
+            //All professors eligible in the spring
+            ArrayList<Integer> NotFallUntil = FileManipulator.getAllEligibleNotCondition(Professor_Constants.SEM, "F", ThisYear);
+
+            NotFallUntil = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, (lastYear), NotFallUntil);
+
+            ThisYear.removeAll(NotFallUntil);
+
+            withAssignment = ThisYear;
+            //If this Fall Find all professors eligible in the spring of this year
         } else if(ThisFall.isSelected()){
 
             //Get all professors This year
-            ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, thisYear);
+            ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, (thisYear));
 
             //All professors eligible in the spring
-            ArrayList<Integer> NotFallUntil = FileManipulator.getAllEligible(Professor_Constants.SEM, "S");
+            ArrayList<Integer> NotFallUntil = FileManipulator.getAllEligibleNotCondition(Professor_Constants.SEM, "S", ThisYear);
+
+            ThisYear.removeAll(NotFallUntil);
 
             //merge all the lists
-            ThisYear = FileManipulator.mergeLists(ThisYear, NotFallUntil);
-            withAssignment = FileManipulator.mergeLists(withAssignment, ThisYear);
+            withAssignment = ThisYear;
+           // withAssignment = FileManipulator.mergeLists(withAssignment, ThisYear);
 
-        //If Next Spring Find all professors eligible in the spring of this year
+            //If Next Spring Find all professors eligible in the spring of this year
         } else if(NextSpring.isSelected()){
             //Get all professors This year
-            ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, thisYear);
+            //ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, thisYear);
+            withAssignment = FileManipulator.getAllEligible(Professor_Constants.UNTIL, thisYear);
 
             //merge all the lists
-            withAssignment = FileManipulator.mergeLists(withAssignment, ThisYear);
+            //withAssignment = FileManipulator.mergeLists(withAssignment, ThisYear);
 
         }
 
@@ -221,7 +255,7 @@ public class EligibleProfessors {
         //Need to highlight married couples. Should add this to table.
 
         //Merge With and Without
-        EligibleProfessors = FileManipulator.mergeLists(withOutAssignment, withAssignment);
+        ArrayList<Integer> EligibleProfessors = FileManipulator.mergeLists(withOutAssignment, withAssignment);
 
         //Check if Next Assignment is empty
         //EligibleProfessors = rf.getAllEligible(Professor_Constants.NEXT_ASSIGNMENT, "", EligibleProfessors);
@@ -265,22 +299,8 @@ public class EligibleProfessors {
         //Get All Department Requirements
         EligibleProfessors = FileManipulator.getDepartmentRequirements(required.fa_specs, EligibleProfessors);
 
+        return EligibleProfessors;
 
-
-        //Loop through each Professor
-        for (int i = 0; i < EligibleProfessors.size(); i++){
-            //Get the row of our professor in excel sheet
-            ProfessorRow = FileManipulator.professorSheet.getRow(EligibleProfessors.get(i));
-
-            //Set the content wanted for each professor
-            professorInfo = getProfessorInfo(ProfessorRow);
-
-            //Add professorInfo(Our new Row) to ArrayList<Object[]> data
-            data.add(professorInfo);
-        }
-
-        //Return information about the professors that meet given specs
-        return data;
     }
 
     /**

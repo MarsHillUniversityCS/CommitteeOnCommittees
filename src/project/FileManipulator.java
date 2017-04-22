@@ -2,8 +2,10 @@ package project;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -14,12 +16,12 @@ import java.util.ArrayList;
  */
 public final class FileManipulator {
     //Initialize variables
-    public Sheet professorSheet;
-    public Sheet committeeSheet;
-    public Workbook wb;
+    public static Sheet professorSheet;
+    public static Sheet committeeSheet;
+    public static Workbook wb;
 
     //Our path that we use to view excel sheet
-    public String PATH = "./Committee_on_Committes/CoC.xlsx";
+    public static String PATH = "./Committee_on_Committes/CoC.xlsx";
 
     /**
      * Constructor for FileManipulator.
@@ -53,21 +55,17 @@ public final class FileManipulator {
         int totalRows = sheet.getPhysicalNumberOfRows();
         Row row = sheet.getRow(0);
         Cell cell = rf.getCellFromProfessorSheet(Constants.CoC.YEAR_APPOINTED.getID(),3);
-        System.out.println(cell.toString());
 
         if (cell == null)
             cell = row.createCell(3);
 
         int [] professors = rf.getAllEligible(Constants.CoC.DEPARTMENT.getID(), "Math & CS");
         professors = rf.getAllEligible(Constants.CoC.LAST_NAME.getID(), "Nash", professors);
-        System.out.println(professors.length);
 
         for(int i=0; i < professors.length; i++){
             if(professors[i]==0)break;
-            System.out.println("professor department math  num = " + professors[i]);
         }
         cell.setCellType(CellType.STRING);
-        //System.out.println("Editing Excel professorSheet now");
         //cell.setCellValue("TESTING THIS NOW");
 
         //rf.saveFile(wb, rf);
@@ -81,16 +79,14 @@ public final class FileManipulator {
 
     /**
      * write a workbook
-     * @param wb workbook to be saved
-     * @param rf project.FileManipulator with path to be saved
      */
-    public void saveFile(Workbook wb, FileManipulator rf){
+    public static void saveFile(){
         try {
-            // Write the output to a file
-            FileOutputStream fileOut = new FileOutputStream(rf.getPath());
+            System.out.println("Saving File");
+            FileOutputStream fileOut = new FileOutputStream(getPath());
             wb.write(fileOut);
             fileOut.close();
-        //User friendly error
+            //User friendly error
         }catch (IOException ioe){
             System.err.println("An Input or output operation has failed.");
         }
@@ -101,16 +97,16 @@ public final class FileManipulator {
      * @param path is the location of the file you want to open.
      * @return a workbook
      */
-    public Workbook readExcelFile(String path){
+    public static Workbook readExcelFile(String path){
         try {
             //Initialize variables
             InputStream inp = new FileInputStream(path);
             wb = WorkbookFactory.create(inp);
-            professorSheet = wb.getSheetAt(0);
-            committeeSheet = wb.getSheetAt(1);
+           // professorSheet = wb.getSheetAt(0);
+           // committeeSheet = wb.getSheetAt(1);
 
             return wb;
-        //Catch errors and give user friendly exceptions
+            //Catch errors and give user friendly exceptions
         }catch (FileNotFoundException fnfe) {
             System.err.println("The file you tried to open does not exist.");
         }catch(InvalidFormatException ife){
@@ -130,8 +126,9 @@ public final class FileManipulator {
      * @param rowNum Y-axis of grid
      * @return
      */
-    public Cell getCellFromProfessorSheet(int cellNum, int rowNum){
-        Row row = professorSheet.getRow(rowNum);
+    public static Cell getCellFromProfessorSheet(int cellNum, int rowNum){
+        //Professor Sheet
+        Row row = wb.getSheetAt(0).getRow(rowNum);
         Cell cell = row.getCell(cellNum);
 
         return cell;
@@ -144,7 +141,7 @@ public final class FileManipulator {
      * @param rowNum Y-axis of grid
      * @return
      */
-    public Cell getCellFromCommitteeSheet(int cellNum, int rowNum){
+    public static Cell getCellFromCommitteeSheet(int cellNum, int rowNum){
         Row row = committeeSheet.getRow(rowNum);
         Cell cell = row.getCell(cellNum);
 
@@ -157,13 +154,13 @@ public final class FileManipulator {
      * @param condition content in the cell that we want to find
      * @return int row that our cell is in.
      */
-    public int getMatchedCellFromProfessorSheet(int column, String condition){
+    public static int getMatchedCellFromProfessorSheet(int column, String condition){
         //Initialize variables
         Cell cell;
         int row = 0;
 
-        //Search through sheet for condition
-        for(int i = 0; i < professorSheet.getPhysicalNumberOfRows(); i++){
+        //Search through professor sheet for condition
+        for(int i = 0; i < wb.getSheetAt(0).getPhysicalNumberOfRows(); i++){
             cell = getCellFromProfessorSheet(column, i);
             //If cell is equal to condition return row
             if (cell.toString().equals(condition)){
@@ -181,7 +178,7 @@ public final class FileManipulator {
      * @param list2
      * @return
      */
-    public ArrayList<Integer> mergeLists(ArrayList<Integer> list1, ArrayList<Integer> list2){
+    public static ArrayList<Integer> mergeLists(ArrayList<Integer> list1, ArrayList<Integer> list2){
 
         //Remove all duplicates
         list1.removeAll(list2);
@@ -200,7 +197,7 @@ public final class FileManipulator {
      * @param professors
      * @return
      */
-    public ArrayList<Integer> getAllEligibleNotContains(int Column, String Condition, ArrayList<Integer> professors){
+    public static ArrayList<Integer> getAllEligibleNotContains(int Column, String Condition, ArrayList<Integer> professors){
         //Initialize variables
         Cell cell;
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
@@ -226,7 +223,7 @@ public final class FileManipulator {
      * @param professors
      * @return
      */
-    public ArrayList<Integer> getAllEligibleNotCondition(int Column, String Condition, ArrayList<Integer> professors){
+    public static ArrayList<Integer> getAllEligibleNotCondition(int Column, String Condition, ArrayList<Integer> professors){
         //Initialize variables
         Cell cell;
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
@@ -234,6 +231,7 @@ public final class FileManipulator {
         //Search through array
         for(int i = 0; i < professors.size(); i++){
             cell = getCellFromProfessorSheet(Column, professors.get(i));
+            if(cell==null)break;
             //Check to make sure it is not the condition
             if(!(cell.toString().equals(Condition))){
                 eligibleProfessors.add(professors.get(i));
@@ -251,14 +249,14 @@ public final class FileManipulator {
      * @param Condition
      * @return
      */
-    public ArrayList<Integer> getAllEligibleNotCondition(int Column, String Condition){
+    public static ArrayList<Integer> getAllEligibleNotCondition(int Column, String Condition){
 
         //Initialize variables
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();//int[professorSheet.getPhysicalNumberOfRows()];
         Cell cell;
 
-        //Search through sheet
-        for(int i = 1; i < professorSheet.getPhysicalNumberOfRows(); i++){
+        //Search through professor sheet
+        for(int i = 1; i < wb.getSheetAt(0).getPhysicalNumberOfRows(); i++){
             cell = getCellFromProfessorSheet(Column, i);
             //if cell is not equal to condition
             if(!(cell.toString().equals(Condition))){
@@ -274,7 +272,7 @@ public final class FileManipulator {
      * @param professors
      * @return
      */
-    public ArrayList<Integer> getAllEligible(int Column, String Condition, ArrayList<Integer> professors){
+    public static ArrayList<Integer> getAllEligible(int Column, String Condition, ArrayList<Integer> professors){
         //Initialize variables
         Cell cell;
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
@@ -301,15 +299,16 @@ public final class FileManipulator {
      * @param Condition is the string we are looking for in our column
      * @return
      */
-    public ArrayList<Integer> getAllEligible(int Column, String Condition){
+    public static ArrayList<Integer> getAllEligible(int Column, String Condition){
 
         //Initialize variables
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();//int[professorSheet.getPhysicalNumberOfRows()];
         Cell cell;
 
-        //Search through sheet
-        for(int i = 1; i < professorSheet.getPhysicalNumberOfRows(); i++){
+        //Search through professor sheet
+        for(int i = 1; i < wb.getSheetAt(0).getPhysicalNumberOfRows(); i++){
             cell = getCellFromProfessorSheet(Column, i);
+            if(cell==null)break;
             //if cell is equal to condition
             if(cell.toString().equals(Condition)){
                 eligibleProfessors.add(i);
@@ -325,7 +324,7 @@ public final class FileManipulator {
      * This returns all of the committees inside of CoC Committee Sheet
      * @return A string of all the committees
      */
-    public String[] getCommittees(){
+    public static String[] getCommittees(){
         //Initialize variables
         String [] Committees = new String[20];
         int committeeCount = 0;
@@ -354,7 +353,8 @@ public final class FileManipulator {
      * @param professors
      * @return
      */
-    public ArrayList<Integer> getAllMatches(int Column, String Condition, ArrayList<Integer> professors){
+    public static ArrayList<Integer> getAllMatches(int Column, String Condition, ArrayList<Integer> professors){
+
         //Initialize variables
         Cell cell;
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
@@ -374,16 +374,55 @@ public final class FileManipulator {
         return eligibleProfessors;
     }
 
-    public ArrayList<Integer> getDepartmentRequirements(int[] requirements, ArrayList<Integer> EligibleProfessors){
+    /**
+     * get set of all professors that meet requirements for EligibleProfessors
+     * @param requirements reqs for the committee
+     * @param EligibleProfessors professors that met all general specs
+     * @return
+     */
+    public static ArrayList<Integer> getDepartmentRequirements(int[] requirements, ArrayList<Integer> EligibleProfessors){
         //req[1] is tenure. If 1 then sort through Tenure
         if(requirements[1] == 1 ){
             EligibleProfessors = getAllMatches(Professor_Constants.TENURE_STATUS, ".*\\d+.*", EligibleProfessors);
         }
 
-
-
         return EligibleProfessors;
 
+    }
+
+    /**
+     * Take information that was changed in edit professor sheet and update spreadsheet
+     * @param ProfessorInfo
+     */
+    public static void editProfessorRow(ArrayList<JTextArea> ProfessorInfo){
+        //Initialize variables
+        JTextArea profID = ProfessorInfo.get(Professor_Constants.ID);
+        int rowInSheet = (int)Double.parseDouble(profID.getText());
+        int numericValue = 0;
+        Cell cell;
+
+        for(int i = 0; i < Professor_Constants.PREFERENCE_5; i++){
+            String info = ProfessorInfo.get(i).getText();
+            cell = getCellFromProfessorSheet(i,rowInSheet);
+
+            //check if cell is a text cell
+            if(cell.getCellType() == Cell.CELL_TYPE_STRING || cell.toString().isEmpty()) {
+
+                cell.setCellValue(info);
+            //check if cell is a number cell
+            }else if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
+                if(info.isEmpty()){
+                    cell.setCellValue("");
+                }else {
+                    numericValue = (int)Double.parseDouble(info);
+                    cell.setCellValue(numericValue);
+                }
+            }
+
+        }
+        //update professor sheet for other pages
+        professorSheet = wb.getSheetAt(0);
+        //saveFile();
     }
 
 
@@ -391,7 +430,7 @@ public final class FileManipulator {
      * Getter for project.FileManipulator.
      * @return path of read file
      */
-    public String getPath() {
+    public static String getPath() {
         return PATH;
     }
 	/*

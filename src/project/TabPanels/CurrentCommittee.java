@@ -29,7 +29,6 @@ public class CurrentCommittee {
     private String[] tableColumns = getTableColumns();
 
     //Create our FileManipulator
-    FileManipulator rf = new FileManipulator();
 
     //Create List of Committees
 
@@ -85,7 +84,7 @@ public class CurrentCommittee {
         PanelDropDown = new JPanel();
 
         //Grab all committees and load them into a String array
-        CommitteeList = rf.getCommittees();
+        CommitteeList = FileManipulator.getCommittees();
 
         //Add Committees to ComboBox
         for (int i = 0; !(CommitteeList[i].isEmpty()); i++)
@@ -168,12 +167,12 @@ public class CurrentCommittee {
         Row ProfessorRow;
 
         //Our ArrayList of Professors. Each Integer represents professor's row number
-        ArrayList<Integer> EligibleProfessors = rf.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
+        ArrayList<Integer> EligibleProfessors = FileManipulator.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, selectedCommittee);
 
         //Loop through each Professor
         for (int i = 0; i < EligibleProfessors.size(); i++){
             //Get the row of our professor in excel sheet
-            ProfessorRow = rf.professorSheet.getRow(EligibleProfessors.get(i));
+            ProfessorRow = FileManipulator.professorSheet.getRow(EligibleProfessors.get(i));
             //Initialize our professorInfo
             professorInfo = new Object[tableColumns.length];
 

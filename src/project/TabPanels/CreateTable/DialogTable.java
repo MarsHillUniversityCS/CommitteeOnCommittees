@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -30,7 +31,8 @@ public class DialogTable extends JTable {
 
 		super(model);
 
-		FileManipulator rf = new FileManipulator();
+		ArrayList<JTextArea> ProfessorInfo = new ArrayList<>();
+
 
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -50,7 +52,7 @@ public class DialogTable extends JTable {
 
 					Cell cell;
 					Object professorID = getValueAt(i, 0);
-					for (int j = 0; j < rf.professorSheet.getRow(0).getPhysicalNumberOfCells(); j++) {
+					for (int j = 0; j < FileManipulator.professorSheet.getRow(0).getPhysicalNumberOfCells(); j++) {
 
 						gbc.gridx = 0;
 						gbc.gridy = j;
@@ -58,20 +60,15 @@ public class DialogTable extends JTable {
 						gbc.fill = GridBagConstraints.HORIZONTAL;
 
 
-						int row = rf.getMatchedCellFromProfessorSheet(Professor_Constants.ID, professorID.toString());
-						cell = 	rf.getCellFromProfessorSheet(i, j);
-						System.out.println("Row=" + row);
+						int row = FileManipulator.getMatchedCellFromProfessorSheet(Professor_Constants.ID, professorID.toString());
 
 
 						//Object valueInTable = getValueAt(i, j);
-						Object valueInTable = rf.getCellFromProfessorSheet(j,row);
-						//System.out.println("valueInTable=" + valueInTable);
+						Object valueInTable = FileManipulator.getCellFromProfessorSheet(j,row);
 
 						TableCellRenderer renderer = getCellRenderer(i, 0);
-						//System.out.println("TableCellRenderer=" + renderer);
 
-						Object valueInModel = rf.getCellFromProfessorSheet(j,row);
-						//System.out.println("valueInModel=" + valueInModel + "\n");
+						Object valueInModel = FileManipulator.getCellFromProfessorSheet(j,row);
 
 						//Object valueInTable = getValueAt(i, j);
 
@@ -83,7 +80,7 @@ public class DialogTable extends JTable {
 								.getTableCellRendererComponent(getThisTable(),
 										valueInModel, false, false, i, j);
 
-						dialog.add(new JLabel("" + rf.getCellFromProfessorSheet(j,0)), gbc);
+						dialog.add(new JLabel("" + FileManipulator.getCellFromProfessorSheet(j,0)), gbc);
 						gbc.gridx = 1;
 
 						// Rendering with DefaultTableCellRenderer does not seem
@@ -93,7 +90,10 @@ public class DialogTable extends JTable {
 								DefaultTableCellRenderer.UIResource.class)) {
 
 							JTextArea ta = new JTextArea("" + valueInTable);
-							ta.setEditable(false);
+							//Make ID unEditable
+							if(j == Professor_Constants.ID)
+								ta.setEditable(false);
+							ProfessorInfo.add(ta);
 							dialog.add(new JScrollPane(ta), gbc);
 						} else {
 							
@@ -110,6 +110,7 @@ public class DialogTable extends JTable {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							FileManipulator.editProfessorRow(ProfessorInfo);
 							dialog.setVisible(false);
 						}
 					});

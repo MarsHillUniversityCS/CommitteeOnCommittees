@@ -80,15 +80,12 @@ public class Requirements {
     private static final String ASSOCIATE = "(A)";
     private static final String ELECTED = "Elected";
 
-    FileManipulator rf = new FileManipulator();
 
 
     public static void main(String[] args) {
         //project.Requirements FacultyPersonel = new project.Requirements("Faculty Personel");
         Requirements PandP = new Requirements("P&P");
 
-        //System.out.println(FacultyPersonel.isElected);
-        //System.out.println(FacultyPersonel.term_years);
 
     }
 
@@ -101,10 +98,10 @@ public class Requirements {
     public Requirements(String Committee){
         //project.FileManipulator rf = new project.FileManipulator("./Committee_on_Committes/CoC.xlsx");
 
-        Workbook wb = rf.readExcelFile(rf.getPath());
+        Workbook wb = FileManipulator.readExcelFile(FileManipulator.getPath());
 
         //Sheet one is the committee requirements
-        rf.professorSheet = wb.getSheetAt(1);
+        //FileManipulator.professorSheet = wb.getSheetAt(1);
 
 
         int CommitteeSpecsRow = findCommittee(Committee);
@@ -124,7 +121,7 @@ public class Requirements {
     private int findCommittee(String Committee){
         Cell cell;
         for(int i = ROW_COMMITTEES_STARTS; ; i++){
-            cell = rf.getCellFromProfessorSheet(0,i);
+            cell = FileManipulator.getCellFromCommitteeSheet(0,i);
             if(cell.getStringCellValue().isEmpty()){
                 return -1;
             }
@@ -155,7 +152,7 @@ public class Requirements {
      * @param CommitteeRow
      */
     private void getIsElected(int CommitteeRow){
-        Cell cell = rf.getCellFromProfessorSheet(ELECTED_COLUMN,CommitteeRow);
+        Cell cell = FileManipulator.getCellFromProfessorSheet(ELECTED_COLUMN,CommitteeRow);
 
         if(cell.getStringCellValue().equals(ELECTED)){
             isElected = true;
@@ -179,9 +176,8 @@ public class Requirements {
      * @param Department
      */
     private void getDepartmentSpecs(int CommitteeRow, int Column, int[] Department){
-        Cell cell = rf.getCellFromProfessorSheet(Column,CommitteeRow);
+        Cell cell = FileManipulator.getCellFromProfessorSheet(Column,CommitteeRow);
 
-        System.out.println(cell.toString());
 
         CellType cellType = cell.getCellTypeEnum();
 
@@ -217,10 +213,9 @@ public class Requirements {
      * @param CommitteeRow
      */
     private void getTermYears(int CommitteeRow) {
-        Cell cell = rf.getCellFromProfessorSheet(TERM_COLUMN,CommitteeRow);
+        Cell cell = FileManipulator.getCellFromProfessorSheet(TERM_COLUMN,CommitteeRow);
 
         String termOfYears = cell.toString();
-        System.out.println(termOfYears);
 
         if(termOfYears.isEmpty() || termOfYears.matches("[0-9]+")){
             term_years = -1;

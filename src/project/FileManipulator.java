@@ -244,6 +244,32 @@ public final class FileManipulator {
     }
 
     /**
+     * sorts through a list of professors to find the ones that do not finish this year or after
+     * @param Column
+     * @param thisYear
+     * @param professors
+     * @return
+     */
+    public static ArrayList<Integer> getAllEligibleNotCondition(int Column, int thisYear, ArrayList<Integer> professors){
+        //Initialize variables
+        Cell cell;
+        ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
+
+        //Search through array
+        for(int i = 0; i < professors.size(); i++){
+            cell = getCellFromProfessorSheet(Column, professors.get(i));
+            if(cell==null)break;
+            //Check to make sure it is not the condition
+            if(!(cell.toString().equals(thisYear)) && !cell.toString().isEmpty()){
+                if((cell.getNumericCellValue()) < thisYear)
+                    eligibleProfessors.add(professors.get(i));
+            }
+        }
+
+        return eligibleProfessors;
+    }
+
+    /**
      * Overload gets a list of professors to find the ones that do not meet a condition
      * @param Column
      * @param Condition
@@ -318,6 +344,30 @@ public final class FileManipulator {
     }
 
 
+    /**
+     * Sort through all row and find which professors end their term this year
+     * @param Column is the Constant.CoC Column we are looking through
+     * @param thisYear is the string we are looking for in our column
+     * @return
+     */
+    public static ArrayList<Integer> getAllEligible(int Column, int thisYear){
+
+        //Initialize variables
+        ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();//int[professorSheet.getPhysicalNumberOfRows()];
+        Cell cell;
+
+        //Search through professor sheet
+        for(int i = 1; i < wb.getSheetAt(0).getPhysicalNumberOfRows(); i++){
+            cell = getCellFromProfessorSheet(Column, i);
+            if(cell==null)break;
+            //if cell is equal to this year or less than
+            if(!cell.toString().isEmpty() && (cell.getNumericCellValue() <= thisYear)){
+
+                eligibleProfessors.add(i);
+            }
+        }
+        return eligibleProfessors;
+    }
 
 
     /**

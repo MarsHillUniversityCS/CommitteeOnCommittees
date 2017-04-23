@@ -39,6 +39,7 @@ public class EligibleProfessors {
     private JPanel PanelTable;
     private JPanel EligibleProfessorPanel;
     private JPanel RadioButtonPanel;
+    private JPanel SearchPanel;
     //Create our FileManipulator
 
 
@@ -48,7 +49,9 @@ public class EligibleProfessors {
 
     public JPanel getPanel(){
         //Our main panel
-        EligibleProfessorPanel = new JPanel();
+        EligibleProfessorPanel = new JPanel(new BorderLayout());
+        SearchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        //SearchPanel.setLayout(new BoxLayout(SearchPanel, BoxLayout.X_AXIS));
 
 
         //EligibleProfessorPanel.setLayout(new GridLayout(1, 1));
@@ -56,8 +59,10 @@ public class EligibleProfessors {
         //create our drop down box to select a committee
         createDropDown();
 
-        EligibleProfessorPanel.add(PanelDropDown,BorderLayout.PAGE_START);
-        EligibleProfessorPanel.add(RadioButtonPanel, BorderLayout.PAGE_END);
+        SearchPanel.add(PanelDropDown);
+        SearchPanel.add(RadioButtonPanel);
+
+        EligibleProfessorPanel.add(SearchPanel,BorderLayout.NORTH);
 
         //Create our table that displays minor information
         createTable();

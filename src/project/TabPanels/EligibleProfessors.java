@@ -38,7 +38,7 @@ public class EligibleProfessors {
     private JPanel PanelDropDown;
     private JPanel PanelTable;
     private JPanel EligibleProfessorPanel;
-
+    private JPanel RadioButtonPanel;
     //Create our FileManipulator
 
 
@@ -51,10 +51,13 @@ public class EligibleProfessors {
         EligibleProfessorPanel = new JPanel();
 
 
-        EligibleProfessorPanel.setLayout(new GridLayout(1, 1));
+        //EligibleProfessorPanel.setLayout(new GridLayout(1, 1));
 
         //create our drop down box to select a committee
         createDropDown();
+
+        EligibleProfessorPanel.add(PanelDropDown,BorderLayout.PAGE_START);
+        EligibleProfessorPanel.add(RadioButtonPanel, BorderLayout.PAGE_END);
 
         //Create our table that displays minor information
         createTable();
@@ -87,7 +90,7 @@ public class EligibleProfessors {
                 EligibleProfessorPanel.remove(PanelTable);
                 EligibleProfessorPanel.revalidate();
                 createTable();
-                EligibleProfessorPanel.add(PanelTable);
+                EligibleProfessorPanel.add(PanelTable, BorderLayout.CENTER);
                 EligibleProfessorPanel.revalidate();
                 /*)
                 if (count < CommitteeList.length)
@@ -112,7 +115,6 @@ public class EligibleProfessors {
         //If beyond Feb put next year in the Spring. Radio buttons for
         //Fall 2017, Spring 2017, Spring 2018. Based on current year
 
-        EligibleProfessorPanel.add(PanelDropDown);
         CreateRadioButtons();
     }
 
@@ -121,7 +123,8 @@ public class EligibleProfessors {
      * Create our radio buttons for the year we are in
      */
     public void CreateRadioButtons(){
-        JPanel RadioButtonPanel = new JPanel();
+        RadioButtonPanel = new JPanel();
+        RadioButtonPanel.setLayout(new BoxLayout(RadioButtonPanel, BoxLayout.Y_AXIS));
         int nextYear = (thisYear) + 1;
         ThisFall = new JRadioButton(thisYear +" Fall");
         ThisFall.setSelected(true);
@@ -138,7 +141,6 @@ public class EligibleProfessors {
         RadioButtonPanel.add(ThisSpring);
         RadioButtonPanel.add(NextSpring);
 
-        EligibleProfessorPanel.add(RadioButtonPanel);
     }
 
 

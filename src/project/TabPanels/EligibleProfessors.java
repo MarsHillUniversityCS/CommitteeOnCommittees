@@ -179,8 +179,6 @@ public class EligibleProfessors {
         //Initialize variables
         ArrayList<Integer> EligibleProfessors = getAllEligible();
 
-
-
         //Loop through each Professor
         for (int i = 0; i < EligibleProfessors.size(); i++){
             //Get the row of our professor in excel sheet
@@ -208,9 +206,7 @@ public class EligibleProfessors {
         //If serving on a committee and the term is ending or term has ended
         if(ThisSpring.isSelected()) {
             int lastYear = thisYear-1;
-
            // withAssignment = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, thisYear, withAssignment);
-
             ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, (int)(lastYear));
             //ArrayList<Integer> ThisYear = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, (thisYear), withAssignment);
 
@@ -247,7 +243,6 @@ public class EligibleProfessors {
             //withAssignment = FileManipulator.mergeLists(withAssignment, ThisYear);
 
         }
-
         //Check box that asks Spring or Fall. If Spring do not show Until
         //that ends in spring. If Fall show folks that ended in spring.
         ArrayList<Integer> withOutAssignment = FileManipulator.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, "");
@@ -259,8 +254,6 @@ public class EligibleProfessors {
 
         //Check if Next Assignment is empty
         //EligibleProfessors = rf.getAllEligible(Professor_Constants.NEXT_ASSIGNMENT, "", EligibleProfessors);
-
-
         //Check year appointed. Highlight if they were added in fall. SHOULD ADD THIS TO TABLE
         //special  election for current
         //or highlight all folks from previous year. Add key
@@ -269,12 +262,9 @@ public class EligibleProfessors {
         //not sabbatical
         EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "Sabbatical", EligibleProfessors);
 
-
-
         //athRep
         //not athletic representative
         EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "AthRep", EligibleProfessors);
-
 
         //TenureStatus DT-15 cannot but DT can. Also V is visiting
         //not Visiting
@@ -283,7 +273,6 @@ public class EligibleProfessors {
         //not DTA-15
         EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-15", EligibleProfessors);
 
-
         //TenureStatus DT-AT cannot but DT can.
         //not Athletic Trainers (DT-AT)?
         EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-AT", EligibleProfessors);
@@ -291,17 +280,63 @@ public class EligibleProfessors {
         //not deans *works
         EligibleProfessors = FileManipulator.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Dean", EligibleProfessors);
 
-
         //not FacChairs *works
         EligibleProfessors = FileManipulator.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Fac", EligibleProfessors);
 
-
         //Get All Department Requirements
-        EligibleProfessors = FileManipulator.getDepartmentRequirements(required.fa_specs, EligibleProfessors);
+        EligibleProfessors = getDepartmentRequirements(required.fa_specs, EligibleProfessors);
 
         return EligibleProfessors;
 
     }
+
+    /**
+     * get set of all professors that meet requirements for EligibleProfessors
+     * @param requirements reqs for the committee
+     * @param EligibleProfessors professors that met all general specs
+     * @return
+     */
+    public ArrayList<Integer> getDepartmentRequirements(int[] requirements, ArrayList<Integer> EligibleProfessors){
+        ArrayList<ArrayList<Integer>> Divisions = new ArrayList<>();
+        ArrayList<Integer> NewEligible = new ArrayList<>();
+        ArrayList<Integer> FA = FileManipulator.getAllEligible(Professor_Constants.DIVISION,"FA", EligibleProfessors);
+        ArrayList<Integer> HSS = FileManipulator.getAllEligible(Professor_Constants.DIVISION,"HSS", EligibleProfessors);
+        ArrayList<Integer> MNS = FileManipulator.getAllEligible(Professor_Constants.DIVISION,"MNS", EligibleProfessors);
+        ArrayList<Integer> PP = FileManipulator.getAllEligible(Professor_Constants.DIVISION,"PP", EligibleProfessors);
+        ArrayList<Integer> L = FileManipulator.getAllEligible(Professor_Constants.DIVISION,"LL", EligibleProfessors);
+
+
+        Divisions.add(FA);
+        Divisions.add(HSS);
+        Divisions.add(MNS);
+        Divisions.add(PP);
+        Divisions.add(L);
+
+        /**
+         * This requirements array stand for
+         * [0] = # of people from this department are required
+         * [1] = 1 if tenure is required, 0 if not
+         * [2] = 1 if they must me Associate, 0 if not
+         * [3] = # of years of service they must have at Mars Hill
+         */
+        for (ArrayList<Integer> Div : Divisions) {
+
+            //req[1] is tenure. If 1 then sort through Tenure
+            if(requirements[1] == 1 ){
+                Div = FileManipulator.getAllMatches(Professor_Constants.TENURE_STATUS, ".*\\d+.*", Div);
+            }
+            if(requirements[2] == 1){
+                Div = FileManipulator.getAllEligible(Professor_Constants.RANK, "Associate", Div);
+            }
+            if(requirements[3] == 1){
+                Div = FileManipulator.getAllEligibleNotCondition(Professor_Constants.RANK, thisYear-5, Div);
+            }
+            NewEligible.addAll(Div);
+        }
+
+        return NewEligible;
+    }
+
 
     /**
      * returns the names to our columns. The top row

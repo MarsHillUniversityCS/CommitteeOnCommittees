@@ -304,7 +304,7 @@ public final class FileManipulator {
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
 
         //Search sheet
-        for(int i = 0; i < eligibleProfessors.size(); i++){
+        for(int i = 0; i < professors.size(); i++){
             cell = getCellFromProfessorSheet(Column, professors.get(i));
             //If we have a match add it to our list of eligible professors
             if(cell.toString().equals(Condition)){
@@ -425,16 +425,75 @@ public final class FileManipulator {
     }
 
     /**
+     * sorts through a list of professors to find the ones that do not finish this year or after
+     * @param Column
+     * @param thisYear
+     * @param professors
+     * @return
+     */
+    public static ArrayList<Integer> getAllEligibleLessThanThisYear(int Column, int thisYear, ArrayList<Integer> professors){
+        //Initialize variables
+        Cell cell;
+        ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
+
+        //Search through array
+        for(int i = 0; i < professors.size(); i++){
+            cell = getCellFromProfessorSheet(Column, professors.get(i));
+            if(cell==null)break;
+            //Check to make sure it is not the condition
+            if(!(cell.toString().equals(thisYear)) && !cell.toString().isEmpty()){
+                if((cell.getNumericCellValue()) < thisYear)
+                    eligibleProfessors.add(professors.get(i));
+            }
+        }
+
+        return eligibleProfessors;
+    }
+
+    /**
      * get set of all professors that meet requirements for EligibleProfessors
      * @param requirements reqs for the committee
      * @param EligibleProfessors professors that met all general specs
      * @return
      */
     public static ArrayList<Integer> getDepartmentRequirements(int[] requirements, ArrayList<Integer> EligibleProfessors){
-        //req[1] is tenure. If 1 then sort through Tenure
-        if(requirements[1] == 1 ){
-            EligibleProfessors = getAllMatches(Professor_Constants.TENURE_STATUS, ".*\\d+.*", EligibleProfessors);
+        ArrayList<ArrayList<Integer>> Divisions = new ArrayList<>();
+        ArrayList<Integer> FA = getAllEligible(Professor_Constants.DIVISION,"FA", EligibleProfessors);
+        ArrayList<Integer> HSS = getAllEligible(Professor_Constants.DIVISION,"HSS", EligibleProfessors);
+        ArrayList<Integer> MNS = getAllEligible(Professor_Constants.DIVISION,"MNS", EligibleProfessors);
+        ArrayList<Integer> PP = getAllEligible(Professor_Constants.DIVISION,"PP", EligibleProfessors);
+        ArrayList<Integer> L = getAllEligible(Professor_Constants.DIVISION,"LL", EligibleProfessors);
+
+
+        Divisions.add(FA);
+        Divisions.add(HSS);
+        Divisions.add(MNS);
+        Divisions.add(PP);
+        Divisions.add(L);
+
+        /**
+         * This requirements array stand for
+         * [0] = # of people from this department are required
+         * [1] = 1 if tenure is required, 0 if not
+         * [2] = 1 if they must me Associate, 0 if not
+         * [3] = # of years of service they must have at Mars Hill
+         */
+        for (ArrayList<Integer> Div : Divisions) {
+
+            //req[1] is tenure. If 1 then sort through Tenure
+            if(requirements[1] == 1 ){
+                Div = getAllMatches(Professor_Constants.TENURE_STATUS, ".*\\d+.*", Div);
+            }
+            if(requirements[2] == 1){
+                Div = getAllEligible(Professor_Constants.RANK, "Associate", Div);
+            }
+            if(requirements[3] == 1){
+
+            }
+
+
         }
+
 
         return EligibleProfessors;
 

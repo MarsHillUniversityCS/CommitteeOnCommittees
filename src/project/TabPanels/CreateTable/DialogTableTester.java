@@ -59,7 +59,7 @@ public class DialogTableTester extends JFrame {
 		data.add(d);
 		data.add(e);
 
-		t.setSize(500, 600);
+		t.setSize(100, 100);
 		t.add(t.getPanel(columnNames, data));
 		t.setVisible(true);
 

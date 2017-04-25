@@ -109,7 +109,8 @@ public class EligibleProfessors {
             public void actionPerformed(ActionEvent e) {
                 //selectedCommittee = committeeDropDown.getSelectedItem().toString();
                 //Set selected committee from index in our committee list
-                selectedCommittee = Committee_Req_Constants.CommitteeNames[committeeDropDown.getSelectedIndex()];
+                //selectedCommittee = Committee_Req_Constants.CommitteeNames[committeeDropDown.getSelectedIndex()];
+                selectedCommittee = committeeDropDown.getSelectedItem().toString();
             }
         });
 
@@ -142,8 +143,8 @@ public class EligibleProfessors {
         bG.add(NextSpring);
 
         //Add to Panel
-        RadioButtonPanel.add(ThisFall);
         RadioButtonPanel.add(ThisSpring);
+        RadioButtonPanel.add(ThisFall);
         RadioButtonPanel.add(NextSpring);
 
     }
@@ -351,7 +352,7 @@ public class EligibleProfessors {
      */
     public String[] getTableColumns(){
 
-        String [] columns = new String[] {"ID","First Name", "Last Name", "Current Pos", "Until", "Sem",
+        String [] columns = new String[] {"ID","First Name", "Last Name", "Div", "Current Pos", "Until", "Sem",
                 "Pref 1", "Pref 2", "Pref 3"};
 
         return columns;
@@ -375,23 +376,26 @@ public class EligibleProfessors {
         cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
         Info[2] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.CURRENT_ASSIGNMENT);
+        cell = ProfessorRow.getCell(Professor_Constants.DIVISION);
         Info[3] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
+        cell = ProfessorRow.getCell(Professor_Constants.CURRENT_ASSIGNMENT);
         Info[4] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.SEM);
+        cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
         Info[5] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
+        cell = ProfessorRow.getCell(Professor_Constants.SEM);
         Info[6] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
         Info[7] = cell.toString();
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_3);
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
         Info[8] = cell.toString();
+
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_3);
+        Info[9] = cell.toString();
 
         return Info;
     }
@@ -407,4 +411,6 @@ public class EligibleProfessors {
  * Add Something that shows the specs of the committee selected.
  * Add a feature that will allow the user to Select prospective committee members.
  * If they have selected a person in that division than the spec is checked.
+ * Add a way to switch Next Assignment-Representing to Current Assignment-Representing
+ *
  */

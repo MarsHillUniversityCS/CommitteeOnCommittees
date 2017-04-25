@@ -304,7 +304,7 @@ public final class FileManipulator {
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
 
         //Search sheet
-        for(int i = 0; i < eligibleProfessors.size(); i++){
+        for(int i = 0; i < professors.size(); i++){
             cell = getCellFromProfessorSheet(Column, professors.get(i));
             //If we have a match add it to our list of eligible professors
             if(cell.toString().equals(Condition)){
@@ -424,21 +424,6 @@ public final class FileManipulator {
         return eligibleProfessors;
     }
 
-    /**
-     * get set of all professors that meet requirements for EligibleProfessors
-     * @param requirements reqs for the committee
-     * @param EligibleProfessors professors that met all general specs
-     * @return
-     */
-    public static ArrayList<Integer> getDepartmentRequirements(int[] requirements, ArrayList<Integer> EligibleProfessors){
-        //req[1] is tenure. If 1 then sort through Tenure
-        if(requirements[1] == 1 ){
-            EligibleProfessors = getAllMatches(Professor_Constants.TENURE_STATUS, ".*\\d+.*", EligibleProfessors);
-        }
-
-        return EligibleProfessors;
-
-    }
 
     /**
      * Take information that was changed in edit professor sheet and update spreadsheet
@@ -487,6 +472,5 @@ public final class FileManipulator {
 	 * reads from file
 	 *http://stackoverflow.com/questions/4716503/reading-a-plain-text-file-in-java
 	 */
-
 
 }

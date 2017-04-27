@@ -66,6 +66,7 @@ public class EligibleProfessors {
 
         //Create our table that displays minor information
         createTable();
+        EligibleProfessorPanel.setSize(1000, 1000);
 
 
         return EligibleProfessorPanel;
@@ -168,6 +169,7 @@ public class EligibleProfessors {
 
         //Get the Table inside of a Panel using a GitHub Class from Oliver Watkins
         PanelTable = DialogTableTester.getPanel(tableColumns, tableData);
+        PanelTable.setSize(new Dimension(1000, 1000));
 
         //Add the table to our main Panel
         EligibleProfessorPanel.add(PanelTable, BorderLayout.CENTER);

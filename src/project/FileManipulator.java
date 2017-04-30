@@ -142,12 +142,15 @@ public final class FileManipulator {
      * @return
      */
     public static Cell getCellFromCommitteeSheet(int cellNum, int rowNum){
-        Cell cell;
-        Row row = committeeSheet.getRow(rowNum);
-        if(row == null){
+        Cell cell = null;
+        Row row = null;
+        //The committeeSheet
+        if(wb.getSheetAt(1).getRow(rowNum) == null){
             cell = null;
-        }else
+        }else{
+            row = wb.getSheetAt(1).getRow(rowNum);
             cell = row.getCell(cellNum);
+        }
 
         return cell;
     }

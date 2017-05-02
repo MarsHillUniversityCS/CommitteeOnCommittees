@@ -84,7 +84,9 @@ public class Requirements {
 
     public static void main(String[] args) {
         //project.Requirements FacultyPersonel = new project.Requirements("Faculty Personel");
-        Requirements PandP = new Requirements("P&P");
+        //Requirements PandP = new Requirements("P&P");
+        //Requirements Ferc = new Requirements("FERC");
+        Requirements Curriculm = new Requirements("Curriculum");
 
 
     }
@@ -176,7 +178,7 @@ public class Requirements {
      * @param Department
      */
     private void getDepartmentSpecs(int CommitteeRow, int Column, int[] Department){
-        Cell cell = FileManipulator.getCellFromProfessorSheet(Column,CommitteeRow);
+        Cell cell = FileManipulator.getCellFromCommitteeSheet(Column,CommitteeRow);
 
 
         CellType cellType = cell.getCellTypeEnum();

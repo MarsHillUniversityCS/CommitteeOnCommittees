@@ -417,7 +417,7 @@ public final class FileManipulator {
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
 
         //Search sheet
-        for(int i = 0; i < eligibleProfessors.size(); i++){
+        for(int i = 0; i < professors.size(); i++){
             cell = getCellFromProfessorSheet(Column, professors.get(i));
             //If we have a match add it to our list of eligible professors
             if(cell.toString().matches(Condition)){

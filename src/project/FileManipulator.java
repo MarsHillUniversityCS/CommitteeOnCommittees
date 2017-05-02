@@ -142,8 +142,15 @@ public final class FileManipulator {
      * @return
      */
     public static Cell getCellFromCommitteeSheet(int cellNum, int rowNum){
-        Row row = committeeSheet.getRow(rowNum);
-        Cell cell = row.getCell(cellNum);
+        Cell cell = null;
+        Row row = null;
+        //The committeeSheet
+        if(wb.getSheetAt(1).getRow(rowNum) == null){
+            cell = null;
+        }else{
+            row = wb.getSheetAt(1).getRow(rowNum);
+            cell = row.getCell(cellNum);
+        }
 
         return cell;
     }
@@ -285,7 +292,7 @@ public final class FileManipulator {
         for(int i = 1; i < wb.getSheetAt(0).getPhysicalNumberOfRows(); i++){
             cell = getCellFromProfessorSheet(Column, i);
             //if cell is not equal to condition
-            if(!(cell.toString().equals(Condition))){
+            if(cell==null || !(cell.toString().equals(Condition))){
                 eligibleProfessors.add(i);
             }
         }
@@ -384,7 +391,7 @@ public final class FileManipulator {
         for(int i = Requirements.ROW_COMMITTEES_STARTS;   ; i++){
             cell = getCellFromCommitteeSheet(0,i);
             //If we reach an empty cell we are finished
-            if(cell.toString().isEmpty()){
+            if(cell == null || cell.toString().isEmpty()){
                 Committees[committeeCount] = "";
                 break;
             }
@@ -410,7 +417,7 @@ public final class FileManipulator {
         ArrayList<Integer> eligibleProfessors = new ArrayList<Integer>();
 
         //Search sheet
-        for(int i = 0; i < eligibleProfessors.size(); i++){
+        for(int i = 0; i < professors.size(); i++){
             cell = getCellFromProfessorSheet(Column, professors.get(i));
             //If we have a match add it to our list of eligible professors
             if(cell.toString().matches(Condition)){

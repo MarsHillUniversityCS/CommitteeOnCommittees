@@ -1,17 +1,13 @@
 //github.com/oliverwatkins/swing_library
 package project.TabPanels.CreateTable;
 
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.*;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 public class DialogTableTester extends JFrame {
 
@@ -22,6 +18,7 @@ public class DialogTableTester extends JFrame {
 	public static void main(String[] args) {
 
 		DialogTableTester t = new DialogTableTester();
+		t.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		String[] columnNames = new String[] { "First Name", "Last Name", "Sport",
 				"Balance", "Vegetarian", "Date of Birth", "Date Joined",
@@ -59,8 +56,16 @@ public class DialogTableTester extends JFrame {
 		data.add(d);
 		data.add(e);
 
-		t.setSize(500, 600);
-		t.add(t.getPanel(columnNames, data));
+		t.setSize(1800, 500);
+
+		JPanel dataPanel = t.getPanel(columnNames, data);
+		dataPanel.setPreferredSize(new Dimension(1800, 500));
+		//dataPanel.setSize(new Dimension(100, 100));
+
+		t.setLayout(new FlowLayout());
+		//t.add(t.getPanel(columnNames, data));
+		t.add(dataPanel);
+		t.pack();
 		t.setVisible(true);
 
 	}
@@ -70,7 +75,21 @@ public class DialogTableTester extends JFrame {
 
 		MyTableModel m = new MyTableModel(columnNames, data);
 
+
 		DialogTable t = new DialogTable(m);
+		//MJG
+		//t.getColumnModel().getColumn(0).setPreferredWidth(100);
+		//t.getColumnModel().getColumn(1).setPreferredWidth(100);
+		//t.getColumnModel().getColumn(2).setPreferredWidth(100);
+		/*
+		final TableColumnModel model = t.getColumnModel();
+		for(int column = 0; column < model.getColumnCount(); column++){
+			int width = 100;
+			model.getColumn(column).setPreferredWidth(width);
+		}
+		*/
+		//MJG
+
 		panel.add(new JScrollPane(t));
 
 		//t.getColumnModel().getColumn(3)

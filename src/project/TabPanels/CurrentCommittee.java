@@ -113,6 +113,7 @@ public class CurrentCommittee {
             public void actionPerformed(ActionEvent e) {
                 //Set selected committee from index in our committee list
                 selectedCommittee = Committee_Req_Constants.CommitteeNames[committeeDropDown.getSelectedIndex()];
+                //selectedCommittee = committeeDropDown.getSelectedItem().toString();
             }
         });
 

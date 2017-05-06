@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class AllProfessors {
 
     private JPanel PanelAllProfessors;
+
     /**
      * Command called that will return our panel
      * @return

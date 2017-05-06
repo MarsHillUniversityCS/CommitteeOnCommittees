@@ -3,6 +3,7 @@ package project;
 import project.TabPanels.AllProfessors;
 import project.TabPanels.CurrentCommittee;
 import project.TabPanels.EligibleProfessors;
+import project.TabPanels.QuickChanges;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,9 +103,10 @@ public class CommitteeGUI {
         //FindCurrentCommittee = makeTextPanel("See Committee Members");
 
 
-        tabbedPane.addTab("All Professors", new AllProfessors().getPanel());
-        tabbedPane.addTab("Current Committee", new CurrentCommittee().getPanel());
-        tabbedPane.addTab("Eligible Professor", new EligibleProfessors().getPanel());
+        tabbedPane.addTab("*All Professors*", new AllProfessors().getPanel());
+        tabbedPane.addTab("*Current Committee*", new CurrentCommittee().getPanel());
+        tabbedPane.addTab("*Eligible Professor*", new EligibleProfessors().getPanel());
+        tabbedPane.addTab("*Quick Changes*", new QuickChanges().getPanel());
 
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         //END Create Find Current Committee

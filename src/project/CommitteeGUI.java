@@ -60,7 +60,7 @@ public class CommitteeGUI {
         //CommitteeFrame.setBounds(0, 0, screenSize.width, screenSize.height);
 
         CommitteeFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        CommitteeFrame.setMinimumSize(new Dimension(800,600));
+        CommitteeFrame.setMinimumSize(new Dimension(800,800));
     }
     /**
      * Creates the menu bar at the top of YahtzeeFrame

@@ -43,9 +43,6 @@ public class EligibleProfessors {
     //Create our FileManipulator
 
 
-    public static void main(String[] args) {
-
-    }
 
     public JPanel getPanel(){
         //Our main panel
@@ -66,10 +63,44 @@ public class EligibleProfessors {
 
         //Create our table that displays minor information
         createTable();
+
+        createRequirements();
+
         EligibleProfessorPanel.setSize(1000, 1000);
 
 
         return EligibleProfessorPanel;
+    }
+
+    public void createRequirements(){
+        JPanel reqPanel = new JPanel(new GridBagLayout());
+        JTextPane jtp = new JTextPane();
+        jtp.setEditable(false);
+        jtp.setContentType("text/html");
+
+        StringBuilder requirements = new StringBuilder();
+        requirements.append("<html><<body><h3>Overall Requirements</h3><ul>");
+        requirements.append("<li>1. May serve on only one standing committee at a time and can succeed self only once.</li>");
+        requirements.append("<li>No married couples may serve on same governing committee.</li>");
+        requirements.append("<li>First Year Faculty cannot serve on committees</li>");
+        requirements.append("<li>Faculty on Sabbatical cannot serve on committees. They must be replaced for the duration of their leave.</li>");
+        requirements.append("<li>Faculty Athletic Representative does not serve on other committees</li>");
+        requirements.append("<li>DTA-15 and Visiting (V) faculty do not serve on committees</li>");
+        requirements.append("<li>Athletic Trainers (DT-AT) do not serve on committees</li>");
+        requirements.append("<li>Deans do not serve on committees</li>");
+        requirements.append("<li>FacChair is not eligible for election or appointment to a committee</li></ul>");
+
+
+
+        requirements.append("</body></html>");
+        jtp.setPreferredSize(new Dimension(750,120));
+        //jtp.setBounds(0,0,200,200);
+        jtp.setText(requirements.toString());
+        JScrollPane pane = new JScrollPane(jtp);
+        pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        reqPanel.add(pane);
+        EligibleProfessorPanel.add(reqPanel, BorderLayout.SOUTH);
+
     }
 
 //START: Drop Down Menu
@@ -307,6 +338,7 @@ public class EligibleProfessors {
      * @return
      */
     public ArrayList<Integer> getDepartmentRequirements(int[] requirements, ArrayList<Integer> EligibleProfessors){
+
         ArrayList<ArrayList<Integer>> Divisions = new ArrayList<>();
         ArrayList<Integer> NewEligible = new ArrayList<>();
         ArrayList<Integer> FA = FileManipulator.getAllEligible(Professor_Constants.DIVISION,"FA", EligibleProfessors);
@@ -329,6 +361,8 @@ public class EligibleProfessors {
          * [2] = 1 if they must me Associate, 0 if not
          * [3] = # of years of service they must have at Mars Hill
          */
+        int i = 0;
+        int j = 0;
         for (ArrayList<Integer> Div : Divisions) {
 
             //req[1] is tenure. If 1 then sort through Tenure
@@ -354,8 +388,8 @@ public class EligibleProfessors {
      */
     public String[] getTableColumns(){
 
-        String [] columns = new String[] {"ID","First Name", "Last Name", "Div", "Current Pos", "Until", "Sem",
-                "Pref 1", "Pref 2", "Pref 3"};
+        String [] columns = new String[] {"ID","First Name","Last Name", "Married To", "Div", "Current Pos", "Until", "Sem",
+                "Pref 1", "Pref 2"};
 
         return columns;
     }
@@ -378,26 +412,27 @@ public class EligibleProfessors {
         cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
         Info[2] = FileManipulator.getCellString(cell);
 
-        cell = ProfessorRow.getCell(Professor_Constants.DIVISION);
+        cell = ProfessorRow.getCell(Professor_Constants.Maried_To);
         Info[3] = FileManipulator.getCellString(cell);
 
-        cell = ProfessorRow.getCell(Professor_Constants.CURRENT_ASSIGNMENT);
+        cell = ProfessorRow.getCell(Professor_Constants.DIVISION);
         Info[4] = FileManipulator.getCellString(cell);
 
-        cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
+        cell = ProfessorRow.getCell(Professor_Constants.CURRENT_ASSIGNMENT);
         Info[5] = FileManipulator.getCellString(cell);
 
-        cell = ProfessorRow.getCell(Professor_Constants.SEM);
+        cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
         Info[6] = FileManipulator.getCellString(cell);
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
+        cell = ProfessorRow.getCell(Professor_Constants.SEM);
         Info[7] = FileManipulator.getCellString(cell);
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
         Info[8] = FileManipulator.getCellString(cell);
 
-        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_3);
+        cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
         Info[9] = FileManipulator.getCellString(cell);
+
 
         return Info;
     }

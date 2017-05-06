@@ -447,8 +447,11 @@ public final class FileManipulator {
             String info = ProfessorInfo.get(i).getText();
             cell = getCellFromProfessorSheet(i,rowInSheet);
 
+            if(cell == null && info.isEmpty())
+                continue;
+
             //check if cell is a text cell
-            if(cell.getCellType() == Cell.CELL_TYPE_STRING || cell.toString().isEmpty()) {
+            if(cell == null || cell.getCellType() == Cell.CELL_TYPE_STRING || cell.toString().isEmpty()) {
 
                 cell.setCellValue(info);
             //check if cell is a number cell

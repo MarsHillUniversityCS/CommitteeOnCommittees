@@ -467,11 +467,13 @@ public final class FileManipulator {
             if(cell == null && info.isEmpty())
                 continue;
 
-            //check if cell is a text cell
             if(cell == null){
-                Row row = professorSheet.getRow(rowInSheet);
-                cell = row.createCell(i);
+                //Row row = professorSheet.getRow(rowInSheet);
+                cell = fixNullCell(i,rowInSheet);
+                //row.createCell(i);
             }
+
+            //check if cell is a text cell
             if(cell == null || cell.getCellType() == Cell.CELL_TYPE_STRING || cell.toString().isEmpty()) {
 
                 cell.setCellValue(info);
@@ -491,12 +493,34 @@ public final class FileManipulator {
         //saveFile();
     }
 
+    /**
+     * Clean wan of getting cell string. If the cell is null we return an empty string.
+     * @param cell
+     * @return
+     */
     public static String getCellString(Cell cell){
         if (cell == null){
             return "";
         }else{
             return  cell.toString();
         }
+    }
+
+
+
+    /**
+     * When editing cells we sometimes need to edit null cells. This method will
+     * Create a new cell that we can set the value of, in the place of the null cell.
+     * @param column
+     * @param row
+     * @return
+     */
+    public static Cell fixNullCell(int column, int row){
+
+            Row professorRow = professorSheet.getRow(row);
+            Cell cell = professorRow.createCell(column);
+
+            return cell;
     }
 
 

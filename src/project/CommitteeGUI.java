@@ -1,5 +1,6 @@
 package project;
 
+import project.TabPanels.AllProfessors;
 import project.TabPanels.CurrentCommittee;
 import project.TabPanels.EligibleProfessors;
 
@@ -101,6 +102,7 @@ public class CommitteeGUI {
         //FindCurrentCommittee = makeTextPanel("See Committee Members");
 
 
+        tabbedPane.addTab("All Professors", new AllProfessors().getPanel());
         tabbedPane.addTab("Current Committee", new CurrentCommittee().getPanel());
         tabbedPane.addTab("Eligible Professor", new EligibleProfessors().getPanel());
 

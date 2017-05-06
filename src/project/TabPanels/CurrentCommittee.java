@@ -179,16 +179,16 @@ public class CurrentCommittee {
 
             //Load Info into professorInfo
             Cell cell = ProfessorRow.getCell(Professor_Constants.ID);
-            professorInfo[0] = cell.toString();
+            professorInfo[0] = FileManipulator.getCellString(cell);
 
             cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
-            professorInfo[1] = cell.toString();
+            professorInfo[1] = FileManipulator.getCellString(cell);
 
             cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
-            professorInfo[2] = cell.toString();
+            professorInfo[2] = FileManipulator.getCellString(cell);
 
             cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
-            professorInfo[3] = cell.toString();
+            professorInfo[3] = FileManipulator.getCellString(cell);
 
             /*
             for(int j =0; j < tableColumns.length; j++) {

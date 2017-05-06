@@ -370,34 +370,34 @@ public class EligibleProfessors {
 
         //Load Info into professorInfo
         Cell cell = ProfessorRow.getCell(Professor_Constants.ID);
-        Info[0] = cell.toString();
+        Info[0] = FileManipulator.getCellString(cell);
 
         cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
-        Info[1] = cell.toString();
+        Info[1] = FileManipulator.getCellString(cell);
 
         cell = ProfessorRow.getCell(Professor_Constants.LAST_NAME);
-        Info[2] = cell.toString();
+        Info[2] = FileManipulator.getCellString(cell);
 
         cell = ProfessorRow.getCell(Professor_Constants.DIVISION);
-        Info[3] = cell.toString();
+        Info[3] = FileManipulator.getCellString(cell);
 
         cell = ProfessorRow.getCell(Professor_Constants.CURRENT_ASSIGNMENT);
-        Info[4] = cell.toString();
+        Info[4] = FileManipulator.getCellString(cell);
 
         cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
-        Info[5] = cell.toString();
+        Info[5] = FileManipulator.getCellString(cell);
 
         cell = ProfessorRow.getCell(Professor_Constants.SEM);
-        Info[6] = cell.toString();
+        Info[6] = FileManipulator.getCellString(cell);
 
         cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_1);
-        Info[7] = cell.toString();
+        Info[7] = FileManipulator.getCellString(cell);
 
         cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_2);
-        Info[8] = cell.toString();
+        Info[8] = FileManipulator.getCellString(cell);
 
         cell = ProfessorRow.getCell(Professor_Constants.PREFERENCE_3);
-        Info[9] = cell.toString();
+        Info[9] = FileManipulator.getCellString(cell);
 
         return Info;
     }

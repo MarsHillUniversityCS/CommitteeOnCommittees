@@ -376,6 +376,23 @@ public final class FileManipulator {
         return eligibleProfessors;
     }
 
+    /**
+     * get all professors
+     * @return
+     */
+    public static ArrayList<Integer> getAllProfessors(){
+
+        //Initialize variables
+        ArrayList<Integer> allProfessors = new ArrayList<Integer>();//int[professorSheet.getPhysicalNumberOfRows()];
+        Cell cell;
+
+        //Search through professor sheet
+        for(int i = 1; i < wb.getSheetAt(0).getPhysicalNumberOfRows(); i++){
+            //if cell is equal to this year or less than
+                allProfessors.add(i);
+        }
+        return allProfessors;
+    }
 
     /**
      * This returns all of the committees inside of CoC Committee Sheet
@@ -472,6 +489,14 @@ public final class FileManipulator {
         //update professor sheet for other pages
         professorSheet = wb.getSheetAt(0);
         //saveFile();
+    }
+
+    public static String getCellString(Cell cell){
+        if (cell == null){
+            return "";
+        }else{
+            return  cell.toString();
+        }
     }
 
 

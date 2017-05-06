@@ -2,25 +2,19 @@
 package project.TabPanels.CreateTable;
 
 import org.apache.poi.ss.usermodel.Cell;
+import project.CommitteeGUI;
+import project.Constants;
 import project.FileManipulator;
 import project.Professor_Constants;
 
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
@@ -102,7 +96,7 @@ public class DialogTable extends JTable {
 
 					}
 					gbc.gridx = 1;
-					gbc.gridy = getColumnCount() + 1;
+					gbc.gridy = Professor_Constants.PREFERENCE_5 + 1;
 					gbc.fill = GridBagConstraints.NONE;
 
 					JButton button = new JButton("OK");
@@ -110,8 +104,15 @@ public class DialogTable extends JTable {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							FileManipulator.editProfessorRow(ProfessorInfo);
-							dialog.setVisible(false);
+							int result = JOptionPane.showConfirmDialog((Component) null, "Would you like to update this info? \n**It will not be saved**",
+									"alert", JOptionPane.YES_NO_CANCEL_OPTION);
+							if(result == JOptionPane.YES_OPTION) {
+								FileManipulator.editProfessorRow(ProfessorInfo);
+								dialog.setVisible(false);
+							} else if (result == JOptionPane.YES_NO_OPTION){
+								dialog.setVisible(false);
+							}
+
 						}
 					});
 					gbc.anchor = GridBagConstraints.EAST;

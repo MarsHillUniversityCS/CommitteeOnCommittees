@@ -451,6 +451,10 @@ public final class FileManipulator {
                 continue;
 
             //check if cell is a text cell
+            if(cell == null){
+                Row row = professorSheet.getRow(rowInSheet);
+                cell = row.createCell(i);
+            }
             if(cell == null || cell.getCellType() == Cell.CELL_TYPE_STRING || cell.toString().isEmpty()) {
 
                 cell.setCellValue(info);

@@ -20,6 +20,24 @@ public class CommitteeGUI {
     private boolean isFileSaved;
 
     private JFrame CommitteeFrame;
+
+    public void setFileSaved(boolean fileSaved) {
+        isFileSaved = fileSaved;
+        if(fileSaved){
+            isFileSaved = fileSaved;
+            title = "Committee on Committees";
+            CommitteeFrame.setTitle(title);
+
+        }else{
+            if(!isFileSaved){
+                isFileSaved = fileSaved;
+                title = "Committee on Committees*";
+                CommitteeFrame.setTitle(title);
+            }
+        }
+    }
+
+
     private String title = "Committee on Committees";
 
     private JTabbedPane tabbedPane;
@@ -136,14 +154,15 @@ public class CommitteeGUI {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 //Ask if they want to quit
-                if (JOptionPane.showConfirmDialog(CommitteeFrame,
-                        "Are you sure you would like to exit? All information changed will be saved!!", "Really Closing?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == YES_OPTION){
-
+                int result = JOptionPane.showConfirmDialog((Component) null, "Would you like to save information before EXITING?",
+                        "alert", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (result == JOptionPane.YES_OPTION){
                     FileManipulator.saveFile();
                     System.exit(0);
+                }else if (result == JOptionPane.NO_OPTION){
+                    System.exit(0);
                 }
+
             }
         });
     }
@@ -154,6 +173,7 @@ public class CommitteeGUI {
     class save implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            setFileSaved(true);
             FileManipulator.saveFile();
         }
     }

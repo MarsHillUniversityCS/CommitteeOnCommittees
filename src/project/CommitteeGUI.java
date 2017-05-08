@@ -19,9 +19,12 @@ import static javax.swing.JOptionPane.YES_OPTION;
 public class CommitteeGUI {
 
 
+
     private boolean isFileSaved;
 
     private JFrame CommitteeFrame;
+    private String title = "Committee on Committees";
+    public static final String File = "CoC.xlsx";
 
     public void setFileSaved(boolean fileSaved) {
         isFileSaved = fileSaved;
@@ -40,7 +43,6 @@ public class CommitteeGUI {
     }
 
 
-    private String title = "Committee on Committees";
 
     private JTabbedPane tabbedPane;
     private JComponent FindCurrentCommittee;
@@ -49,6 +51,27 @@ public class CommitteeGUI {
     FileManipulator rf = new FileManipulator();
 
     public static void main(String[] args) {
+        String fileName = "";
+
+        //Ask for file location
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setDialogTitle("CoC - Choose the '" + File + "' File");
+        //chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        while(!fileName.equals(File)){
+            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                fileName = chooser.getName((chooser.getSelectedFile()));
+                if(!fileName.equals(File)){
+                    JOptionPane.showMessageDialog(null, "You must select the Excel named '" + File + "' ");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "You must select the Excel named '" + File + "'\nThe program is now exiting.");
+                System.exit(0);
+            }
+        }
+        FileManipulator.PATH = chooser.getSelectedFile().toString();
+
         new CommitteeGUI().go();
     }
 
@@ -191,12 +214,12 @@ public class CommitteeGUI {
     class exitListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int result = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you'd like to exit?",
-                    "Yahtzee",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
-            if(result == YES_OPTION){
+            int result = JOptionPane.showConfirmDialog((Component) null, "Would you like to save information before EXITING?",
+                    "alert", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (result == JOptionPane.YES_OPTION){
+                FileManipulator.saveFile();
+                System.exit(0);
+            }else if (result == JOptionPane.NO_OPTION){
                 System.exit(0);
             }
         }

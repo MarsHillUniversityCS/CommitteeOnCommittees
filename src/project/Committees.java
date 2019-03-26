@@ -2,7 +2,7 @@ package project;
 
 /**
  * Created by s000191354 on 4/1/17.
- * Updated on 03/25 by ESears
+ * Updated on 03/25/19 by ESears
  */
 public class Committees {
     protected int yearsOfService = 0;

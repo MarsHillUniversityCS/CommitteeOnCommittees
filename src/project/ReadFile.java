@@ -50,8 +50,6 @@ public class ReadFile {
             fileOut.close();
         }catch (IOException ioe){
             ioe.printStackTrace();
-        }catch(InvalidFormatException ife){
-            ife.printStackTrace();
         }
     }
 

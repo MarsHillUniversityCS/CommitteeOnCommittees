@@ -109,8 +109,6 @@ public final class FileManipulator {
             //Catch errors and give user friendly exceptions
         }catch (FileNotFoundException fnfe) {
             System.err.println("The file you tried to open does not exist.");
-        }catch(InvalidFormatException ife){
-            System.err.println("The file you tried to open has an INVALID FORM.");
         }catch (IOException ioe){
             System.err.println("An Input or output operation has failed.");
         }

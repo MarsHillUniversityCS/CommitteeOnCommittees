@@ -1,0 +1,99 @@
+First Name,Last name,ID,Married To,Division,Dept,Program,Year of Appt.,Current Assignment, #,RepresentingCurrent,untilCurrent,SemCurrent,Next Assignment,#,RepresentingNext,untilNext,SemNext,Rank,Tenure Status,Year Eligible for Tenure,Next Year Tenure Status (if different),Year Elegible (if applicable),Pref1,Pref2,Pref3,Pref4,Pref5
+John,Nash,1,,MNS,Math & CS,Mathematics,1973,,,,,,,,,,,Professor,1977,T,,,,,,,
+Philippe,Starck,2,,PP,Business,App & Int Design,1981,CoC,2,DIV,2018,S,,,,,,Professor,1991,T,,,,,,,
+Bruce,Springsteen,3,,FA,Music,Music,1985,FERC,4,DIV,2019,S,,,,,,Professor,1987,T,,,,,,,
+Ansel,Adams,4,5,FA,Art,Art,1987,DeanFA,,,,,,,,,,Professor,1989,T,,,,,,,
+Frank,McCourt,5,4,PP,Education,Education,1987,FERC,4,L,2019,S,,,,,,Professor,1992,T,,,,,,,
+Geoff,Pullum,6,,HSS,Lang & Literature,English,1990,AASFA,1,DIV,2018,S,,,,,,Professor,1996,T,,,VALC,FERC,Lib,AASFA,Curr
+Robert,Johnson,7,,FA,Music,Music,1990,DeanGSP,,,,,,,,,,Associate,1998,T,,,,,,,
+Henry,Ford,8,,PP,Business,Bus Administration,1991,Admin,,,,,,,,,,Professor,1996,T,,,,,,,
+Dean,Smith,9,,PP,"Health, PE, Rec",Rec & Sports Mgt,1993,,,,,,Curr,3,L,2020,S,Associate,2015,T,,,,,,,
+Lynn,Morris,10,,MNS,Natural Sciences,Biology,1994,DeanMNS,,,,,,,,,,Professor,1999,T,,,,,,,
+Roman,Jakobson,11,,FA,Music,Music,1994,P&P,6,DIV,2018,S,,,,,,Professor,2000,T,,,,,,,
+Joseph,Priestley,12,,HSS,Lang & Literature,English,1994,VALC,10,L,2018,S,,,,,,Associate,2006,T,,,Lib,CoC,Curr,FERC,FacPers
+Barbara,Abbott,13,,HSS,Lang & Literature,Mod Foreign Lang,1996,,,,,,FacPers,5,HSS,2020,S,Professor,2001,T,,,FERC,Lib,RelLife,VALC,Curr
+Ken,Burns,14,,HSS,"Rel, Hist, & Phil",History,1996,DeanHSS,,,,,,,,,,Professor,2001,T,,,,,,,
+Edith,Abbott,15,,PP,Social Work,Social Work,1996,DeanPP,,,,,,,,,,Professor,2001,T,,,,,,,
+Henri,Matisse,16,,FA,Art,Art,1998,,,,,,,,,,,Professor,2003,T,,,,,,,
+Ada,Lovelace,17,,MNS,Math & CS,Computer Science,1999,CoC,2,DIV,2018,S,,,,,,Assistant,2015,T,,,Curr,FERC,P&P,Athl,VALC
+Dennis,Ritchie,18,,MNS,Math & CS,Mathematics,1999,FacChair,,,2017,S,,,,,,Associate,2007,T,,,,,,,
+Michael,Silverstein,19,,HSS,Lang & Literature,Mod Foreign Lang,1999,P&P,6,DIV,2019,S,,,,,,Associate,2004,T,,,CoC,VALC,Lib,FERC,FacPers
+Jack,Nicholson,20,,HSS,Social Sciences,Sociology,2000,,,,,,,,,,,Instructor,DT,NA,,,,,,,
+Andrew,Milner,21,,PP,Education,Education,2000,Admin,,,,,,,,,,Professor,2005,T,,,,,,,
+Nathan,Hale,22,,FA,Theatre,Theatre,2000,Curr,3,DIV,2018,S,,,,,,Professor,2003,T,,,FERC,Lib,VALC,Curr,Athl
+John,Locke,23,,PP,"Health, PE, Rec",Physical Education,2001,,,,,,RelLife,9,L,2020,S,Assistant,TT,2015,,,Lib,Athl,FERC,RelLife,VALC
+Mark,Twain,24,,HSS,"Rel, Hist, & Phil",Religion & Phil,2001,FacPers,5,L,2017,S,FacChair,,,2020,S,Professor,2004,T,,,RelLife,Lib,VALC,FERC,CoC
+Michael,Jordan,25,,HSS,Lang & Literature,English,2001,Sabbatical,,,2017,S,Advising,,,,,Professor,2007,T,,,,,,,
+Linus,Torvalds,26,,MNS,Math & CS,Computer Science,2002,AthRep,,,,,,,,,,Assistant,2012,T,,,,,,,
+Rene,Descartes,27,30,HSS,"Rel, Hist, & Phil",Religion & Phil,2002,Curr,3,DIV,2017,S,,,,,,Professor,2007,T,,,,,,,
+Noah,Webster,28,,PP,Education,Education,2002,FacPers,5,DIV,2019,S,,,,,,Professor,2007,T,,,Lib,VALC,CoC,AASFA,Curr
+Anne,Sullivan,29,,PP,Education,Education,2003,FERC,4,DIV,2017,S,,,,,,Professor,2008,T,,,,,,,
+Carl,Rogers,30,27,HSS,Social Sciences,Psychology,2004,FacPers,5,DIV,2017,S,,,,,,Associate,2010,T,,,,,,,
+Leona,Edwards,31,,PP,Education,Education,2004,P&P,6,DIV,2017,S,,,,,,Associate,2009,T,,,VALC,FERC,RelLife,Lib,Athl
+Cyndi,Lauper,32,,PP,"Health, PE, Rec",Athletic Training,2005,,,,,,,,,,,Instructor,DT-AT,NA,,,,,,,
+Norman,Finkelstein,33,,PP,"Health, PE, Rec",Physical Education,2005,AASFA,1,DIV,2019,S,,,,,,Assistant,TT,2015,,,CoC,Athl,Curr,AASFA,FERC
+Larry,Bird,34,,FA,Music,Music,2005,CoC,2,DIV,2018,S,,,,,,Associate,2010,T,,,FacPers,P&P,Curr,CoC,VALC
+Samuel,Bilik,35,,HSS,"Rel, Hist, & Phil",History,2005,FERC,4,DIV,2018,S,,,,,,Associate,2010,T,,,VALC,Lib,RelLife,FERC,Curr
+David,Hogan,36,,HSS,"Rel, Hist, & Phil",History,2006,Sabbatical,,,2017,S,Curr,3,HSS,2020,S,Associate,2011,T,,,,,,,
+Carole,King,37,,FA,Music,Music,2007,AASFA,1,DIV,2018,S,,,,,,Instructor,DT,NA,,,AASFA,VALC,Athl,FERC,RelLife
+Alfred,Nobel,38,,PP,Business,Bus Administration,2008,,,,,,FacPers,5,L,2020,S,Professor,2010,T,,,,,,,
+Paul,Simon,39,,PP,"Health, PE, Rec",Athletic Training,2008,,,,,,,,,,,Instructor,DT-AT,NA,,,,,,,
+Sam,Walton,40,,MNS,Natural Sciences,Chemistry,2008,FacPers,5,DIV,2019,S,,,,,,Professor,2010,T,,,,,,,
+Roland,Bevan,41,,FA,Music,Music,2008,FacPers,5,DIV,2018,S,,,,,,Associate,2013,T,,,P&P,Curr,CoC,AASFA,FERC
+George,Lakoff,42,,HSS,Lang & Literature,Mod Foreign Lang,2009,CoC,2,DIV,2017,S,,,,,,Associate,2014,T,,,FERC,VALC,Curr,P&P,FacPers
+Charles,Darwin,43,,HSS,Social Sciences,Psychology,2010,,,,,,,,,,,Associate,2014,T,,,VALC,FERC,Lib,Athl,CoC
+Sigmund,Freud,44,,MNS,Natural Sciences,Biology,2010,AASFA,1,DIV,2017,S,,,,,,Associate,2015,T,,,CoC,AASFA,FacPers,RelLife,VALC
+Noam,Chomsky,45,,PP,Education,Education,2011,,,,,,,,,,,Associate,2013,T,,,FERC,CoC,Curr,,
+Louis,Pasteur,46,,HSS,Lang & Literature,English,2011,,,,,,VALC,10,HSS,2020,S,Associate,2016,T,,,,,,,
+Mary,Duncan,47,,FA,Theatre,Theatre,2011,,,,,,,,,,,Assistant,TT,2019,,,VALC,Lib,FERC,P&P,FacPers
+Claude,Bernard,48,,HSS,Lang & Literature,English,2011,Athl,8,L,2018,S,,,,,,Instructor,DT,NA,,,,,,,
+Bob,Dylan,49,,HSS,Lang & Literature,English,2011,Curr,3,L,2017,S,,,,,,Associate,2016,T,,,Lib,RelLife,P&P,CoC,AASFA
+Stephen,Levinson,50,,MNS,Natural Sciences,Chemistry,2011,Curr,3,DIV,2019,S,,,,,,Associate,2016,T,,,Athl,CoC,FERC,Lib,P&P
+Carl,Gauss,51,,PP,Education,Education,2011,DirAdvising,,,2017,S,FERC,4,PP,2020,S,Assistant,2015,T,,,,,,,
+Jaime,Escalante,52,,MNS,Natural Sciences,Biology,2011,FERC,4,DIV,2018,S,,,,,,Associate,2016,T,,,,,,,
+Robert,Dixon,53,,MNS,Math & CS,Mathematics,2011,P&P,6,DIV,2019,S,,,,,,Associate,TT,2016,,,CoC,Curr,FacPers,FERC,AASFA
+Harrison,Ford,54,,FA,Music,Music,2011,VALC,10,DIV,2018,S,,,,,,Associate,2016,T,,,,,,,
+Blaise,Pascal,55,,HSS,"Rel, Hist, & Phil",History,2012,,,,,,,,,,,Instructor,DT-15,NA,,,,,,,
+Max,Weber,56,,HSS,Social Sciences,Political Science,2012,,,,,,CoC,2,HSS,2020,S,Assistant,TT,2017,,,VALC,Lib,P&P,Curr,CoC
+Clarence,Darrow,57,,PP,Business,Bus Administration,2012,,,,,,,,,,,Associate,TT,2018,,,,,,,
+Anne,Hathaway,58,,PP,Criminal Justice,Criminal Justice,2012,Curr,3,DIV,2018,S,,,,,,Professor,2014,T,,,FacPers,Curr,CoC,P&P,AASFA
+Neil,deGrasse Tyson,59,,FA,Theatre,Theatre,2012,FacSec,,DIV,2018,S,,,,,,Assistant,2016,T,,,,,,,
+Richard,Branson,60,,MNS,Math & CS,Mathematics,2012,Lib,7,L,2018,S,,,,,,Instructor,DT,NA,,,Lib,CoC,FacPers,VALC,RelLife
+Howard,Zinn,61,,PP,Education,Education,2012,Lib,7,L,2017,S,,,,,,Assistant,TT,2017,,,,,,,
+Woodrow,Wilson,62,,HSS,Social Sciences,Sociology,2012,VALC,10,DIV,2017,S,,,,,,Assistant,TT,2017,,,AASFA,Curr,RelLife,Athl,Lib
+Leonard,Bloomfield,63,,MNS,Natural Sciences,Biology,2013,,,,,,,,,,,Instructor,DT-15,NA,,,,,,,
+Alan,Turing,64,,MNS,Math & CS,Mathematics,2013,AASFA,1,L,2019,S,,,,,,Instructor,DT,NA,,,RelLife,Athl,CoC,Lib,VALC
+Albert,Einstein,65,,MNS,Math & CS,Mathematics,2013,RelLife,9,L,2019,S,,,,,,Instructor,TT,2020,,,RelLife,FERC,VALC,Lib,Athl
+F. Lee,Bailey,66,,HSS,Lang & Literature,English,2013,StudLife,11,DIV,2018,S,,,,,,Instructor,DT,NA,,,,,,,
+Robert,Hooke,67,,PP,Criminal Justice,Criminal Justice,2013,VALC,10,DIV,2019,S,,,,,,Assistant,TT,2018,,,VALC,Athl,Lib,FERC,CoC
+Bill,Gates,68,,FA,Music,Music,2014,,,,,,,,,,,Associate,TT,2019,,,,,,,
+Erik,Erikson,69,,FA,Theatre,Theatre,2014,,,,,,,,,,,Associate,TT,2017,,,,,,,
+Marie,Curie,70,,PP,Business,Bus Administration,2014,Athl,8,L,2017,S,P&P,6,PP,,,Assistant,TT,2019,,,FERC,Athl,VALC,CoC,Lib
+Edward,Jenner,71,,MNS,SON,Nursing,2014,DeanSON,,,,,,,,,,Professor,TT,2017,,,,,,,
+Art,Garfunkel,72,,HSS,Social Sciences,Psychology,2014,RelLife,9,L,2019,S,,,,,,Assistant,TT,2019,,,Lib,VALC,RelLife,FERC,Athl
+Patrick,Stewart,73,,MNS,Natural Sciences,Chemistry,2014,RelLife,9,L,2018,S,,,,,,Assistant,TT,2019,,,VALC,FERC,Lib,CoC,Athl
+Mary,Seacole,74,,MNS,Natural Sciences,Biology,2014,VALC,10,DIV,2019,S,,,,,,Assistant,TT,2019,,,Lib,FERC,VALC,Athl,RelLife
+Joseph,Lister,75,,PP,Business,Bus Administration,2015,,,,,,,,,,,Instructor,DT,NA,,,,,,,
+Johnny,Cochran,76,,HSS,Lang & Literature,Mod Foreign Lang,2015,,,,,,,,,,,Instructor,DT-15,NA,,,,,,,
+Steven,Pinker,77,,HSS,Lang & Literature,English,2015,,,,,,,,,,,Instructor,DT-15,NA,,,,,,,
+Warren,Buffett,78,,MNS,Natural Sciences,Biology,2015,,,,,,,,,,,Instructor,DT-15,NA,,,,,,,
+Robert,Young,79,,HSS,"Rel, Hist, & Phil",Religion & Phil,2015,,,,,,,,,,,Assistant,TT,2020,,,RelLife,VALC,FERC,Lib,Curr
+Kenneth,Hale,80,,MNS,Natural Sciences,Biology,2015,,,,,,AASFA,1,MNS,2020,S,Assistant,TT,2020,,,Lib,FERC,VALC,CoC,AASFA
+Rachel,Carson,81,,MNS,SON,Nursing,2015,,,,,,,,,,,Associate,TT,2020,,,,,,,
+Gregor,Mendel,82,,PP,Social Work,Social Work,2015,,,,,,VALC,10,PP,,,Assistant,TT,2020,,,AASFA,VALC,FacPers,Curr,CoC
+Immanuel,Kant,83,,HSS,"Rel, Hist, & Phil",History,2015,,,,,,,,,,,Assistant,V,NA,,,,,,,
+George,Bancroft,84,,MNS,Natural Sciences,Biology,2015,Athl,8,L,2019,S,,,,,,Assistant,TT,2020,,,,,,,
+Mary Ellen,Richmond,85,,PP,Criminal Justice,Criminal Justice,2015,CoC,2,DIV,2019,S,,,,,,Associate,TT,2020,,,CoC,AASFA,Athl,VALC,FERC
+Clara,Barton,86,,HSS,Lang & Literature,English,2015,Lib,7,L,2019,S,,,,,,Assistant,TT,2020,,,Lib,VALC,FERC,Athl,RelLife
+Pabalo,Picasso,87,,FA,Music,Music,2016,,,,,,,,,,,Instructor,DT,NA,,,Lib,RelLife,VALC,AASFA,FERC
+Georgia,O'Keeffe,88,,MNS,Math & CS,Mathematics,2016,,,,,,,,,,,Instructor,DT,NA,,,Athl,Lib,CoC,P&P,FacPers
+Steve,Jobs,89,,MNS,SON,Nursing,2016,,,,,,,,,,,Instructor,DT,NA,,,,,,,
+Richard,Simmons,90,,HSS,Social Sciences,Art Therapy,2016,,,,,,Lib,7,L,2020,S,Assistant,TT,2021,,,,,,,
+Julis,Erving,91,,PP,Business,Bus Administration,2016,,,,,,,,,,,Assistant,TT,2021,,,VALC,Lib,Curr,FERC,CoC
+Bernhard,Reimann,92,,PP,"Health, PE, Rec",Physical Education,2016,,,,,,Athl,8,PP,2018,S,Assistant,TT,2021,,,,,,,
+John,Mellencamp,93,,PP,"Health, PE, Rec",Physical Education,2016,,,,,,,,,,,Assistant,TT,2021,,,Athl,FERC,VALC,Curr,CoC
+Hermann,Rorschach,94,,PP,Social Work,Social Work,2016,,,,,,,,,,,Assistant,TT,2021,,,,,,,
+Jeannette,Rankin,95,,FA,Art,Art,2016,,,,,,,,,,,Assistant,V,NA,,,VALC,FERC,Lib,Curr,P&P
+Florence,Nightingale,96,,FA,Art,Art,2016,,,,,,,,,,,Assistant,V,NA,,,VALC,Lib,AASFA,P&P,FERC
+Dorthea,Dix,97,,MNS,SON,Nursing,2016,,,,,,,,,,,Instructor,V,NA,,,,,,,
+Mary,Breckinridge,98,,MNS,SON,Nursing,2016,,,,,,,,,,,Associate,V,NA,,,,,,,

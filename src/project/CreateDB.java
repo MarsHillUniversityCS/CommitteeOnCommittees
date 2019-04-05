@@ -18,16 +18,19 @@ public class CreateDB {
         // TODO Auto-generated method stub
 
         CreateDB db = new CreateDB();
-        db.createDB();
         db.createTables();
 
+    }
+
+    public CreateDB () {
+        createTables();
     }
 
     public Connection getConnection() {
         //if (conn != null) return conn;
 
         try {
-            conn.close();
+            if (conn != null) conn.close();
             // db parameters
             String url = "jdbc:sqlite:" + DB_FILE;
             // create a connection to the database
@@ -36,29 +39,6 @@ public class CreateDB {
             System.out.println(e.getMessage());
         }
         return conn;
-    }
-
-    public void createDB() {
-
-        try {
-            // db parameters
-            String url = "jdbc:sqlite:" + DB_FILE;
-            // create a connection to the database
-            conn = DriverManager.getConnection(url);
-
-            System.out.println("Connection to SQLite has been established.");
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
     }
 
 
@@ -76,7 +56,7 @@ public class CreateDB {
         // String url = "jdbc:sqlite:C://sqlite/db/tests.db";
 
         // SQL statement for creating a new table
-        String sql = "CREATE table CoCDatabaseFinal " +
+        String sql = "CREATE table IF NOT EXISTS CoCDatabaseFinal " +
                 "(id integer PRIMARY KEY, firstName text, lastName text, " +
                 "marriedTo integer, division text, department text, " +
                 "program text, yearHired integer, currentAssignment text, " +
@@ -86,7 +66,7 @@ public class CreateDB {
                 "representingNextUntil integer, semesterNext text, rank text, " +
                 "tenureStatus text, yearEligibleForTenure text, nextYearTenureStatus text, " +
                 "yearEligible integer, preferenceOne text, preferenceTwo text, " +
-                "preferenceThree text, preferenceFour text, preferenceFive text);";
+                "preferenceThree text, preferenceFour text, preferenceFive text, IsActive boolean);";
 
         try {
             // Connection conn = DriverManager.getConnection(url);

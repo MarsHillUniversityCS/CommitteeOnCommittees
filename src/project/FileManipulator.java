@@ -471,7 +471,7 @@ public final class FileManipulator {
                 //row.createCell(i);
             }
 
-            //check if cell is a text cell
+            /*//check if cell is a text cell
             if(cell == null || cell.getCellType() == Cell.CELL_TYPE_STRING || cell.toString().isEmpty()) {
 
                 cell.setCellValue(info);
@@ -483,7 +483,7 @@ public final class FileManipulator {
                     numericValue = (int)Double.parseDouble(info);
                     cell.setCellValue(numericValue);
                 }
-            }
+            }*/
 
         }
         //update professor sheet for other pages

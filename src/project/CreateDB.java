@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.util.ArrayList;
+
 public class CreateDB {
 
     public final static String DB_FILE = System.getProperty("user.home")
@@ -49,26 +51,66 @@ public class CreateDB {
 
 
     private void createTableWarehouses() {
+            if (conn == null)
+                conn = getConnection();
+
+            // SQLite connection string
+            // String url = "jdbc:sqlite:C://sqlite/db/tests.db";
+
+            // SQL statement for creating a new table
+            String sql = "CREATE table IF NOT EXISTS CoCDatabaseFinal " +
+                    "(id integer PRIMARY KEY, firstName text, lastName text, " +
+                    "marriedTo integer, division text, department text, " +
+                    "program text, yearHired integer, currentAssignment text, " +
+                    "currentAssignmentID integer, representingCurrent text, " +
+                    "representingCurrentUntil integer, semesterCurrent text, " +
+                    "nextAssignment text, nextAssignmentID integer, representingNext text, " +
+                    "representingNextUntil integer, semesterNext text, rank text, " +
+                    "tenureStatus text, yearEligibleForTenure text, nextYearTenureStatus text, " +
+                    "yearEligible integer, preferenceOne text, preferenceTwo text, " +
+                    "preferenceThree text, preferenceFour text, preferenceFive text, IsActive boolean);";
+
+            try {
+                // Connection conn = DriverManager.getConnection(url);
+                Statement stmt = conn.createStatement();
+
+                // create a new table
+                stmt.execute(sql);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+    }
+
+    //ToDo: Finish making this database call. Ask Marty
+    public ArrayList<Object[]> getAllProfessors(){
+
+        ArrayList<Object[]> professors = new ArrayList<Object[]>();
+
         if (conn == null)
             conn = getConnection();
 
-        // SQLite connection string
-        // String url = "jdbc:sqlite:C://sqlite/db/tests.db";
+        // SQL statement for selecting all professors
+        String sql = "SELECT ALL id, firstName, lastName, currentAssignment" +
+                "FROM CoCDatabaseFinal";
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
 
-        // SQL statement for creating a new table
-        String sql = "CREATE table IF NOT EXISTS CoCDatabaseFinal " +
-                "(id integer PRIMARY KEY, firstName text, lastName text, " +
-                "marriedTo integer, division text, department text, " +
-                "program text, yearHired integer, currentAssignment text, " +
-                "currentAssignmentID integer, representingCurrent text, " +
-                "representingCurrentUntil integer, semesterCurrent text, " +
-                "nextAssignment text, nextAssignmentID integer, representingNext text, " +
-                "representingNextUntil integer, semesterNext text, rank text, " +
-                "tenureStatus text, yearEligibleForTenure text, nextYearTenureStatus text, " +
-                "yearEligible integer, preferenceOne text, preferenceTwo text, " +
-                "preferenceThree text, preferenceFour text, preferenceFive text, IsActive boolean);";
 
         try {
+
+            preparedStatement = conn.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                String currentAssignment = resultSet.getString("currentAssignment");
+
+                Professor_Constants professor = new Professor_Constants(id, firstName, lastName, currentAssignment);
+            }
+
             // Connection conn = DriverManager.getConnection(url);
             Statement stmt = conn.createStatement();
 

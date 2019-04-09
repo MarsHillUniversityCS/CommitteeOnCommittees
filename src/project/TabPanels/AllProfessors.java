@@ -2,9 +2,11 @@ package project.TabPanels;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import project.CreateDB;
 import project.FileManipulator;
 import project.Professor_Constants;
 import project.TabPanels.CreateTable.DialogTableTester;
+import java.sql.Connection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +24,11 @@ public class AllProfessors {
      * @return
      */
     public JPanel getPanel() {
+
+        //Get a connection to the database
+        CreateDB db = new CreateDB();
+        Connection conn = db.getConnection();
+
         //Our main panel
         PanelAllProfessors = new JPanel();
 

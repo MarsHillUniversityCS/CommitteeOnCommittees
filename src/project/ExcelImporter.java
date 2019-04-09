@@ -14,7 +14,8 @@ public class ExcelImporter {
 
 
 	public static void main(String args[]){
-		new ExcelImporter().readCSV("/home/s000192926/IdeaProjects/CommitteeOnCommittees/resources/CoC_data.csv");
+		//new ExcelImporter().readCSV("/home/s000192926/IdeaProjects/CommitteeOnCommittees/resources/CoC_data.csv");
+		new ExcelImporter().readCSV("./resources/CoC_data.csv");
 	}
 	
 	public void readCSV(String fn){
@@ -26,32 +27,32 @@ public class ExcelImporter {
 
 				String firstName = makeSQLSafe(record.get("First Name"));
 				String lastName = makeSQLSafe(record.get("Last name"));
-				String dept = record.get("Dept");
+				String dept = makeSQLSafe(record.get("Dept"));
 				int marriedTo = getNumericValueIfExists(record.get("Married To"));
-				int ID = Integer.parseInt(record.get("ID"));
-				String division = record.get("Division");
-				String program = record.get("Program");
-				int yearHired = Integer.parseInt(record.get("Year of Appt."));
-				String currentAssignment = record.get("Current Assignment");
+				int ID = getNumericValueIfExists(record.get("ID"));
+				String division = makeSQLSafe(record.get("Division"));
+				String program = makeSQLSafe(record.get("Program"));
+				int yearHired = getNumericValueIfExists(record.get("Year of Appt."));
+				String currentAssignment = makeSQLSafe(record.get("Current Assignment"));
 				int currentAssignmentID = getNumericValueIfExists(record.get(" #"));
-				String representingCurrent = record.get("RepresentingCurrent");
+				String representingCurrent = makeSQLSafe(record.get("RepresentingCurrent"));
 				int representingCurrentUntil = getNumericValueIfExists(record.get("untilCurrent"));
-				String semCurrent = record.get("SemCurrent");
-				String nextAssignment = record.get("Next Assignment");
+				String semCurrent = makeSQLSafe(record.get("SemCurrent"));
+				String nextAssignment = makeSQLSafe(record.get("Next Assignment"));
 				int nextAssignmentID = getNumericValueIfExists(record.get("#"));
-				String representingNext = record.get("RepresentingNext");
+				String representingNext = makeSQLSafe(record.get("RepresentingNext"));
 				int representingNextUntil = getNumericValueIfExists(record.get("untilNext"));
-				String semNext = record.get("SemNext");
-				String rank = record.get("Rank");
-				String tenureStatus = record.get("Tenure Status");
-				String yearEligibleForTenure = record.get("Year Eligible for Tenure");
-				String nextYearTenureStatus = record.get("Next Year Tenure Status (if different)");
+				String semNext = makeSQLSafe(record.get("SemNext"));
+				String rank = makeSQLSafe(record.get("Rank"));
+				String tenureStatus = makeSQLSafe(record.get("Tenure Status"));
+				String yearEligibleForTenure = makeSQLSafe(record.get("Year Eligible for Tenure"));
+				String nextYearTenureStatus = makeSQLSafe(record.get("Next Year Tenure Status (if different)"));
 				int yearEligible = getNumericValueIfExists(record.get("Year Elegible (if applicable)"));
-				String preferenceOne = record.get("Pref1");
-				String preferenceTwo = record.get("Pref2");
-				String preferenceThree = record.get("Pref3");
-				String preferenceFour = record.get("Pref4");
-				String preferenceFive = record.get("Pref5");
+				String preferenceOne = makeSQLSafe(record.get("Pref1"));
+				String preferenceTwo = makeSQLSafe(record.get("Pref2"));
+				String preferenceThree = makeSQLSafe(record.get("Pref3"));
+				String preferenceFour = makeSQLSafe(record.get("Pref4"));
+				String preferenceFive = makeSQLSafe(record.get("Pref5"));
 
 
 				//System.out.println(firstName + " " + lastName + " - *" + dept + "*");

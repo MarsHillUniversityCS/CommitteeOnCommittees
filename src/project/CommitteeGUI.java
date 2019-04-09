@@ -24,7 +24,7 @@ public class CommitteeGUI {
 
     private JFrame CommitteeFrame;
     private String title = "Committee on Committees";
-    public static final String File = "CoC.xlsx";
+    public static final String File = "CoCDatabase.db";
 
     public void setFileSaved(boolean fileSaved) {
         isFileSaved = fileSaved;
@@ -55,7 +55,7 @@ public class CommitteeGUI {
 
         //Ask for file location
         JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setCurrentDirectory(new java.io.File("/"));
         chooser.setDialogTitle("CoC - Choose the '" + File + "' File");
         //chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.setAcceptAllFileFilterUsed(false);
@@ -63,10 +63,10 @@ public class CommitteeGUI {
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 fileName = chooser.getName((chooser.getSelectedFile()));
                 if(!fileName.equals(File)){
-                    JOptionPane.showMessageDialog(null, "You must select the Excel named '" + File + "' ");
+                    JOptionPane.showMessageDialog(null, "You must select the database file named '" + File + "' ");
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "You must select the Excel named '" + File + "'\nThe program is now exiting.");
+                JOptionPane.showMessageDialog(null, "You must select the database file named '" + File + "'\nThe program is now exiting.");
                 System.exit(0);
             }
         }

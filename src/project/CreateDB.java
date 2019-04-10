@@ -83,9 +83,9 @@ public class CreateDB {
     }
 
     //ToDo: Finish making this database call. Ask Marty
-    public ArrayList<Object[]> getAllProfessors(){
+    public ArrayList<Professor> getAllProfessors(){
 
-        ArrayList<Object[]> professors = new ArrayList<Object[]>();
+        ArrayList<Professor> professor = new ArrayList<Professor>();
 
         if (conn == null)
             conn = getConnection();
@@ -108,7 +108,7 @@ public class CreateDB {
                 String lastName = resultSet.getString("lastName");
                 String currentAssignment = resultSet.getString("currentAssignment");
 
-                Professor_Constants professor = new Professor_Constants(id, firstName, lastName, currentAssignment);
+                professor.add(Professor(id, firstName, lastName, currentAssignment));
             }
 
             // Connection conn = DriverManager.getConnection(url);
@@ -119,6 +119,8 @@ public class CreateDB {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        return professor;
 
     }
 

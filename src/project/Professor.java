@@ -2,17 +2,30 @@ package project;
 
 public class Professor {
 
+    private int profIsActive;
     private int profID;
     private String profFirstName;
     private String profLastName;
     private String profCurrentAssignment;
 
-    public Professor(int ID, String firstName, String lastName, String currentAssignment){
+
+    public Professor(int ID, String firstName, String lastName, String currentAssignment, int isActive){
         profID = ID;
         profFirstName = firstName;
         profLastName = lastName;
         profCurrentAssignment = currentAssignment;
+        profIsActive = isActive;
 
+
+    }
+
+
+    public int getProfIsActive() {
+        return profIsActive;
+    }
+
+    public void setProfIsActive(int profIsActive) {
+        this.profIsActive = profIsActive;
     }
 
     public int getProfID() {

@@ -6,6 +6,7 @@ import project.CreateDB;
 import project.FileManipulator;
 import project.Professor_Constants;
 import project.TabPanels.CreateTable.DialogTableTester;
+import project.Professor;
 import java.sql.Connection;
 
 import javax.swing.*;
@@ -54,7 +55,7 @@ public class AllProfessors {
         tableColumns = getTableColumns();
 
         //Get the table data. That is the Professors in the selected committee
-        ArrayList<Object[]> tableData = getTableData();
+        ArrayList<Professor> tableData = getTableData();
 
         //Get the Table inside of a Panel using a GitHub Class from Oliver Watkins
         PanelTable = DialogTableTester.getPanel(tableColumns, tableData);
@@ -79,14 +80,19 @@ public class AllProfessors {
      * Gets the data that will be loaded into our table
      * @return Array list of object[]. Each Object[] is information about the professor
      */
-    public ArrayList<Object[]> getTableData(){
+    public ArrayList<Professor> getTableData(){
         //Initialize ArrayList data
-        ArrayList<Object[]> data = new ArrayList<Object[]>();
-        Object[] professorInfo;
-        Row ProfessorRow;
+        ArrayList<Professor> profList = new ArrayList<Professor>();
+
+        CreateDB db = new CreateDB();
+
+        profList = db.getAllProfessors();
+
+        //Object[] professorInfo;
+        //Row ProfessorRow;
 
         //Our ArrayList of Professors. Each Integer represents professor's row number
-        ArrayList<Integer> EligibleProfessors = FileManipulator.getAllProfessors();
+ /*       ArrayList<Integer> EligibleProfessors = FileManipulator.getAllProfessors();
 
         //Loop through each Professor
         for (int i = 0; i < EligibleProfessors.size(); i++){
@@ -108,20 +114,20 @@ public class AllProfessors {
             cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
             professorInfo[3] = FileManipulator.getCellString(cell);
 
-            /*
+            *//*
             for(int j =0; j < tableColumns.length; j++) {
                 Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
                 professorInfo[j] = cell.toString();
                 //data[i][j] = cell.toString();
                 //CHECK WHEN WE ARE FINISHED
             }
-            */
+            *//*
 
             //Add professorInfo(Our new Row) to ArrayList<Object[]> data
-            data.add(professorInfo);
-        }
+            //data.add(professorInfo);
+        }*/
 
-        return data;
+        return profList;
     }
 
 //END: Table

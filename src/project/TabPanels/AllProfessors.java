@@ -70,7 +70,7 @@ public class AllProfessors {
      */
     public String[] getTableColumns(){
 
-        String [] columns = new String[] {"ID","First Name", "Last Name", "Term"};
+        String [] columns = new String[] {"ID","First Name", "Last Name", "Term", "Active"};
 
         return columns;
     }

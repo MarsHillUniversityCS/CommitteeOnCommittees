@@ -91,8 +91,9 @@ public class CreateDB {
             conn = getConnection();
 
         // SQL statement for selecting all professors
-        String sql = "SELECT ALL id, firstName, lastName, currentAssignment, isActive" +
+        String sql = "SELECT id, firstName, lastName, currentAssignment" +
                 "FROM CoCDatabaseFinal";
+
         PreparedStatement preparedStatement;
         ResultSet resultSet;
 
@@ -107,9 +108,14 @@ public class CreateDB {
                 String firstName = resultSet.getString("firstName");
                 String lastName = resultSet.getString("lastName");
                 String currentAssignment = resultSet.getString("currentAssignment");
-                int isActive = resultSet.getInt("isActive");
 
-                professor.add(new Professor(id, firstName, lastName, currentAssignment, isActive));
+                //Professor p = new Professor();
+                //p.setProfID(resultSet.getInt("id"));
+                //p.setProfFirstName(resultSet.getString("firstName"));
+
+
+
+                professor.add(new Professor(id, firstName, lastName, currentAssignment));
             }
 
             // Connection conn = DriverManager.getConnection(url);

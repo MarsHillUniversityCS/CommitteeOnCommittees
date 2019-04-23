@@ -55,7 +55,7 @@ public class AllProfessors {
         tableColumns = getTableColumns();
 
         //Get the table data. That is the Professors in the selected committee
-        ArrayList<Professor> tableData = getTableData();
+        ArrayList<Object[]> tableData = getTableData();
 
         //Get the Table inside of a Panel using a GitHub Class from Oliver Watkins
         PanelTable = DialogTableTester.getPanel(tableColumns, tableData);
@@ -70,7 +70,7 @@ public class AllProfessors {
      */
     public String[] getTableColumns(){
 
-        String [] columns = new String[] {"ID","First Name", "Last Name", "Term", "Active"};
+        String [] columns = new String[] {"ID","First Name", "Last Name", "Term"};
 
         return columns;
     }
@@ -80,13 +80,20 @@ public class AllProfessors {
      * Gets the data that will be loaded into our table
      * @return Array list of object[]. Each Object[] is information about the professor
      */
-    public ArrayList<Professor> getTableData(){
+    public ArrayList<Object[]> getTableData(){
         //Initialize ArrayList data
         ArrayList<Professor> profList = new ArrayList<Professor>();
 
         CreateDB db = new CreateDB();
 
         profList = db.getAllProfessors();
+
+        ArrayList<Object[]> profInfo = new ArrayList<Object[]>();
+        for(Professor p : profList){
+            profInfo.add(p.getTableInfo());
+        }
+
+        return profInfo;
 
         //Object[] professorInfo;
         //Row ProfessorRow;
@@ -127,7 +134,7 @@ public class AllProfessors {
             //data.add(professorInfo);
         }*/
 
-        return profList;
+        //return profList;
     }
 
 //END: Table

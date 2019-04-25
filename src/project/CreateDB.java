@@ -82,7 +82,7 @@ public class CreateDB {
 
     }
 
-    //ToDo: Finish making this database call. Ask Marty
+
     public ArrayList<Professor> getAllProfessors(){
 
         ArrayList<Professor> professor = new ArrayList<Professor>();
@@ -128,6 +128,62 @@ public class CreateDB {
         }
 
         return professor;
+
+    }
+
+
+    //ToDo: Create getters for all of the professor information then
+    //ToDo: Get all of the professor info where ID = ID
+    public Professor getProfessorInformationWithID(int ID){
+
+        Professor p = new Professor();
+
+        if (conn == null)
+            conn = getConnection();
+
+        // SQL statement for selecting all professors
+        String sql = "SELECT * " +
+                "FROM CoCDatabaseFinal" +
+                "WHERE ID = ?";
+
+        PreparedStatement preparedStatement;
+
+        ResultSet resultSet;
+
+
+
+        try {
+
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(0, ID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                String currentAssignment = resultSet.getString("currentAssignment");
+
+                //Professor p = new Professor();
+                //p.setProfID(resultSet.getInt("id"));
+                //p.setProfFirstName(resultSet.getString("firstName"));
+
+
+
+
+            }
+
+            // Connection conn = DriverManager.getConnection(url);
+            //Statement stmt = conn.createStatement();
+
+            // create a new table
+            //stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return p;
 
     }
 

@@ -1,5 +1,7 @@
 package project;
 
+import org.apache.poi.ss.usermodel.Table;
+
 import java.util.ArrayList;
 
 public class Professor {
@@ -9,6 +11,31 @@ public class Professor {
     private String profFirstName;
     private String profLastName;
     private String profCurrentAssignment;
+    private int profMarried;
+    private String profDivision;
+    private String profDept;
+    private String profProgram;
+    private int profHired;
+    private int profCurrentAssignmentID;
+    private String profCurrentRepresenting;
+    private int profRepresentingCurrentUntil;
+    private String profCurrentSemester;
+    private String profNextAssignment;
+    private int profNextAssignmentID;
+    private String profNextRepresenting;
+    private int profRepesentingNextUntil;
+    private String profNextSemester;
+    private String profRank;
+    private int profTenure;
+    private String profYearEligibleTenure;
+    private String profNextYearTenureStatus;
+    private String profPreferenceOne;
+    private String profPreferenceTwo;
+    private String profPreferenceThree;
+    private String profPreferenceFour;
+    private String profPreferenceFive;
+
+
 
     ArrayList<String> TABLE_CONSTANTS = new ArrayList<String>();
 
@@ -61,6 +88,12 @@ public class Professor {
         this.profCurrentAssignment = profCurrentAssignment;
     }
 
+    public void setProfMarried(int profMarried){
+        this.profMarried = profMarried;
+    }
+
+    public void setProf
+
     public Object[] getTableInfo(){
 
         Object[] info = new Object[4];
@@ -76,5 +109,32 @@ public class Professor {
 
     public void fillStringConstants(){
         TABLE_CONSTANTS.add("First Name");
+        TABLE_CONSTANTS.add("Last Name");
+        TABLE_CONSTANTS.add("ID");
+        TABLE_CONSTANTS.add("Married To");
+        TABLE_CONSTANTS.add("Division");
+        TABLE_CONSTANTS.add("Dept");
+        TABLE_CONSTANTS.add("Program");
+        TABLE_CONSTANTS.add("Year of Appt.");
+        TABLE_CONSTANTS.add("Current Assignment");
+        TABLE_CONSTANTS.add(" #");
+        TABLE_CONSTANTS.add("Representing");
+        TABLE_CONSTANTS.add("until");
+        TABLE_CONSTANTS.add("Sem");
+        TABLE_CONSTANTS.add("Next Assignment");
+        TABLE_CONSTANTS.add("#");
+        TABLE_CONSTANTS.add("Representing");
+        TABLE_CONSTANTS.add("until");
+        TABLE_CONSTANTS.add("Sem");
+        TABLE_CONSTANTS.add("Rank");
+        TABLE_CONSTANTS.add("Tenure Status");
+        TABLE_CONSTANTS.add("Year Eligible for Tenure");
+        TABLE_CONSTANTS.add("Next Year Tenure Status (if different)");
+        TABLE_CONSTANTS.add("Year Eligible (if applicable)");
+        TABLE_CONSTANTS.add("Pref1");
+        TABLE_CONSTANTS.add("Pref2");
+        TABLE_CONSTANTS.add("Pref3");
+        TABLE_CONSTANTS.add("Pref4");
+        TABLE_CONSTANTS.add("Pref5");
     }
 }

@@ -132,7 +132,6 @@ public class CreateDB {
     }
 
 
-    //ToDo: Create getters for all of the professor information then
     //ToDo: Get all of the professor info where ID = ID
     public Professor getProfessorInformationWithID(int ID){
 
@@ -160,16 +159,34 @@ public class CreateDB {
             resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()){
-                int id = resultSet.getInt("id");
-                String firstName = resultSet.getString("firstName");
-                String lastName = resultSet.getString("lastName");
-                String currentAssignment = resultSet.getString("currentAssignment");
-
-                //Professor p = new Professor();
-                //p.setProfID(resultSet.getInt("id"));
-                //p.setProfFirstName(resultSet.getString("firstName"));
-
-
+                p.setProfID(resultSet.getInt("id"));
+                p.setProfFirstName(resultSet.getString("firstName"));
+                p.setProfLastName(resultSet.getString("lastName"));
+                p.setProfCurrentAssignment(resultSet.getString("currentAssignment"));
+                p.setProfCurrentAssignmentID(resultSet.getInt("currentAssignmentID"));
+                p.setProfCurrentRepresenting(resultSet.getString("representingCurrent"));
+                p.setProfCurrentSemester(resultSet.getString("semesterCurrent"));
+                p.setProfDept(resultSet.getString("department"));
+                p.setProfDivison(resultSet.getString("division"));
+                p.setProfHired(resultSet.getInt("yearHired"));
+                p.setProfIsActive(resultSet.getBoolean("IsActive"));
+                p.setProfMarried(resultSet.getInt("marriedTo"));
+                p.setProfNextAssignment(resultSet.getString("nextAssignment"));
+                p.setProfNextAssignmentID(resultSet.getInt("nextAssignmentID"));
+                p.setProfNextRepresenting(resultSet.getString("representingNext"));
+                p.setProfNextSemester(resultSet.getString("semesterNext"));
+                p.setProfNextYearTenureStatus(resultSet.getString("nextYearTenureStatus"));
+                p.setProfPreferenceOne(resultSet.getString("preferenceOne"));
+                p.setProfPreferenceTwo(resultSet.getString("preferenceTwo"));
+                p.setProfPreferenceThree(resultSet.getString("preferenceThree"));
+                p.setProfPreferenceFour(resultSet.getString("preferenceFour"));
+                p.setProfPreferenceFive(resultSet.getString("preferenceFive"));
+                p.setProfProgram(resultSet.getString("program"));
+                p.setProfRank(resultSet.getString("rank"));
+                p.setProfRepresentingCurrentUntil(resultSet.getInt("representingCurrentUntil"));
+                p.setProfRepresentingNextUntil(resultSet.getInt("representingNextUntil"));
+                p.setProfTenure(resultSet.getInt("tenureStatus"));
+                p.setProfYearEligibleTenure(resultSet.getString("yearEligibleForTenure"));
 
 
             }

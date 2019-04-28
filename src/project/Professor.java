@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Professor {
 
-    private int profIsActive;
+    private boolean profIsActive;
     private int profID;
     private String profFirstName;
     private String profLastName;
@@ -23,7 +23,7 @@ public class Professor {
     private String profNextAssignment;
     private int profNextAssignmentID;
     private String profNextRepresenting;
-    private int profRepesentingNextUntil;
+    private int profRepresentingNextUntil;
     private String profNextSemester;
     private String profRank;
     private int profTenure;
@@ -48,11 +48,11 @@ public class Professor {
 
     public Professor(){}
 
-    public int getProfIsActive() {
+    public boolean getProfIsActive() {
         return profIsActive;
     }
 
-    public void setProfIsActive(int profIsActive) {
+    public void setProfIsActive(boolean profIsActive) {
         this.profIsActive = profIsActive;
     }
 
@@ -92,7 +92,93 @@ public class Professor {
         this.profMarried = profMarried;
     }
 
-    public void setProf
+    public void setProfDivison(String profDivision){
+        this.profDivision = profDivision;
+    }
+
+    public void setProfDept(String profDept){
+        this.profDept = profDept;
+    }
+
+    public void setProfProgram(String profProgram){
+        this.profProgram = profProgram;
+    }
+
+    public void setProfHired(int profHired){
+        this.profHired = profHired;
+    }
+
+    public void setProfCurrentAssignmentID(int profCurrentAssignmentID){
+        this.profCurrentAssignmentID = profCurrentAssignmentID;
+    }
+
+    public void setProfCurrentRepresenting(String profCurrentRepresenting){
+        this.profCurrentRepresenting = profCurrentRepresenting;
+    }
+
+    public void setProfRepresentingCurrentUntil(int profRepresentingCurrentUntil){
+        this.profRepresentingCurrentUntil = profRepresentingCurrentUntil;
+    }
+
+    public void setProfCurrentSemester(String profCurrentSemester){
+        this.profCurrentSemester = profCurrentSemester;
+    }
+
+    public void setProfNextAssignment(String profNextAssignment){
+        this.profNextAssignment = profNextAssignment;
+    }
+
+    public void setProfNextAssignmentID(int profNextAssignmentID){
+        this.profNextAssignmentID = profNextAssignmentID;
+    }
+
+    public void setProfNextRepresenting(String profNextRepresenting){
+        this.profNextRepresenting = profNextRepresenting;
+    }
+
+    public void setProfRepresentingNextUntil(int profRepresentingNextUntil){
+        this.profRepresentingNextUntil = profRepresentingNextUntil;
+    }
+
+    public void setProfNextSemester(String profNextSemester){
+        this.profNextSemester = profNextSemester;
+    }
+
+    public void setProfRank(String profRank){
+        this.profRank = profRank;
+    }
+
+    public void setProfTenure(int profTenure){
+        this.profTenure = profTenure;
+    }
+
+    public void setProfYearEligibleTenure(String profYearEligibleTenure){
+        this.profYearEligibleTenure = profYearEligibleTenure;
+    }
+
+    public void setProfNextYearTenureStatus(String profNextYearTenureStatus){
+        this.profNextYearTenureStatus = profNextYearTenureStatus;
+    }
+
+    public void setProfPreferenceOne(String profPreferenceOne){
+        this.profPreferenceOne = profPreferenceOne;
+    }
+
+    public void setProfPreferenceTwo(String profPreferenceTwo){
+        this.profPreferenceTwo = profPreferenceTwo;
+    }
+
+    public void setProfPreferenceThree(String profPreferenceThree){
+        this.profPreferenceThree = profPreferenceThree;
+    }
+
+    public void setProfPreferenceFour(String profPreferenceFour){
+        this.profPreferenceFour = profPreferenceFour;
+    }
+
+    public void setProfPreferenceFive(String profPreferenceFive){
+        this.profPreferenceFive = profPreferenceFive;
+    }
 
     public Object[] getTableInfo(){
 

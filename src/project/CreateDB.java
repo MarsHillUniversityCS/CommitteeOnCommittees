@@ -190,9 +190,10 @@ public class CreateDB {
             conn = getConnection();
 
         // SQL statement for selecting all professors
-        String sql = "SELECT id, firstName, lastName, currentAssignment, marriedTo, division, semesterCurrent, representingCurrentUntil, preferenceOne, preferenceTwo" +
-                "FROM CoCDatabaseFinal" +
-                "WHERE currentAssignment = ?";
+        String sql = "SELECT id, firstName, lastName, currentAssignment, marriedTo, division, semesterCurrent, " +
+                    "representingCurrentUntil, preferenceOne, preferenceTwo" +
+                    "FROM CoCDatabaseFinal" +
+                    "WHERE currentAssignment = ?";
 
         PreparedStatement preparedStatement;
         ResultSet resultSet;

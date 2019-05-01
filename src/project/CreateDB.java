@@ -132,6 +132,112 @@ public class CreateDB {
     }
 
 
+
+    public ArrayList<Professor> getAllProfessorsInCommittee(String currentProfAssignment){
+
+        ArrayList<Professor> professor = new ArrayList<Professor>();
+
+        if (conn == null)
+            conn = getConnection();
+
+        // SQL statement for selecting all professors
+        String sql = "SELECT id, firstName, lastName, currentAssignment" +
+                "FROM CoCDatabaseFinal" +
+                "WHERE currentAssignment = ?";
+
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+
+        try {
+
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(0, currentProfAssignment);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                String currentAssignment = resultSet.getString("currentAssignment");
+
+
+
+                professor.add(new Professor(id, firstName, lastName, currentAssignment));
+            }
+
+            // Connection conn = DriverManager.getConnection(url);
+            //Statement stmt = conn.createStatement();
+
+            // create a new table
+            //stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return professor;
+
+    }
+
+
+
+    public ArrayList<Professor> getAllProfessorsEligible(String currentProfAssignment){
+
+        ArrayList<Professor> professor = new ArrayList<Professor>();
+
+        if (conn == null)
+            conn = getConnection();
+
+        // SQL statement for selecting all professors
+        String sql = "SELECT id, firstName, lastName, currentAssignment, marriedTo, division, semesterCurrent, representingCurrentUntil, preferenceOne, preferenceTwo" +
+                "FROM CoCDatabaseFinal" +
+                "WHERE currentAssignment = ?";
+
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+
+        try {
+
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(0, currentProfAssignment);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+
+                Professor p = new Professor();
+
+                p.setProfID(resultSet.getInt("id"));
+                p.setProfFirstName(resultSet.getString("firstName"));
+                p.setProfLastName(resultSet.getString("lastName"));
+                p.setProfCurrentAssignment(resultSet.getString("currentAssignment"));
+                p.setProfMarried(resultSet.getInt("marriedTo"));
+                p.setProfDivison(resultSet.getString("division"));
+                p.setProfCurrentSemester(resultSet.getString("semesterCurrent"));
+                p.setProfRepresentingCurrentUntil(resultSet.getInt("representingCurrentUntil"));
+                p.setProfPreferenceOne(resultSet.getString("preferenceOne"));
+                p.setProfPreferenceTwo(resultSet.getString("preferenceTwo"));
+
+
+                professor.add(p);
+            }
+
+            // Connection conn = DriverManager.getConnection(url);
+            //Statement stmt = conn.createStatement();
+
+            // create a new table
+            //stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return professor;
+
+    }
+
+
     //ToDo: Get all of the professor info where ID = ID
     public Professor getProfessorInformationWithID(int ID){
 

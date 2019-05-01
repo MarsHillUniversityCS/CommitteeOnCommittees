@@ -44,6 +44,7 @@ public class Professor {
         profFirstName = firstName;
         profLastName = lastName;
         profCurrentAssignment = currentAssignment;
+        fillStringConstants();
     }
 
     public Professor(){}
@@ -222,5 +223,21 @@ public class Professor {
         TABLE_CONSTANTS.add("Pref3");
         TABLE_CONSTANTS.add("Pref4");
         TABLE_CONSTANTS.add("Pref5");
+
+    }
+
+    public ArrayList<String> getPopupLabels() {
+        return TABLE_CONSTANTS;
+    }
+
+    public ArrayList<String> getProfessorInformation(){
+        ArrayList<String> values = new ArrayList<String>();
+
+        values.add(profFirstName);
+        values.add(profLastName);
+
+        //DO ALL OF THESE
+
+        return values;
     }
 }

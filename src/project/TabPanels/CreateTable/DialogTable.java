@@ -2,10 +2,7 @@
 package project.TabPanels.CreateTable;
 
 import org.apache.poi.ss.usermodel.Cell;
-import project.CommitteeGUI;
-import project.Constants;
-import project.FileManipulator;
-import project.Professor_Constants;
+import project.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,7 +29,7 @@ public class DialogTable extends JTable {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 
-					int i = rowAtPoint(e.getPoint());
+					int row = rowAtPoint(e.getPoint());
 
 					final JDialog dialog = new JDialog();
 
@@ -44,59 +41,37 @@ public class DialogTable extends JTable {
 					GridBagConstraints gbc = new GridBagConstraints();
 					gbc.insets = new Insets(2, 2, 2, 2);
 
-					Cell cell;
-					Object professorID = getValueAt(i, 0);
-					for (int j = 0; j < FileManipulator.professorSheet.getRow(0).getPhysicalNumberOfCells(); j++) {
+					String professorID = (String) getValueAt(row, 0);
+					System.err.println(professorID);
+
+					CreateDB db = new CreateDB();
+					Professor p =  db.getProfessorInformationWithID(Integer.parseInt(professorID));
+
+					ArrayList<String> labels = p.getPopupLabels();
+					ArrayList<String> values = p.getProfessorInformation();
+
+					for(int i = 0; i < labels.size(); i++){
+						String lbl = labels.get(i);
+						String val = values.get(i);
+
 
 						gbc.gridx = 0;
-						gbc.gridy = j;
+						gbc.gridy = i;
 						gbc.anchor = GridBagConstraints.WEST;
 						gbc.fill = GridBagConstraints.HORIZONTAL;
 
 
-						int row = FileManipulator.getMatchedCellFromProfessorSheet(Professor_Constants.ID, professorID.toString());
-
-
-						//Object valueInTable = getValueAt(i, j);
-						Object valueInTable = FileManipulator.getCellFromProfessorSheet(j,row);
-
-						TableCellRenderer renderer = getCellRenderer(i, 0);
-
-						Object valueInModel = FileManipulator.getCellFromProfessorSheet(j,row);
-
-						//Object valueInTable = getValueAt(i, j);
-
-						//TableCellRenderer renderer = getCellRenderer(i, j);
-
-						//Object valueInModel = getModel().getValueAt(i, j);
-
-						Component rendererComponent = renderer
-								.getTableCellRendererComponent(getThisTable(),
-										valueInModel, false, false, i, j);
-
-						dialog.add(new JLabel("" + FileManipulator.getCellFromProfessorSheet(j,0)), gbc);
+						dialog.add(new JLabel(lbl), gbc);
 						gbc.gridx = 1;
 
-						// Rendering with DefaultTableCellRenderer does not seem
-						// to work outside
-						// of the table. Need to create new component
-						if (rendererComponent.getClass().equals(
-								DefaultTableCellRenderer.UIResource.class)) {
+						JTextArea ta = new JTextArea(val);
 
-							JTextArea ta = new JTextArea("" + valueInTable);
-							//Make ID unEditable
-							if(j == Professor_Constants.ID)
-								ta.setEditable(false);
-							ProfessorInfo.add(ta);
-							dialog.add(new JScrollPane(ta), gbc);
-						} else {
-							
-							dialog.add(rendererComponent, gbc);
-						}
+						dialog.add(ta, gbc);
+
 
 					}
 					gbc.gridx = 1;
-					gbc.gridy = Professor_Constants.PREFERENCE_5 + 1;
+					gbc.gridy = gbc.gridy++;
 					gbc.fill = GridBagConstraints.NONE;
 
 					JButton button = new JButton("OK");
@@ -104,6 +79,7 @@ public class DialogTable extends JTable {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
+							/*
 							int result = JOptionPane.showConfirmDialog((Component) null, "Would you like to update this info? \n**It will not be saved**",
 									"alert", JOptionPane.YES_NO_CANCEL_OPTION);
 							if(result == JOptionPane.YES_OPTION) {
@@ -112,6 +88,8 @@ public class DialogTable extends JTable {
 							} else if (result == JOptionPane.YES_NO_OPTION){
 								dialog.setVisible(false);
 							}
+
+							*/
 
 						}
 					});

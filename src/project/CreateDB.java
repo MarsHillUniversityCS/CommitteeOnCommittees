@@ -45,12 +45,12 @@ public class CreateDB {
 
 
     public void createTables() {
-        createTableWarehouses();
+        createTableProfessor();
         // createTableBarns();
     }
 
 
-    private void createTableWarehouses() {
+    private void createTableProfessor() {
             if (conn == null)
                 conn = getConnection();
 
@@ -78,6 +78,7 @@ public class CreateDB {
                 stmt.execute(sql);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
+                e.printStackTrace();
             }
 
     }
@@ -91,7 +92,7 @@ public class CreateDB {
             conn = getConnection();
 
         // SQL statement for selecting all professors
-        String sql = "SELECT id, firstName, lastName, currentAssignment" +
+        String sql = "SELECT id, firstName, lastName, currentAssignment " +
                 "FROM CoCDatabaseFinal";
 
         PreparedStatement preparedStatement;
@@ -125,6 +126,7 @@ public class CreateDB {
             //stmt.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return professor;
@@ -141,7 +143,7 @@ public class CreateDB {
             conn = getConnection();
 
         // SQL statement for selecting all professors
-        String sql = "SELECT id, firstName, lastName, currentAssignment" +
+        String sql = "SELECT id, firstName, lastName, currentAssignment " +
                 "FROM CoCDatabaseFinal" +
                 "WHERE currentAssignment = ?";
 
@@ -174,6 +176,7 @@ public class CreateDB {
             //stmt.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return professor;
@@ -191,7 +194,7 @@ public class CreateDB {
 
         // SQL statement for selecting all professors
         String sql = "SELECT id, firstName, lastName, currentAssignment, marriedTo, division, semesterCurrent, " +
-                    "representingCurrentUntil, preferenceOne, preferenceTwo" +
+                    "representingCurrentUntil, preferenceOne, preferenceTwo " +
                     "FROM CoCDatabaseFinal" +
                     "WHERE currentAssignment = ?";
 
@@ -249,7 +252,7 @@ public class CreateDB {
 
         // SQL statement for selecting all professors
         String sql = "SELECT * " +
-                "FROM CoCDatabaseFinal" +
+                "FROM CoCDatabaseFinal " +
                 "WHERE ID = ?";
 
         PreparedStatement preparedStatement;
@@ -261,7 +264,7 @@ public class CreateDB {
         try {
 
             preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setInt(0, ID);
+            preparedStatement.setInt(1, ID);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -305,6 +308,7 @@ public class CreateDB {
             //stmt.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return p;

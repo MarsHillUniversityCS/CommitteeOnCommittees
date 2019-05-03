@@ -41,18 +41,23 @@ public class DialogTable extends JTable {
 					GridBagConstraints gbc = new GridBagConstraints();
 					gbc.insets = new Insets(2, 2, 2, 2);
 
-					String professorID = (String) getValueAt(row, 0);
+
+					int professorID = ((Integer) getValueAt(row, 0)).intValue();
 					System.err.println(professorID);
 
 					CreateDB db = new CreateDB();
-					Professor p =  db.getProfessorInformationWithID(Integer.parseInt(professorID));
+					Professor p =  db.getProfessorInformationWithID(professorID);
+					System.out.println(p.getProfFirstName());
 
 					ArrayList<String> labels = p.getPopupLabels();
+					System.out.println("Labels size = " + labels.size());
+
 					ArrayList<String> values = p.getProfessorInformation();
 
-					for(int i = 0; i < labels.size(); i++){
-						String lbl = labels.get(i);
+					for(int i = 0; i < values.size(); i++){
 						String val = values.get(i);
+						String lbl = labels.get(i);
+
 
 
 						gbc.gridx = 0;
@@ -71,7 +76,7 @@ public class DialogTable extends JTable {
 
 					}
 					gbc.gridx = 1;
-					gbc.gridy = gbc.gridy++;
+					gbc.gridy = ++gbc.gridy;
 					gbc.fill = GridBagConstraints.NONE;
 
 					JButton button = new JButton("OK");

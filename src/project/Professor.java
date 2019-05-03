@@ -47,7 +47,9 @@ public class Professor {
         fillStringConstants();
     }
 
-    public Professor(){}
+    public Professor(){
+        fillStringConstants();
+    }
 
     public boolean getProfIsActive() {
         return profIsActive;

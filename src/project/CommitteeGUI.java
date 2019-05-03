@@ -48,7 +48,7 @@ public class CommitteeGUI {
     private JComponent FindCurrentCommittee;
 
 
-    FileManipulator rf = new FileManipulator();
+    //FileManipulator rf = new FileManipulator();
 
     public static void main(String[] args) {
         String fileName = "";
@@ -127,9 +127,9 @@ public class CommitteeGUI {
 
 
         tabbedPane.addTab("*All Professors*", new AllProfessors().getPanel());
-        tabbedPane.addTab("*Current Committee*", new CurrentCommittee().getPanel());
-        tabbedPane.addTab("*Eligible Professor*", new EligibleProfessors().getPanel());
-        tabbedPane.addTab("*Quick Changes*", new QuickChanges().getPanel());
+        //tabbedPane.addTab("*Current Committee*", new CurrentCommittee().getPanel());
+        //tabbedPane.addTab("*Eligible Professor*", new EligibleProfessors().getPanel());
+        //tabbedPane.addTab("*Quick Changes*", new QuickChanges().getPanel());
 
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         //END Create Find Current Committee

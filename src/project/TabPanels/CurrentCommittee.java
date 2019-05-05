@@ -3,6 +3,7 @@ package project.TabPanels;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.omg.CORBA.Current;
 import project.*;
 import project.TabPanels.CreateTable.DialogTableTester;
 
@@ -80,18 +81,29 @@ public class CurrentCommittee {
      * Create our drop down box that is loaded with all of our committees
      */
     public void createDropDown(){
+
+        CreateDB db = new CreateDB();
+
+        ArrayList<String> committees = db.getCommittees();
+
         //Initialize variables
         PanelDropDown = new JPanel();
 
+        for(String c : committees){
+            committeeDropDown.addItem(c);
+
+        }
+
+
         //Grab all committees and load them into a String array
-        CommitteeList = FileManipulator.getCommittees();
+        //CommitteeList = FileManipulator.getCommittees();
 
         //Add Committees to ComboBox
-        for (int i = 0; !(CommitteeList[i].isEmpty()); i++)
-            committeeDropDown.addItem(CommitteeList[count++]);
+        //for (int i = 0; !(CommitteeList[i].isEmpty()); i++)
+           // committeeDropDown.addItem(CommitteeList[count++]);
 
         //Set selectedCommittee
-        selectedCommittee = CommitteeList[0];
+        selectedCommittee = committees.get(0);
 
         //Create our search button
         btnFindCommitteeMembers.addActionListener(new ActionListener() {
@@ -113,6 +125,7 @@ public class CurrentCommittee {
             public void actionPerformed(ActionEvent e) {
                 //Set selected committee from index in our committee list
                 selectedCommittee = Committee_Req_Constants.CommitteeNames[committeeDropDown.getSelectedIndex()];
+
                 //selectedCommittee = committeeDropDown.getSelectedItem().toString();
             }
         });
@@ -162,6 +175,26 @@ public class CurrentCommittee {
      * @return Array list of object[]. Each Object[] is information about the professor
      */
     public ArrayList<Object[]> getTableData(){
+
+
+
+        //Initialize ArrayList data
+        ArrayList<Professor> profList = new ArrayList<Professor>();
+
+        CreateDB db = new CreateDB();
+
+        profList = db.getAllProfessorsInCommittee(String.valueOf(committeeDropDown.getSelectedItem()));
+
+        System.err.println(String.valueOf(committeeDropDown.getSelectedItem()));
+
+        ArrayList<Object[]> profInfo = new ArrayList<Object[]>();
+        for(Professor p : profList){
+            profInfo.add(p.getTableInfo());
+        }
+
+        return profInfo;
+
+        /*
         //Initialize ArrayList data
         ArrayList<Object[]> data = new ArrayList<Object[]>();
         Object[] professorInfo;
@@ -189,7 +222,7 @@ public class CurrentCommittee {
 
             cell = ProfessorRow.getCell(Professor_Constants.UNTIL);
             professorInfo[3] = FileManipulator.getCellString(cell);
-
+            */
             /*
             for(int j =0; j < tableColumns.length; j++) {
                 Cell cell = ProfessorRow.getCell(Professor_Constants.FIRST_NAME);
@@ -200,17 +233,17 @@ public class CurrentCommittee {
             */
 
             //Add professorInfo(Our new Row) to ArrayList<Object[]> data
-            data.add(professorInfo);
+            //data.add(professorInfo);
         }
 
-        return data;
+        //return data;
     }
 
 //END: Table
 
 
 
-}
+
 
 /**
  * Create way to read long named Committees.

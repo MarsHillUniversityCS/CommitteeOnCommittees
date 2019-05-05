@@ -43,15 +43,11 @@ public class DialogTable extends JTable {
 
 
 					int professorID = ((Integer) getValueAt(row, 0)).intValue();
-					System.err.println(professorID);
 
 					CreateDB db = new CreateDB();
 					Professor p =  db.getProfessorInformationWithID(professorID);
-					System.out.println(p.getProfFirstName());
 
 					ArrayList<String> labels = p.getPopupLabels();
-					System.out.println("Labels size = " + labels.size());
-
 					ArrayList<String> values = p.getProfessorInformation();
 
 					for(int i = 0; i < values.size(); i++){

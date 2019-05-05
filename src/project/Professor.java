@@ -95,6 +95,98 @@ public class Professor {
         this.profMarried = profMarried;
     }
 
+    public String getProfDivision() {
+        return profDivision;
+    }
+
+    public String getProfDept() {
+        return profDept;
+    }
+
+    public String getProfProgram() {
+        return profProgram;
+    }
+
+    public int getProfHired() {
+        return profHired;
+    }
+
+    public int getProfCurrentAssignmentID() {
+        return profCurrentAssignmentID;
+    }
+
+    public String getProfCurrentRepresenting() {
+        return profCurrentRepresenting;
+    }
+
+    public int getProfRepresentingCurrentUntil() {
+        return profRepresentingCurrentUntil;
+    }
+
+    public String getProfCurrentSemester() {
+        return profCurrentSemester;
+    }
+
+    public String getProfNextAssignment() {
+        return profNextAssignment;
+    }
+
+    public int getProfNextAssignmentID() {
+        return profNextAssignmentID;
+    }
+
+    public String getProfNextRepresenting() {
+        return profNextRepresenting;
+    }
+
+    public int getProfRepresentingNextUntil() {
+        return profRepresentingNextUntil;
+    }
+
+    public String getProfNextSemester() {
+        return profNextSemester;
+    }
+
+    public String getProfRank() {
+        return profRank;
+    }
+
+    public int getProfTenure() {
+        return profTenure;
+    }
+
+    public String getProfYearEligibleTenure() {
+        return profYearEligibleTenure;
+    }
+
+    public String getProfNextYearTenureStatus() {
+        return profNextYearTenureStatus;
+    }
+
+    public String getProfPreferenceOne() {
+        return profPreferenceOne;
+    }
+
+    public String getProfPreferenceTwo() {
+        return profPreferenceTwo;
+    }
+
+    public String getProfPreferenceThree() {
+        return profPreferenceThree;
+    }
+
+    public String getProfPreferenceFour() {
+        return profPreferenceFour;
+    }
+
+    public String getProfPreferenceFive() {
+        return profPreferenceFive;
+    }
+
+    public int getProfMarried() {
+        return profMarried;
+    }
+
     public void setProfDivison(String profDivision){
         this.profDivision = profDivision;
     }
@@ -190,10 +282,27 @@ public class Professor {
         info[i++] = getProfID();
         info[i++] = getProfFirstName();
         info[i++] = getProfLastName();
-        info[i++] = "2018";
+        info[i++] = getProfCurrentSemester();
 
         return info;
 
+    }
+
+    public Object[] getTableInfoForEligible(){
+        Object[] info = new Object[10];
+        int i = 0;
+        info[i++] = getProfID();
+        info[i++] = getProfFirstName();
+        info[i++] = getProfLastName();
+        info[i++] = getProfMarried();
+        info[i++] = getProfDivision();
+        info[i++] = getProfCurrentAssignment();
+        info[i++] = getProfRepresentingCurrentUntil();
+        info[i++] = getProfCurrentSemester();
+        info[i++] = getProfPreferenceOne();
+        info[i++] = getProfPreferenceTwo();
+
+        return info;
     }
 
     public void fillStringConstants(){
@@ -237,6 +346,34 @@ public class Professor {
 
         values.add(profFirstName);
         values.add(profLastName);
+        values.add(String.valueOf(profID));
+        values.add(String.valueOf(profMarried));
+        values.add(profDivision);
+        values.add(profDept);
+        values.add(profProgram);
+        values.add(String.valueOf(profHired));
+        values.add(profCurrentAssignment);
+        values.add(String.valueOf(profCurrentAssignmentID));
+        values.add(profCurrentRepresenting);
+        values.add(String.valueOf(profRepresentingCurrentUntil));
+        values.add(profCurrentSemester);
+        values.add(profNextAssignment);
+        values.add(String.valueOf(profNextAssignmentID));
+        values.add(profNextRepresenting);
+        values.add(String.valueOf(profRepresentingNextUntil));
+        values.add(profNextSemester);
+        values.add(profRank);
+        values.add(String.valueOf(profTenure));
+        values.add(profYearEligibleTenure);
+        values.add(profNextYearTenureStatus);
+        values.add(profYearEligibleTenure);
+        values.add(profPreferenceOne);
+        values.add(profPreferenceTwo);
+        values.add(profPreferenceThree);
+        values.add(profPreferenceFour);
+        values.add(profPreferenceFive);
+
+
 
         //DO ALL OF THESE
 

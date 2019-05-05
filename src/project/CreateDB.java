@@ -144,7 +144,7 @@ public class CreateDB {
 
         // SQL statement for selecting all professors
         String sql = "SELECT id, firstName, lastName, currentAssignment " +
-                "FROM CoCDatabaseFinal" +
+                "FROM CoCDatabaseFinal " +
                 "WHERE currentAssignment = ?";
 
         PreparedStatement preparedStatement;
@@ -154,7 +154,7 @@ public class CreateDB {
         try {
 
             preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setString(0, currentProfAssignment);
+            preparedStatement.setString(1, currentProfAssignment);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -185,7 +185,7 @@ public class CreateDB {
 
 
 
-    public ArrayList<Professor> getAllProfessorsEligible(String currentProfAssignment){
+    public ArrayList<Professor> getAllProfessorsEligible(String currentProfAssignment, String semester, int representingUntil){
 
         ArrayList<Professor> professor = new ArrayList<Professor>();
 
@@ -195,8 +195,11 @@ public class CreateDB {
         // SQL statement for selecting all professors
         String sql = "SELECT id, firstName, lastName, currentAssignment, marriedTo, division, semesterCurrent, " +
                     "representingCurrentUntil, preferenceOne, preferenceTwo " +
-                    "FROM CoCDatabaseFinal" +
-                    "WHERE currentAssignment = ?";
+                    "FROM CoCDatabaseFinal " +
+                    "WHERE currentAssignment = ? AND semesterCurrent = ? AND representingCurrentUntil = ? AND currentAssignment <> 'Sabbatical' " +
+                    "AND currentAssignment <> 'DeanHSS' AND currentAssignment <> 'DeanMNS' AND currentAssignment <> 'DeanGSP' AND currentAssignment <> 'DeanPP' " +
+                    "AND currentAssignment <> 'FacChair' AND currentAssignment <> 'AthRep' AND tenureStatus <> 'DT-15' AND tenureStatus <> 'V' " +
+                    "AND tenureStatus <> 'DT-AT'";
 
         PreparedStatement preparedStatement;
         ResultSet resultSet;
@@ -205,7 +208,9 @@ public class CreateDB {
         try {
 
             preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setString(0, currentProfAssignment);
+            preparedStatement.setString(1, currentProfAssignment);
+            preparedStatement.setString(2, semester);
+            preparedStatement.setInt(3, representingUntil);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -312,6 +317,37 @@ public class CreateDB {
         }
 
         return p;
+
+    }
+
+    public ArrayList<String> getCommittees(){
+        ArrayList<String> committees = new ArrayList<String>();
+
+        committees.add("AASFA");
+        committees.add("CoC");
+        committees.add("Curr");
+        committees.add("FERC");
+        committees.add("Admin");
+        committees.add("P&P");
+        committees.add("FacChair");
+        committees.add("DeanFA");
+        committees.add("DeanGSP");
+        committees.add("VALC");
+        committees.add("DeanMNS");
+        committees.add("DeanPP");
+        committees.add("DeanHSS");
+        committees.add("FacPers");
+        committees.add("Sabbatical");
+        committees.add("AthRep");
+        committees.add("Athl");
+        committees.add("DirAdvising");
+        committees.add("FacSec");
+        committees.add("Lib");
+        committees.add("RelLife");
+        committees.add("StudLife");
+        committees.add("DeanSON");
+
+        return committees;
 
     }
 

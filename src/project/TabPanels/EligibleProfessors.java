@@ -2,10 +2,7 @@ package project.TabPanels;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import project.Committee_Req_Constants;
-import project.FileManipulator;
-import project.Professor_Constants;
-import project.Requirements;
+import project.*;
 import project.TabPanels.CreateTable.DialogTableTester;
 
 import javax.swing.*;
@@ -13,6 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -31,6 +31,7 @@ public class EligibleProfessors {
     private Requirements required;
     private int count = 0;
     private int thisYear = (Calendar.getInstance().get(Calendar.YEAR));
+    private int nextYear = (thisYear + 1);
 
     private String selectedCommittee = "";
     private String[] tableColumns = getTableColumns();
@@ -111,15 +112,26 @@ public class EligibleProfessors {
         //Initialize variables
         PanelDropDown = new JPanel();
 
+        CreateDB db = new CreateDB();
+
+        ArrayList<String> committees = db.getCommittees();
+
+        PanelDropDown = new JPanel();
+
+        for(String c : committees){
+            committeeDropDown.addItem(c);
+
+        }
+
         //Grab all committees and load them into a String array
-        CommitteeList = FileManipulator.getCommittees();
+        //CommitteeList = FileManipulator.getCommittees();
 
         //Add Committees to ComboBox
-        for (int i = 0; !(CommitteeList[i].isEmpty()); i++)
-            committeeDropDown.addItem(CommitteeList[count++]);
+        //for (int i = 0; !(CommitteeList[i].isEmpty()); i++)
+            //committeeDropDown.addItem(CommitteeList[count++]);
 
         //Set selectedCommittee
-        selectedCommittee = CommitteeList[0];
+        selectedCommittee = committees.get(0);
 
         //Create our search button
         btnFindCommitteeMembers.addActionListener(new ActionListener() {
@@ -163,7 +175,7 @@ public class EligibleProfessors {
     public void CreateRadioButtons(){
         RadioButtonPanel = new JPanel();
         RadioButtonPanel.setLayout(new BoxLayout(RadioButtonPanel, BoxLayout.Y_AXIS));
-        int nextYear = (thisYear) + 1;
+        //int nextYear = (thisYear) + 1;
         ThisFall = new JRadioButton(thisYear +" Fall");
         ThisFall.setSelected(true);
         ThisSpring = new JRadioButton(thisYear +" Spring");
@@ -212,86 +224,119 @@ public class EligibleProfessors {
      * @return Array list of object[]. Each Object[] is information about the professor
      */
     public ArrayList<Object[]> getTableData(){
+
+
         //Initialize ArrayList data
-        ArrayList<Object[]> data = new ArrayList<Object[]>();
-        Object[] professorInfo;
-        Row ProfessorRow;
+        ArrayList<Professor> profList = new ArrayList<Professor>();
 
-        //Initialize variables
-        ArrayList<Integer> EligibleProfessors = getAllEligible();
+        profList = getEligible();
 
-        //Loop through each Professor
-        for (int i = 0; i < EligibleProfessors.size(); i++){
-            //Get the row of our professor in excel sheet
-            ProfessorRow = FileManipulator.professorSheet.getRow(EligibleProfessors.get(i));
+        System.err.println(profList.size());
 
-            //Set the content wanted for each professor
-            professorInfo = getProfessorInfo(ProfessorRow);
-
-            //Add professorInfo(Our new Row) to ArrayList<Object[]> data
-            data.add(professorInfo);
+        ArrayList<Object[]> profInfo = new ArrayList<Object[]>();
+        for(Professor p : profList){
+            profInfo.add(p.getTableInfoForEligible());
         }
 
+        return profInfo;
+
+
+        //Initialize ArrayList data
+        //ArrayList<Object[]> data = new ArrayList<Object[]>();
+        //Object[] professorInfo;
+        //Row ProfessorRow;
+
+        //Initialize variables
+        //ArrayList<Integer> EligibleProfessors = getAllEligible();
+
+        //Loop through each Professor
+        //for (int i = 0; i < EligibleProfessors.size(); i++){
+            //Get the row of our professor in excel sheet
+            //ProfessorRow = FileManipulator.professorSheet.getRow(EligibleProfessors.get(i));
+
+            //Set the content wanted for each professor
+            //professorInfo = getProfessorInfo(ProfessorRow);
+
+            //Add professorInfo(Our new Row) to ArrayList<Object[]> data
+            //data.add(professorInfo);
+        //}
+
         //Return information about the professors that meet given specs
-        return data;
+        //return data;
     }
 
 
-    public ArrayList<Integer> getAllEligible(){
+
+
+    public ArrayList<Professor> getEligible(){
+
+        CreateDB db = new CreateDB();
+
+        ArrayList<Professor> professorList = new ArrayList<>();
+
         //Find requirements
-        required = new Requirements(selectedCommittee);
+        //required = new Requirements(selectedCommittee);
 
         //Check to see if they are currently serving on a committee
-        ArrayList<Integer> withAssignment = FileManipulator.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "");
+        //ArrayList<Integer> withAssignment = FileManipulator.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "");
 
         //If serving on a committee and the term is ending or term has ended
         if(ThisSpring.isSelected()) {
-            int lastYear = thisYear-1;
+
+            professorList = db.getAllProfessorsEligible(String.valueOf(committeeDropDown.getSelectedItem()), "S", thisYear);
+
+            //int lastYear = thisYear-1;
            // withAssignment = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, thisYear, withAssignment);
-            ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, (int)(lastYear));
+            //ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, (int)(lastYear));
             //ArrayList<Integer> ThisYear = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, (thisYear), withAssignment);
 
             //All professors eligible in the spring
-            ArrayList<Integer> NotFallUntil = FileManipulator.getAllEligibleNotCondition(Professor_Constants.SEM, "F", ThisYear);
+            //ArrayList<Integer> NotFallUntil = FileManipulator.getAllEligibleNotCondition(Professor_Constants.SEM, "F", ThisYear);
 
-            NotFallUntil = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, (lastYear), NotFallUntil);
+            //NotFallUntil = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, (lastYear), NotFallUntil);
 
-            ThisYear.removeAll(NotFallUntil);
+            //ThisYear.removeAll(NotFallUntil);
 
-            withAssignment = ThisYear;
+            //withAssignment = ThisYear;
             //If this Fall Find all professors eligible in the spring of this year
         } else if(ThisFall.isSelected()){
 
+            professorList = db.getAllProfessorsEligible(String.valueOf(committeeDropDown.getSelectedItem()), "F", thisYear);
+
             //Get all professors This year
-            ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, (thisYear));
+            //ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, (thisYear));
 
             //All professors eligible in the spring
-            ArrayList<Integer> NotFallUntil = FileManipulator.getAllEligibleNotCondition(Professor_Constants.SEM, "S", ThisYear);
+            //ArrayList<Integer> NotFallUntil = FileManipulator.getAllEligibleNotCondition(Professor_Constants.SEM, "S", ThisYear);
 
-            ThisYear.removeAll(NotFallUntil);
+            //ThisYear.removeAll(NotFallUntil);
 
             //merge all the lists
-            withAssignment = ThisYear;
+            //withAssignment = ThisYear;
            // withAssignment = FileManipulator.mergeLists(withAssignment, ThisYear);
 
             //If Next Spring Find all professors eligible in the spring of this year
         } else if(NextSpring.isSelected()){
+
+            professorList = db.getAllProfessorsEligible(String.valueOf(committeeDropDown.getSelectedItem()), "S", nextYear);
             //Get all professors This year
             //ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, thisYear);
-            withAssignment = FileManipulator.getAllEligible(Professor_Constants.UNTIL, thisYear);
+            //withAssignment = FileManipulator.getAllEligible(Professor_Constants.UNTIL, thisYear);
 
             //merge all the lists
             //withAssignment = FileManipulator.mergeLists(withAssignment, ThisYear);
 
         }
+
+        return professorList;
         //Check box that asks Spring or Fall. If Spring do not show Until
         //that ends in spring. If Fall show folks that ended in spring.
-        ArrayList<Integer> withOutAssignment = FileManipulator.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, "");
+        //ArrayList<Integer> withOutAssignment = FileManipulator.getAllEligible(Professor_Constants.CURRENT_ASSIGNMENT, "");
 
         //Need to highlight married couples. Should add this to table.
 
         //Merge With and Without
-        ArrayList<Integer> EligibleProfessors = FileManipulator.mergeLists(withOutAssignment, withAssignment);
+        //ArrayList<Integer> EligibleProfessors = FileManipulator.mergeLists(withOutAssignment, withAssignment);
 
         //Check if Next Assignment is empty
         //EligibleProfessors = rf.getAllEligible(Professor_Constants.NEXT_ASSIGNMENT, "", EligibleProfessors);
@@ -301,33 +346,34 @@ public class EligibleProfessors {
         //EligibleProfessors = rf.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, thisYear, EligibleProfessors);
 
         //not sabbatical
-        EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "Sabbatical", EligibleProfessors);
+        //EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "Sabbatical", EligibleProfessors);
 
         //athRep
         //not athletic representative
-        EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "AthRep", EligibleProfessors);
+        //EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.CURRENT_ASSIGNMENT, "AthRep", EligibleProfessors);
 
         //TenureStatus DT-15 cannot but DT can. Also V is visiting
         //not Visiting
-        EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "V", EligibleProfessors);
+        //EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "V", EligibleProfessors);
 
         //not DTA-15
-        EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-15", EligibleProfessors);
+        //EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-15", EligibleProfessors);
 
         //TenureStatus DT-AT cannot but DT can.
         //not Athletic Trainers (DT-AT)?
-        EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-AT", EligibleProfessors);
+        //EligibleProfessors = FileManipulator.getAllEligibleNotCondition(Professor_Constants.TENURE_STATUS, "DT-AT", EligibleProfessors);
 
         //not deans *works
-        EligibleProfessors = FileManipulator.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Dean", EligibleProfessors);
+        //EligibleProfessors = FileManipulator.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Dean", EligibleProfessors);
 
         //not FacChairs *works
-        EligibleProfessors = FileManipulator.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Fac", EligibleProfessors);
+        //EligibleProfessors = FileManipulator.getAllEligibleNotContains(Professor_Constants.CURRENT_ASSIGNMENT, "Fac", EligibleProfessors);
 
         //Get All Department Requirements
-        EligibleProfessors = getDepartmentRequirements(required.fa_specs, EligibleProfessors);
+        //EligibleProfessors = getDepartmentRequirements(required.fa_specs, EligibleProfessors);
 
-        return EligibleProfessors;
+        //return EligibleProfessors;
+
 
     }
 

@@ -114,11 +114,13 @@ public class EligibleProfessors {
 
         CreateDB db = new CreateDB();
 
+        //Get a list of potential committees
         ArrayList<String> committees = db.getCommittees();
 
         PanelDropDown = new JPanel();
 
         for(String c : committees){
+            //Add committees to the dropdown
             committeeDropDown.addItem(c);
 
         }
@@ -229,12 +231,13 @@ public class EligibleProfessors {
         //Initialize ArrayList data
         ArrayList<Professor> profList = new ArrayList<Professor>();
 
+        //Call the getEligible function
         profList = getEligible();
 
-        System.err.println(profList.size());
-
+        //Create an arraylist of type Object[]
         ArrayList<Object[]> profInfo = new ArrayList<Object[]>();
         for(Professor p : profList){
+            //Add professors to the arraylist
             profInfo.add(p.getTableInfoForEligible());
         }
 
@@ -270,6 +273,7 @@ public class EligibleProfessors {
 
     public ArrayList<Professor> getEligible(){
 
+        //gain access to the database functions
         CreateDB db = new CreateDB();
 
         ArrayList<Professor> professorList = new ArrayList<>();
@@ -283,7 +287,8 @@ public class EligibleProfessors {
         //If serving on a committee and the term is ending or term has ended
         if(ThisSpring.isSelected()) {
 
-            professorList = db.getAllProfessorsEligible(String.valueOf(committeeDropDown.getSelectedItem()), "S", thisYear);
+            //Get a list of the professors who are eligible with given parameters
+            professorList = db.getAllProfessorsEligible(String.valueOf(committeeDropDown.getSelectedItem()),  thisYear);
 
             //int lastYear = thisYear-1;
            // withAssignment = FileManipulator.getAllEligibleNotCondition(Professor_Constants.UNTIL, thisYear, withAssignment);
@@ -301,7 +306,8 @@ public class EligibleProfessors {
             //If this Fall Find all professors eligible in the spring of this year
         } else if(ThisFall.isSelected()){
 
-            professorList = db.getAllProfessorsEligible(String.valueOf(committeeDropDown.getSelectedItem()), "F", thisYear);
+            //Get a list of the professors who are eligible with given parameters
+            professorList = db.getAllProfessorsEligible(String.valueOf(committeeDropDown.getSelectedItem()), thisYear);
 
             //Get all professors This year
             //ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, (thisYear));
@@ -318,7 +324,8 @@ public class EligibleProfessors {
             //If Next Spring Find all professors eligible in the spring of this year
         } else if(NextSpring.isSelected()){
 
-            professorList = db.getAllProfessorsEligible(String.valueOf(committeeDropDown.getSelectedItem()), "S", nextYear);
+            //Get a list of the professors who are eligible with given parameters
+            professorList = db.getAllProfessorsEligible(String.valueOf(committeeDropDown.getSelectedItem()), nextYear);
             //Get all professors This year
             //ArrayList<Integer> ThisYear = FileManipulator.getAllEligible(Professor_Constants.UNTIL, thisYear);
             //withAssignment = FileManipulator.getAllEligible(Professor_Constants.UNTIL, thisYear);

@@ -86,10 +86,13 @@ public class AllProfessors {
 
         CreateDB db = new CreateDB();
 
+        //Get all professors
         profList = db.getAllProfessors();
 
+        //Create an arraylist of type Object[]
         ArrayList<Object[]> profInfo = new ArrayList<Object[]>();
         for(Professor p : profList){
+            //Fill the list with professor info.
             profInfo.add(p.getTableInfo());
         }
 

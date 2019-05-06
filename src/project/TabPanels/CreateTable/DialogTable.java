@@ -24,6 +24,7 @@ public class DialogTable extends JTable {
 
 		ArrayList<JTextArea> ProfessorInfo = new ArrayList<>();
 
+		CreateDB db = new CreateDB();
 
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -75,8 +76,33 @@ public class DialogTable extends JTable {
 					gbc.gridy = ++gbc.gridy;
 					gbc.fill = GridBagConstraints.NONE;
 
-					JButton button = new JButton("OK");
-					button.addActionListener(new ActionListener() {
+					JButton saveButton = new JButton("Save");
+					JButton cancelButton = new JButton("Cancel");
+
+
+					saveButton.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+
+							/*
+							int result = JOptionPane.showConfirmDialog((Component) null, "Would you like to update this info? \n**It will not be saved**",
+									"alert", JOptionPane.YES_NO_CANCEL_OPTION);
+							if(result == JOptionPane.YES_OPTION) {
+								FileManipulator.editProfessorRow(ProfessorInfo);
+								dialog.setVisible(false);
+							} else if (result == JOptionPane.YES_NO_OPTION){
+								dialog.setVisible(false);
+							}
+
+							*/
+
+
+
+						}
+					});
+
+					cancelButton.addActionListener(new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -92,10 +118,17 @@ public class DialogTable extends JTable {
 
 							*/
 
+
+
 						}
 					});
+
+
 					gbc.anchor = GridBagConstraints.EAST;
-					dialog.add(button, gbc);
+					dialog.add(saveButton, gbc);
+
+					gbc.gridx = 0;
+					dialog.add(cancelButton, gbc);
 
 //					dialog.setLocationRelativeTo(mainFrame);
 					dialog.setModal(true);

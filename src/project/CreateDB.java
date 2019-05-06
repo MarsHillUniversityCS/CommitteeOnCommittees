@@ -11,11 +11,13 @@ import java.util.ArrayList;
 
 public class CreateDB {
 
+    //Tells the program where to save the database file.
     public final static String DB_FILE = System.getProperty("user.home")
             + System.getProperty("file.separator") +"CoCDatabase.db";
 
     private Connection conn = null;
 
+    //main function that creates a database and tables.
     public static void main(String[] args) {
         // TODO Auto-generated method stub
 
@@ -28,6 +30,8 @@ public class CreateDB {
         createTables();
     }
 
+
+    //Get a connection to the database
     public Connection getConnection() {
         //if (conn != null) return conn;
 
@@ -44,12 +48,14 @@ public class CreateDB {
     }
 
 
+    //Calls createTableProfessor
     public void createTables() {
         createTableProfessor();
         // createTableBarns();
     }
 
 
+    //Create a table in the database for professors to be stored in.
     private void createTableProfessor() {
             if (conn == null)
                 conn = getConnection();
@@ -78,12 +84,12 @@ public class CreateDB {
                 stmt.execute(sql);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
             }
 
     }
 
-
+    //Get all professors
+    //@return a list of professors
     public ArrayList<Professor> getAllProfessors(){
 
         ArrayList<Professor> professor = new ArrayList<Professor>();
@@ -92,7 +98,7 @@ public class CreateDB {
             conn = getConnection();
 
         // SQL statement for selecting all professors
-        String sql = "SELECT id, firstName, lastName, currentAssignment " +
+        String sql = "SELECT id, firstName, lastName, currentAssignment,representingCurrentUntil " +
                 "FROM CoCDatabaseFinal";
 
         PreparedStatement preparedStatement;
@@ -105,18 +111,23 @@ public class CreateDB {
             resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()){
-                int id = resultSet.getInt("id");
-                String firstName = resultSet.getString("firstName");
-                String lastName = resultSet.getString("lastName");
-                String currentAssignment = resultSet.getString("currentAssignment");
-
-                //Professor p = new Professor();
-                //p.setProfID(resultSet.getInt("id"));
-                //p.setProfFirstName(resultSet.getString("firstName"));
+                //int id = resultSet.getInt("id");
+                //String firstName = resultSet.getString("firstName");
+                //String lastName = resultSet.getString("lastName");
+                //String currentAssignment = resultSet.getString("currentAssignment");
+                //int until = resultSet.getInt("representingCurrentUntil");
 
 
+                Professor p = new Professor();
+                p.setProfID(resultSet.getInt("id"));
+                p.setProfFirstName(resultSet.getString("firstName"));
+                p.setProfLastName(resultSet.getString("lastName"));
+                p.setProfCurrentAssignment(resultSet.getString("currentAssignment"));
+                p.setProfRepresentingCurrentUntil(resultSet.getInt("representingCurrentUntil"));
 
-                professor.add(new Professor(id, firstName, lastName, currentAssignment));
+
+
+                professor.add(p);
             }
 
             // Connection conn = DriverManager.getConnection(url);
@@ -135,6 +146,9 @@ public class CreateDB {
 
 
 
+    //Get all of the professors who are in a committee
+    //@param currentProfAssignment
+    //@return professor list
     public ArrayList<Professor> getAllProfessorsInCommittee(String currentProfAssignment){
 
         ArrayList<Professor> professor = new ArrayList<Professor>();
@@ -143,7 +157,7 @@ public class CreateDB {
             conn = getConnection();
 
         // SQL statement for selecting all professors
-        String sql = "SELECT id, firstName, lastName, currentAssignment " +
+        String sql = "SELECT id, firstName, lastName, currentAssignment, representingCurrentUntil " +
                 "FROM CoCDatabaseFinal " +
                 "WHERE currentAssignment = ?";
 
@@ -159,14 +173,17 @@ public class CreateDB {
             resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()){
-                int id = resultSet.getInt("id");
-                String firstName = resultSet.getString("firstName");
-                String lastName = resultSet.getString("lastName");
-                String currentAssignment = resultSet.getString("currentAssignment");
+
+                Professor p = new Professor();
+                p.setProfID(resultSet.getInt("id"));
+                p.setProfFirstName(resultSet.getString("firstName"));
+                p.setProfLastName(resultSet.getString("lastName"));
+                p.setProfCurrentAssignment(resultSet.getString("currentAssignment"));
+                p.setProfRepresentingCurrentUntil(resultSet.getInt("representingCurrentUntil"));
 
 
 
-                professor.add(new Professor(id, firstName, lastName, currentAssignment));
+                professor.add(p);
             }
 
             // Connection conn = DriverManager.getConnection(url);
@@ -184,8 +201,10 @@ public class CreateDB {
     }
 
 
-
-    public ArrayList<Professor> getAllProfessorsEligible(String currentProfAssignment, String semester, int representingUntil){
+    //Get a list of all eligible professors for upcoming committees
+    //@Param currentProfAssignment, representingUntil
+    //@Return professor
+    public ArrayList<Professor> getAllProfessorsEligible(String currentProfAssignment, int representingUntil){
 
         ArrayList<Professor> professor = new ArrayList<Professor>();
 
@@ -196,7 +215,7 @@ public class CreateDB {
         String sql = "SELECT id, firstName, lastName, currentAssignment, marriedTo, division, semesterCurrent, " +
                     "representingCurrentUntil, preferenceOne, preferenceTwo " +
                     "FROM CoCDatabaseFinal " +
-                    "WHERE currentAssignment = ? AND semesterCurrent = ? AND representingCurrentUntil = ? AND currentAssignment <> 'Sabbatical' " +
+                    "WHERE currentAssignment <> ? AND representingCurrentUntil <> ? AND currentAssignment <> 'Sabbatical' " +
                     "AND currentAssignment <> 'DeanHSS' AND currentAssignment <> 'DeanMNS' AND currentAssignment <> 'DeanGSP' AND currentAssignment <> 'DeanPP' " +
                     "AND currentAssignment <> 'FacChair' AND currentAssignment <> 'AthRep' AND tenureStatus <> 'DT-15' AND tenureStatus <> 'V' " +
                     "AND tenureStatus <> 'DT-AT'";
@@ -209,8 +228,8 @@ public class CreateDB {
 
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, currentProfAssignment);
-            preparedStatement.setString(2, semester);
-            preparedStatement.setInt(3, representingUntil);
+            //preparedStatement.setString(2, semester);
+            preparedStatement.setInt(2, representingUntil);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -247,7 +266,10 @@ public class CreateDB {
     }
 
 
-    //ToDo: Get all of the professor info where ID = ID
+
+    //Get information on a single professor
+    //@param ID
+    //@return Professor p
     public Professor getProfessorInformationWithID(int ID){
 
         Professor p = new Professor();
@@ -320,6 +342,7 @@ public class CreateDB {
 
     }
 
+    //Fill the array list of potential committees
     public ArrayList<String> getCommittees(){
         ArrayList<String> committees = new ArrayList<String>();
 

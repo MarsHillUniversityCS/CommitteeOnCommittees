@@ -282,7 +282,11 @@ public class Professor {
         info[i++] = getProfID();
         info[i++] = getProfFirstName();
         info[i++] = getProfLastName();
-        info[i++] = getProfCurrentSemester();
+        if(getProfRepresentingCurrentUntil() == -1) {
+            info[i++] = "";
+        }else{
+            info[i++] = getProfRepresentingCurrentUntil();
+        }
 
         return info;
 
@@ -294,10 +298,22 @@ public class Professor {
         info[i++] = getProfID();
         info[i++] = getProfFirstName();
         info[i++] = getProfLastName();
-        info[i++] = getProfMarried();
+
+        if(getProfMarried() == -1){
+            info[i++] = "";
+        }else{
+            info[i++] = getProfMarried();
+        }
+
         info[i++] = getProfDivision();
         info[i++] = getProfCurrentAssignment();
-        info[i++] = getProfRepresentingCurrentUntil();
+
+        if(getProfRepresentingCurrentUntil() == -1){
+            info[i++] = "";
+        }else{
+            info[i++] = getProfRepresentingCurrentUntil();
+        }
+
         info[i++] = getProfCurrentSemester();
         info[i++] = getProfPreferenceOne();
         info[i++] = getProfPreferenceTwo();

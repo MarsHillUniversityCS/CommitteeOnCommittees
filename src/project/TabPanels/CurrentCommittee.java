@@ -84,12 +84,14 @@ public class CurrentCommittee {
 
         CreateDB db = new CreateDB();
 
+        //Get a list of the potential committees
         ArrayList<String> committees = db.getCommittees();
 
         //Initialize variables
         PanelDropDown = new JPanel();
 
         for(String c : committees){
+            //Add the committees to the dropdown.
             committeeDropDown.addItem(c);
 
         }
@@ -183,12 +185,14 @@ public class CurrentCommittee {
 
         CreateDB db = new CreateDB();
 
+        //Get all the professors with given parameters
         profList = db.getAllProfessorsInCommittee(String.valueOf(committeeDropDown.getSelectedItem()));
 
-        System.err.println(String.valueOf(committeeDropDown.getSelectedItem()));
 
+        //Create a new arraylist of type Object[]
         ArrayList<Object[]> profInfo = new ArrayList<Object[]>();
         for(Professor p : profList){
+            //Fill the arraylist with professor info
             profInfo.add(p.getTableInfo());
         }
 

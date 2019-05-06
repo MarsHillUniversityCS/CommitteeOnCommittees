@@ -398,10 +398,6 @@ public final class FileManipulator {
      */
     public static String[] getCommittees(){
 
-        CreateDB db = new CreateDB();
-
-        ArrayList<String> committees = db.getCommittees();
-
 
         //Initialize variables
         String [] Committees = new String[20];

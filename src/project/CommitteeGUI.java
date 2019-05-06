@@ -127,8 +127,8 @@ public class CommitteeGUI {
 
 
         tabbedPane.addTab("*All Professors*", new AllProfessors().getPanel());
-        //tabbedPane.addTab("*Current Committee*", new CurrentCommittee().getPanel());
-        //tabbedPane.addTab("*Eligible Professor*", new EligibleProfessors().getPanel());
+        tabbedPane.addTab("*Current Committee*", new CurrentCommittee().getPanel());
+        tabbedPane.addTab("*Eligible Professor*", new EligibleProfessors().getPanel());
         //tabbedPane.addTab("*Quick Changes*", new QuickChanges().getPanel());
 
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
